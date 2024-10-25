@@ -1,0 +1,414 @@
+﻿
+@{
+    ViewData["Title"] = "Quản lý tài khoản";
+}
+
+<div class="main" id="content">
+    <nav class="navbar navbar-expand px-4 py-3">
+        <div class="navbar-collapse collapse">
+            <ul class="navbar-nav justify-content-between" style="width: 1380px;">
+                <li>
+                    <h2 style="font-weight: bolder;">Thông tin tài khoản</h2>
+                </li>
+                <li class="nav-item dropdown">
+                    <a href="#" data-bs-toggle="dropdown" class="nav-icon pe-md-0">
+                        <img src="images/account.png" class="avatar img-fluid" alt="">
+                    </a>
+                    <div class="dropdown-menu dropdown-menu-end rounded" style="width: 180px;">
+                        <div class="row">
+                            <h4 style="font-weight: 600; font-size: larger;" class="ms-2">Huỳnh Quốc Bảo
+                            </h4>
+                        </div>
+                        <div class="d-flex">
+                            <a class="ms-2 cusor" data-bs-toggle="modal" data-bs-target="#doimk">Đổi mật khẩu</a>
+                        </div>
+                        <div class="d-flex">
+                            <a class="ms-2 cusor" style="color: red;">Đăng xuất</a>
+                        </div>
+                    </div>
+                </li>
+            </ul>
+        </div>
+    </nav>
+    <main class="content px-3 py-3">
+        <div class="container-fluid">
+            <div>
+
+                <div class="row justify-content-between mx-1 mb-4">
+                    <div class="input-group d-flex align-items-center border border-dark rounded"
+                        style="width: 300px;padding: 0;">
+                        <i class="fa-solid fa-magnifying-glass fa-1x ms-2 "></i>
+                        <input type="text" class="form-control input-border" placeholder="Thông tin tài khoản"
+                            aria-label="Username" aria-describedby="basic-addon1" style="border: 0;">
+                    </div>
+                    <button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#them"
+                        data-bs-dismiss="modal" style="width: 135px; font-size: small;">Thêm tài khoản</button>
+                </div>
+
+                <div class="row mt-2">
+                    <div class="col-12">
+                        <table class="table">
+                            <thead style="background: #0e2238;">
+                                <tr>
+                                    <th scope="col">#</th>
+                                    <th scope="col">Họ và tên</th>
+                                    <th scope="col">Chức vụ</th>
+                                    <th scope="col">Tài khoản</th>
+                                    <th scope="col">Mật khẩu</th>
+                                    <th scope="col"></th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr></tr>
+                                <th scope="row">1</th>
+                                <td>Huỳnh Quốc Bảo</td>
+                                <td>Quản lý</td>
+                                <td>admin</td>
+                                <td>admin1234</td>
+                                <td class="d-flex  justify-content-end">
+                                    <button type="button" class="btn btn-warning me-2" data-bs-toggle="modal"
+                                        data-bs-target="#sua" data-bs-dismiss="modal"
+                                        style="font-size: small;">Sửa</button>
+                                    <button type="button" class="btn btn-danger" style="font-size: small;">Xóa</button>
+                                </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Modal thêm -->
+    <div class="modal fade" id="them" tabindex="-1" aria-labelledby="them" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content" style="border-radius: 20px;">
+                <div class="modal-header d-flex justify-content-center">
+                    <div>
+                        <h5 style="font-weight: bolder;">Thêm tài khoản</h5>
+                    </div>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body pb-0">
+                    <div class="container">
+                        <div class="row">
+                            <div class="col-6">
+                                <label for="" class="ms-1 mb-1 label-modal">Tài khoản</label>
+                                <select class="form-select" id="position" required>
+                                    <option value="">Chọn mã nhân viên</option>
+                                    <option value="Quản lý">QL01</option>
+                                    <option value="Bảo vệ">BV01</option>
+                                    <option value="Lễ tân">LT01</option>
+                                </select>
+                                <span id="errorPosition" class="text-danger"></span> <!-- Thông báo lỗi cho chức vụ -->
+                            </div>
+                            <div class="col-6">
+                                <label for="" class="ms-1 mb-1 label-modal">Mật khẩu</label>
+                                <input type="password" id="password" class="form-control" placeholder=""
+                                    aria-label="Username" aria-describedby="addon-wrapping">
+                                <span id="errorPassword" class="text-danger"></span> <!-- Thông báo lỗi cho mật khẩu -->
+                            </div>
+                        </div>
+                        <div class="row mt-2">
+                            <div class="col-6">
+                                <label for="" class="ms-1 mb-1 label-modal">Họ và Tên:</label>
+                                <div>
+                                    <h6 class="ms-2">Châu Thanh Hoàng Nhân</h6>
+                                </div>
+                            </div>
+                            <div class="col-6">
+                                <label for="" class="ms-1 mb-1 label-modal">Chức Vụ:</label>
+                                <div>
+                                    <h6 class="ms-1">Quản Lý</h6>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- footer -->
+                <div class="container">
+                    <div class="row" style="justify-content: flex-end;">
+                        <div class="col-3 m-2 d-flex justify-content-end">
+                            <button type="button" class="btn btn-success" id="addAccountBtn"
+                                style="font-size: small;">Thêm tài khoản</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+     <!-- Modal doi mk -->
+     <div class="modal fade" id="doimk" tabindex="-1" aria-labelledby="moimk" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content" style="border-radius: 20px;">
+                <div class="modal-header d-flex justify-content-center">
+                    <div>
+                        <h5 style="font-weight: bolder;">Đổi mật khẩu</h5>
+                    </div>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body" id="modalContent">
+                    <div class="container px-5">
+                        <div class="row">
+                            <div class="col-12">
+                                <label for="fullname" class="ms-1 mb-1 label-modal">Mật khẩu hiện tại</label>
+                                <input type="password" class="form-control" id="mkHienTai" placeholder=""
+                                    required>
+                                <span id="mkHienTaiError" class="error text-danger"></span>
+                            </div>
+                        </div>
+                        <div class="row mt-3">
+                            <div class="col-12">
+                                <label for="cccd" class="ms-1 mb-1 label-modal">Mật khẩu mới</label>
+                                <input class="form-control" type="password" id="mkMoi" placeholder="" required>
+                                <span id="mkMoiError" type="password" class="error text-danger"></span>
+                            </div>
+                        </div>
+                        <div class="row mt-3">
+                            <div class="col-12">
+                                <label for="address" class="ms-1 mb-1 label-modal">Nhập lại mật khẩu mới</label>
+                                <input type="text" class="form-control" id="mkMoi1" placeholder="" required>
+                                <span id="mkMoi1Error" class="error text-danger"></span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- footer -->
+                <div class="container my-2">
+                    <div class="row" style="justify-content: flex-end;">
+                        <div class="col-3 m-2 d-flex justify-content-end" style="width: 200px;">
+                            <button type="button" class="btn btn-warning" id="doimatkhau"
+                                style="font-size: medium; color: white;">Đổi mật khẩu</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal sửa -->
+    <div class="modal fade" id="sua" tabindex="-1" aria-labelledby="sua" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content" style="border-radius: 20px;">
+                <div class="modal-header d-flex justify-content-center">
+                    <div>
+                        <h5 style="font-weight: bolder;">Sửa thông tin tài khoản</h5>
+                    </div>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body pb-0">
+                    <div class="container">
+                        <div class="row">
+                            <div class="col-6">
+                                <label for="" class="ms-1 mb-1 label-modal">Tài khoản</label>
+                                <select class="form-select" id="Editposition" required>
+                                    <option value="">Chọn mã nhân viên</option>
+                                    <option value="Quản lý">QL01</option>
+                                    <option value="Bảo vệ">BV01</option>
+                                    <option value="Lễ tân">LT01</option>
+                                </select>
+                                <span id="EditerrorPosition" class="text-danger"></span>
+                                <!-- Thông báo lỗi cho chức vụ -->
+                            </div>
+                            <div class="col-6">
+                                <label for="" class="ms-1 mb-1 label-modal">Mật khẩu</label>
+                                <input type="password" id="Editpassword" class="form-control" placeholder=""
+                                    aria-label="Username" aria-describedby="addon-wrapping">
+                                <span id="EditerrorPassword" class="text-danger"></span>
+                                <!-- Thông báo lỗi cho mật khẩu -->
+                            </div>
+                        </div>
+                        <div class="row mt-2">
+                            <div class="col-6">
+                                <label for="" class="ms-1 mb-1 label-modal">Họ và Tên:</label>
+                                <div>
+                                    <h6 class="ms-2">Châu Thanh Hoàng Nhân</h6>
+                                </div>
+                            </div>
+                            <div class="col-6">
+                                <label for="" class="ms-1 mb-1 label-modal">Chức Vụ:</label>
+                                <div>
+                                    <h6 class="ms-1">Quản Lý</h6>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- footer -->
+                <div class="container">
+                    <div class="row" style="justify-content: flex-end;">
+                        <div class="col-3 m-2 d-flex justify-content-end">
+                            <button type="button" class="btn btn-success" id="Edit" style="font-size: small;">Đồng
+                                ý</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- javascript nút thêm -->
+    <script>
+        document.getElementById('addAccountBtn').addEventListener('click', function () {
+            // Lấy giá trị từ các trường nhập liệu
+            const position = document.getElementById('position');
+            const passwordInput = document.getElementById('password');
+            const password = passwordInput.value.trim(); // Loại bỏ khoảng trắng
+
+            // Xóa thông báo lỗi trước đó (nếu có)
+            document.getElementById('errorPosition').innerText = '';
+            document.getElementById('errorPassword').innerText = '';
+
+            let hasError = false; // Biến để kiểm tra có lỗi hay không
+
+            // Biểu thức chính quy để kiểm tra ký tự đặc biệt
+            const specialCharRegex = /[!#$%^&*(),.?":{}|<>]/g;
+
+            // Kiểm tra chức vụ
+            if (position.value.trim() === '') {
+                document.getElementById('errorPosition').innerText = 'Vui lòng chọn chức vụ.';
+                hasError = true;
+            }
+
+            // Kiểm tra mật khẩu
+            if (password === '') {
+                document.getElementById('errorPassword').innerText = 'Vui lòng nhập mật khẩu.';
+                hasError = true;
+            } else if (password.length < 6) {
+                document.getElementById('errorPassword').innerText = 'Mật khẩu phải có ít nhất 6 ký tự.';
+                hasError = true;
+            } else if (specialCharRegex.test(password)) {
+                document.getElementById('errorPassword').innerText = 'Mật khẩu không được chứa ký tự đặc biệt.';
+                hasError = true;
+            }
+
+            // Nếu không có lỗi, tiếp tục xử lý thêm tài khoản
+            if (!hasError) {
+                alert("Thêm tài khoản thành công");
+                document.getElementById('position').value = '';
+                document.getElementById('password').value = '';
+            }
+        });
+
+        // Xóa khoảng trắng khi nhập vào trường mật khẩu
+        document.getElementById('password').addEventListener('input', function () {
+            this.value = this.value.replace(/^\s+|\s+$/g, '');
+        });
+    </script>
+    <!--Javascipt nút sửa  -->
+    <script>
+        document.getElementById('Edit').addEventListener('click', function () {
+            // Lấy giá trị từ các trường nhập liệu
+            const position = document.getElementById('Editposition');
+            const passwordInput = document.getElementById('Editpassword');
+            const password = passwordInput.value.trim(); // Loại bỏ khoảng trắng
+
+            // Xóa thông báo lỗi trước đó (nếu có)
+            document.getElementById('EditerrorPosition').innerText = '';
+            document.getElementById('EditerrorPassword').innerText = '';
+
+            let hasError = false; // Biến để kiểm tra có lỗi hay không
+
+            // Biểu thức chính quy để kiểm tra ký tự đặc biệt
+            const specialCharRegex = /[!#$%^&*(),.?":{}|<>]/g;
+
+            // Kiểm tra chức vụ
+            if (position.value.trim() === '') {
+                document.getElementById('EditerrorPosition').innerText = 'Vui lòng chọn chức vụ.';
+                hasError = true;
+            }
+
+            // Kiểm tra mật khẩu
+            if (password === '') {
+                document.getElementById('EditerrorPassword').innerText = 'Vui lòng nhập mật khẩu.';
+                hasError = true;
+            } else if (password.length < 6) {
+                document.getElementById('EditerrorPassword').innerText = 'Mật khẩu phải có ít nhất 6 ký tự.';
+                hasError = true;
+            } else if (specialCharRegex.test(password)) {
+                document.getElementById('EditerrorPassword').innerText = 'Mật khẩu không được chứa ký tự đặc biệt.';
+                hasError = true;
+            }
+
+            // Nếu không có lỗi, tiếp tục xử lý thêm tài khoản
+            if (!hasError) {
+                alert("Sửa thông tin tài khoản thành công");
+                document.getElementById('Editposition').value = '';
+                document.getElementById('Editpassword').value = '';
+            }
+        });
+
+        // Xóa khoảng trắng khi nhập vào trường mật khẩu
+        document.getElementById('password').addEventListener('input', function () {
+            this.value = this.value.replace(/^\s+|\s+$/g, '');
+        });
+    </script>
+
+     <!-- javascrit bắt lỗi đổi mk -->
+     <script>
+        // Loại bỏ khoảng trắng trong khi người dùng nhập vào các ô mật khẩu
+        document.getElementById('mkHienTai').addEventListener('input', function () {
+            this.value = this.value.replace(/\s/g, '');
+        });
+
+        document.getElementById('mkMoi').addEventListener('input', function () {
+            this.value = this.value.replace(/\s/g, '');
+        });
+
+        document.getElementById('mkMoi1').addEventListener('input', function () {
+            this.value = this.value.replace(/\s/g, '');
+        });
+
+        document.getElementById('doimatkhau').addEventListener('click', function () {
+            // Lấy giá trị của các ô input
+            const mkHienTai = document.getElementById('mkHienTai').value.trim();
+            const mkMoi = document.getElementById('mkMoi').value.trim();
+            const mkMoi1 = document.getElementById('mkMoi1').value.trim();
+
+            // Xóa thông báo lỗi trước đó
+            document.getElementById('mkHienTaiError').textContent = '';
+            document.getElementById('mkMoiError').textContent = '';
+            document.getElementById('mkMoi1Error').textContent = '';
+
+            let isValid = true;
+
+            // Kiểm tra mật khẩu hiện tại
+            if (!mkHienTai) {
+                document.getElementById('mkHienTaiError').textContent = 'Vui lòng nhập mật khẩu hiện tại';
+                isValid = false;
+            }
+
+            // Kiểm tra mật khẩu mới
+            if (!mkMoi) {
+                document.getElementById('mkMoiError').textContent = 'Vui lòng nhập mật khẩu mới';
+                isValid = false;
+            } else if (mkMoi.length < 6) {
+                document.getElementById('mkMoiError').textContent = 'Mật khẩu mới phải có ít nhất 6 ký tự';
+                isValid = false;
+            }
+
+            // Kiểm tra nhập lại mật khẩu mới
+            if (!mkMoi1) {
+                document.getElementById('mkMoi1Error').textContent = 'Vui lòng nhập lại mật khẩu mới';
+                isValid = false;
+            } else if (mkMoi !== mkMoi1) {
+                document.getElementById('mkMoi1Error').textContent = 'Mật khẩu nhập lại không khớp';
+                isValid = false;
+            }
+
+            // Nếu không có lỗi, thực hiện các bước tiếp theo (ví dụ: gửi dữ liệu đến server)
+            if (isValid) {
+                // Thực hiện xử lý đổi mật khẩu tại đây
+                alert('Đổi mật khẩu thành công!');
+                document.getElementById('mkHienTai').value = '';
+                document.getElementById('mkMoi').value = '';
+                document.getElementById('mkMoi1').value = '';
+            }
+        });
+
+    </script>
+
+</div>
+
