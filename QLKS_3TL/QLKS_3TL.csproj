@@ -16,4 +16,13 @@
     <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="8.0.6" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Areas\LeTan\Controllers\" />
+    <Folder Include="Areas\LeTan\Data\" />
+    <Folder Include="Areas\LeTan\Models\" />
+    <Folder Include="Areas\LeTan\Views\" />
+    <Folder Include="Areas\QuanLy\Data\" />
+    <Folder Include="Areas\QuanLy\Models\" />
+  </ItemGroup>
+
 </Project>

@@ -26,6 +26,6 @@ builder.Services.AddDbContext<Qlks3tlContext>(options => { options.UseSqlServer(
 
     app.MapControllerRoute(
         name: "default",
-        pattern: "{controller=Home}/{action=Index}/{id?}");
+        pattern: "{area=QuanLy}/{controller=Home}/{action=Index}/{id?}");
 
     app.Run();
