@@ -31,7 +31,7 @@
                     <i class="lni lni-grid-alt"></i>
                 </button>
                 <div class="sidebar-logo">
-                    <a href="#">3TL HOTEL</a>
+                    <a asp-controller="Home" asp-action="Index">3TL HOTEL</a>
                 </div>
             </div>
             <ul class="sidebar-nav">
@@ -84,7 +84,7 @@
                     </a>
                 </li>
                 <li class="sidebar-item">
-                    <a href="#" class="sidebar-link" onclick="loadContent('QuanLyTaiKhoan.html')">
+                    <a a asp-controller="QuanLyTaiKhoan" asp-action="Index" class="sidebar-link" onclick="loadContent('QuanLyTaiKhoan.html')">
                         <i class="lni lni-cog"></i>
                         <span>Quản lý tài khoản</span>
                     </a>

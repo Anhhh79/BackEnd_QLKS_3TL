@@ -1,4 +1,4 @@
-﻿
+﻿@model IEnumerable<QLKS_3TL.Areas.QuanLy.Models.NhanVienViewModal>
 @{
     ViewData["Title"] = "Quản lý nhân viên";
 }
@@ -12,7 +12,7 @@
                 </li>
                 <li class="nav-item dropdown">
                     <a href="#" data-bs-toggle="dropdown" class="nav-icon pe-md-0">
-                        <img src="images/account.png" class="avatar img-fluid" alt="">
+                        <img src="~/images/account.png" class="avatar img-fluid" alt="">
                     </a>
                     <div class="dropdown-menu dropdown-menu-end rounded" style="width: 180px;">
                         <div class="row">
@@ -55,7 +55,7 @@
                         <table class="table">
                             <thead style="background: #0e2238;">
                                 <tr>
-                                    <th scope="col">#</th>
+                                    <th scope="col">STT</th>
                                     <th scope="col">Căn cước công dân</th>
                                     <th scope="col">Họ và tên</th>
                                     <th scope="col">Giới tính</th>
@@ -66,58 +66,39 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                <tr class="row-item">
-                                    <th scope="row">1</th>
-                                    <td class="me-2">0928383992</td>
-                                    <td>Huỳnh Quốc Bảo</td>
-                                    <td>Nam</td>
-                                    <td>090013332</td>
-                                    <td>Quản lý</td>
-                                    <td>Cần Thơ</td>
-                                    <td class="d-flex  justify-content-end">
-                                        <a class="cusor me-2 mt-1" data-bs-toggle="modal"
-                                           data-bs-target="#chitiet"
-                                           style="color: darkblue; font-style: italic; text-decoration: underline;">
-                                            Chi
-                                            tiết
-                                        </a>
-                                        <button type="button" class="btn btn-warning me-2 edit-btn"
-                                                data-bs-toggle="modal" data-bs-target="#suaModal"
-                                                style="font-size: small;">
-                                            Sửa
-                                        </button>
-                                        <button type="button" class="btn btn-danger"
-                                                style="font-size: small;">
-                                            Xóa
-                                        </button>
-                                    </td>
-                                </tr>
-                                <tr class="row-item">
-                                    <th scope="row">1</th>
-                                    <td class="me-2">0938282</td>
-                                    <td>Huỳnh Quốc Bảo 1</td>
-                                    <td>Nam</td>
-                                    <td>090013332</td>
-                                    <td>Quản lý</td>
-                                    <td>Cần Thơ</td>
-                                    <td class="d-flex  justify-content-end">
-                                        <a class="cusor me-2 mt-1" data-bs-toggle="modal"
-                                           data-bs-target="#chitiet"
-                                           style="color: darkblue; font-style: italic; text-decoration: underline;">
-                                            Chi
-                                            tiết
-                                        </a>
-                                        <button type="button" class="btn btn-warning me-2 edit-btn"
-                                                data-bs-toggle="modal" data-bs-target="#suaModal"
-                                                style="font-size: small;">
-                                            Sửa
-                                        </button>
-                                        <button type="button" class="btn btn-danger"
-                                                style="font-size: small;">
-                                            Xóa
-                                        </button>
-                                    </td>
-                                </tr>
+                                @{
+                                    int soThuTu = 1;
+                                }
+                                @foreach (var item in Model)
+                                {
+                                    <tr class="row-item">
+                                        <th scope="row">@soThuTu</th>
+                                        <td class="me-2">@item.Cccd</td>
+                                        <td>@item.HoTen</td>
+                                        <td>@item.GioiTinh</td>
+                                        <td>@item.SoDienThoai</td>
+                                        <td>@item.ChucVu</td>
+                                        <td>@item.DiaChi</td>
+                                        <td class="d-flex  justify-content-end">
+                                            <a class="cusor me-2 mt-1" data-bs-toggle="modal"
+                                               data-bs-target="#chitiet"
+                                               style="color: darkblue; font-style: italic; text-decoration: underline;">
+                                                Chi
+                                                tiết
+                                            </a>
+                                            <button type="button" class="btn btn-warning me-2 edit-btn"
+                                                    data-bs-toggle="modal" data-bs-target="#suaModal"
+                                                    style="font-size: small;">
+                                                Sửa
+                                            </button>
+                                            <button type="button" class="btn btn-danger"
+                                                    style="font-size: small;">
+                                                Xóa
+                                            </button>
+                                        </td>
+                                    </tr>         
+                                        soThuTu++;
+                                }
                             </tbody>
                         </table>
                     </div>

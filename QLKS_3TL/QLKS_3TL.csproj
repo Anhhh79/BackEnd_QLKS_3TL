@@ -17,12 +17,14 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Folder Include="Areas\KhachHang\Controllers\" />
+    <Folder Include="Areas\KhachHang\Data\" />
+    <Folder Include="Areas\KhachHang\Models\" />
+    <Folder Include="Areas\KhachHang\Views\" />
     <Folder Include="Areas\LeTan\Controllers\" />
     <Folder Include="Areas\LeTan\Data\" />
     <Folder Include="Areas\LeTan\Models\" />
     <Folder Include="Areas\LeTan\Views\" />
-    <Folder Include="Areas\QuanLy\Data\" />
-    <Folder Include="Areas\QuanLy\Models\" />
   </ItemGroup>
 
 </Project>
