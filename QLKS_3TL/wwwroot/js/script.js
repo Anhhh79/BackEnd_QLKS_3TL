@@ -33,6 +33,3 @@ function loadContent(url) {
 
     xhr.send();  // Gửi yêu cầu AJAX
 }
-
-
-

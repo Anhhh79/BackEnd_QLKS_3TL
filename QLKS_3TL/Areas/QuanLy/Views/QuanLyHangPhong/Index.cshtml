@@ -1,8 +1,7 @@
-﻿
+﻿@model IEnumerable<QLKS_3TL.Data.HangPhong>
 @{
     ViewData["Title"] = "Quản lý hạng phòng";
 }
-
 <div class="main" id="content">
     <nav class="navbar navbar-expand px-4 py-3">
         <div class="navbar-collapse collapse">
@@ -12,7 +11,7 @@
                 </li>
                 <li class="nav-item dropdown">
                     <a href="#" data-bs-toggle="dropdown" class="nav-icon pe-md-0">
-                        <img src="images/account.png" class="avatar img-fluid" alt="">
+                        <img src="~/images/account.png" class="avatar img-fluid" alt="">
                     </a>
                     <div class="dropdown-menu dropdown-menu-end rounded" style="width: 180px;">
                         <div class="row">
@@ -41,8 +40,8 @@
                         <input type="text" class="form-control input-border" placeholder="Thông tin hóa đơn"
                                aria-label="Username" aria-describedby="basic-addon1" style="border: 0;">
                     </div>
-                    <button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#them"
-                            data-bs-dismiss="modal" style="width: 150px; font-size: small;">
+                    <button type="button" class="btn btn-success" id="createProductBtn"
+                            style="width: 150px; font-size: small;">
                         Thêm hạng phòng
                     </button>
                 </div>
@@ -53,6 +52,7 @@
                             <thead style="background: #0e2238;">
                                 <tr>
                                     <th scope="col">#</th>
+                                    <th scope="col">Mã hạng phòng</th>
                                     <th scope="col">Tên hạng phòng</th>
                                     <th scope="col">Số giường</th>
                                     <th scope="col">Diện tích</th>
@@ -60,53 +60,36 @@
                                     <th scope="col"></th>
                                 </tr>
                             </thead>
-                            <tbody>
-                                <tr>
-                                    <th scope="row">1</th>
-                                    <td>Dexu king</td>
-                                    <td style="padding-left: 37px;">2</td>
-                                    <td style="padding-left: 30px;">45</td>
-                                    <td>1.200.000 VND</td>
-                                    <td class="d-flex  justify-content-end">
-                                        <a class="cusor me-2 mt-1" data-bs-toggle="modal" data-bs-target="#chitiet"
-                                           style="color: darkblue; font-style: italic; text-decoration: underline;">
-                                            Chi
-                                            tiết
-                                        </a>
-                                        <button type="button" class="btn btn-warning me-2" data-bs-toggle="modal"
-                                                data-bs-target="#sua" data-bs-dismiss="modal"
-                                                style="font-size: small;">
-                                            Sửa
-                                        </button>
-                                        <button type="button" class="btn btn-danger"
-                                                style="font-size: small;">
-                                            Xóa
-                                        </button>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <th scope="row">1</th>
-                                    <td>Dexu king 2</td>
-                                    <td style="padding-left: 37px;">2</td>
-                                    <td style="padding-left: 30px;">47</td>
-                                    <td>1.200.000 VND</td>
-                                    <td class="d-flex  justify-content-end">
-                                        <a class="cusor me-2 mt-1" data-bs-toggle="modal" data-bs-target="#chitiet"
-                                           style="color: darkblue; font-style: italic; text-decoration: underline;">
-                                            Chi
-                                            tiết
-                                        </a>
-                                        <button type="button" class="btn btn-warning me-2" data-bs-toggle="modal"
-                                                data-bs-target="#sua" data-bs-dismiss="modal"
-                                                style="font-size: small;">
-                                            Sửa
-                                        </button>
-                                        <button type="button" class="btn btn-danger"
-                                                style="font-size: small;">
-                                            Xóa
-                                        </button>
-                                    </td>
-                                </tr>
+                            <tbody id="tblBody">
+                                @{
+                                    int stt = 1;
+                                }
+                                @foreach (var hp in Model)
+                                {
+                                    <tr>
+                                        <th scope="row">@stt</th>
+                                        <td>@hp.MaHangPhong</td>
+                                        <td>@hp.TenHangPhong</td>
+                                        <td style="padding-left: 37px;">@hp.SoGiuong</td>
+                                        <td style="padding-left: 30px;">@hp.DienTich</td>
+                                        <td>@hp.GiaHangPhong VND</td>
+                                        <td class="d-flex  justify-content-end">
+                                            <a class="cusor me-2 mt-1 chitietBtn" onclick="loadRoomDetail('@hp.MaHangPhong')"
+                                               style="color: darkblue; font-style: italic; text-decoration: underline;">
+                                                Chi
+                                                tiết
+                                            </a>
+                                            <button type="button" class="btn btn-warning me-2 editBtn" data-toggle="modal" data-target="#editModal" data-id="@hp.MaHangPhong" style="font-size: small;">
+                                                Sửa
+                                            </button>
+                                            <button type="button" class="btn btn-danger delete-btn" data-id="@hp.MaHangPhong"
+                                                    style="font-size: small;">
+                                                Xóa
+                                            </button>
+                                        </td>
+                                    </tr>
+                                    stt++;
+                                }
                             </tbody>
                         </table>
                     </div>
@@ -114,6 +97,9 @@
             </div>
         </div>
     </main>
+    <div id="modalPlaceholder"></div>
+   <div id="modalPlaceholderEdit"></div>
+    <div id="loadModal"></div>
     <!-- Modal đổi mk -->
     <div class="modal fade" id="doimk" tabindex="-1" aria-labelledby="moimk" aria-hidden="true">
         <div class="modal-dialog">
@@ -164,146 +150,61 @@
             </div>
         </div>
     </div>
+</div>
 
-    <!-- Modal thêm -->
-    <div class="modal fade" id="them" tabindex="-1" aria-labelledby="them" aria-hidden="true">
-        <div class="modal-dialog modal-lg">
-            <div class="modal-content" style="border-radius: 20px;">
-                <div class="modal-header d-flex justify-content-center">
-                    <div>
-                        <h5 style="font-weight: bolder;">Thêm hạng phòng</h5>
-                    </div>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body">
-                    <div class="container">
-                        <div class="row">
-                            <div class="col-6">
-                                <label for="tenHangPhong" class="ms-1 mb-1 label-modal">
-                                    Tên hạng
-                                    phòng
-                                </label>
-                                <input type="text" id="tenHangPhong" class="form-control" placeholder="">
-                                <span id="errorTenHangPhong" class="text-danger"></span>
-                                <!-- Thông báo lỗi -->
-                            </div>
-                            <div class="col-6">
-                                <label for="gia" class="ms-1 mb-1 label-modal">Giá</label>
-                                <input type="number" id="gia" class="form-control" placeholder="">
-                                <span id="errorGia" class="text-danger"></span> <!-- Thông báo lỗi -->
-                            </div>
-                        </div>
-                        <div class="row mt-3">
-                            <div class="col-6">
-                                <label for="soGiuong" class="ms-1 mb-1 label-modal">Số giường</label>
-                                <input type="number" id="soGiuong" class="form-control" placeholder="">
-                                <span id="errorSoGiuong" class="text-danger"></span>
-                                <!-- Thông báo lỗi -->
-                            </div>
-                            <div class="col-6">
-                                <label for="dienTich" class="ms-1 mb-1 label-modal">Diện tích</label>
-                                <input type="number" id="dienTich" class="form-control" placeholder="">
-                                <span id="errorDienTich" class="text-danger"></span>
-                                <!-- Thông báo lỗi -->
-                            </div>
-                        </div>
-
-                        <div class="row mt-3">
-                            <div class="col-6">
-                                <label class="mb-1 ms-1 label-modal">Ảnh </label>
-                                <input type="file" id="imageInput" accept="image/*">
-                                <span id="errorImage" class="text-danger"></span> <!-- Thông báo lỗi -->
-                            </div>
-                            <div class="col-6">
-                                <label for="moTa" class="mb-1 ms-1 label-modal">Mô tả </label>
-                                <textarea id="moTa" class="p-2 form-control" name="moTa" rows="4" cols="40"
-                                          placeholder="Nhập mô tả ở đây..."></textarea>
-                                <span id="errorMoTa" class="text-danger"></span> <!-- Thông báo lỗi -->
-                            </div>
-                        </div>
-                    </div>
-                    <!-- Nút thêm -->
-                    <div class="container my-2">
-                        <div class="row" style="justify-content: flex-end;">
-                            <div class="col-3 m-2 d-flex justify-content-end">
-                                <button type="button" id="btnThem" class="btn btn-success"
-                                        style="font-size: small;">
-                                    Thêm hạng phòng
-                                </button>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+<!-- Modal chi tiết -->
+<div class="modal fade" id="chitiet" tabindex="-1" aria-labelledby="chitiet" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content" style="border-radius: 20px;">
+            <div class="modal-header d-flex justify-content-center">
+                <h5 class="modal-title" id="modalRoomTitle" style="font-weight: bolder;">Thông tin hạng phòng</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
-        </div>
-    </div>
-
-    <!-- Modal chi tiết -->
-    <div class="modal fade" id="chitiet" tabindex="-1" aria-labelledby="chitiet" aria-hidden="true">
-        <div class="modal-dialog modal-lg">
-            <div class="modal-content" style="border-radius: 20px;">
-                <div class="modal-header d-flex justify-content-center">
-                    <div>
-                        <h5 style="font-weight: bolder;">Thông tin hạng phòng</h5>
-                    </div>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body">
-                    <div class="container">
-                        <div class="row">
-                            <div class="col-5">
-                                <img src="images/room-1.jpg" alt="" style="width: 300px;">
-                            </div>
-                            <div class="col-7 px-0">
-                                <div class="container">
-                                    <div class="row">
-                                        <h4 style="font-weight: 600;">Dexu King</h4>
-                                    </div>
-                                    <div class="row mt-2">
-                                        <div class="col-6">
-                                            <h6>
-                                                <span style="font-weight: 600;">
-                                                    Mã hạng
-                                                    phòng:
-                                                </span>DK01
-                                            </h6>
-                                        </div>
-                                        <div class="col-6">
-                                            <h6>
-                                                <span style="font-weight: 600;">
-                                                    Số
-                                                    giường:
-                                                </span> 2
-                                            </h6>
-                                        </div>
-                                    </div>
-                                    <div class="row mt-2">
-                                        <div class="col-6">
-                                            <h6>
-                                                <span style="font-weight: 600;">
-                                                    Diện
-                                                    tích:
-                                                </span> 35m2
-                                            </h6>
-                                        </div>
-                                        <div class="col-6">
-                                            <h6>
-                                                <span style="font-weight: 600;">
-                                                    Giá:
-                                                </span> 1.200.000 VND
-                                            </h6>
-                                        </div>
-                                    </div>
-                                    <div class="row mt-2">
+            <div class="modal-body">
+                <div class="container">
+                    <div class="row">
+                        <div class="col-2">
+                            <img id="modalRoomImage" src="" alt="Room Image" class="img-fluid">
+                            <h5 class="text-center mt-2 ms-2" style="font-weight: 600;" id="modalRoomName"></h5>
+                        </div>
+                        <div class="col-10">
+                            <div class="container ms-3">
+                                <div class="row">
+                                    <h4 style="font-weight: 600;" id="modalRoomName"></h4>
+                                </div>
+                                <div class="row mt-2">
+                                    <div class="col-8">
                                         <h6>
-                                            <span style="font-weight: 600;">
-                                                Mô tả:
-                                            </span> có view nhìn ra cửa sổ, không gian
-                                            thoáng mát, đầy đủ tiện nghi, có nhiều đồ
-                                            dùng cá nhân cần thiết, nhân viên phục vụ
-                                            nhiệt tình.
+                                            <span style="font-weight: 600;">Mã hạng phòng:</span>
+                                            <span id="modalRoomCode"></span>
                                         </h6>
                                     </div>
+                                    <div class="col-4">
+                                        <h6>
+                                            <span style="font-weight: 600;">Số giường:</span>
+                                            <span id="modalRoomBeds"></span>
+                                        </h6>
+                                    </div>
+                                </div>
+                                <div class="row mt-2">
+                                    <div class="col-8">
+                                        <h6>
+                                            <span style="font-weight: 600;">Diện tích:</span>
+                                            <span id="modalRoomArea"></span>
+                                        </h6>
+                                    </div>
+                                    <div class="col-4">
+                                        <h6>
+                                            <span style="font-weight: 600;">Giá:</span>
+                                            <span id="modalRoomPrice"></span>
+                                        </h6>
+                                    </div>
+                                </div>
+                                <div class="row mt-2">
+                                    <h6>
+                                        <span style="font-weight: 600;">Mô tả:</span>
+                                        <span id="modalRoomDescription"></span>
+                                    </h6>
                                 </div>
                             </div>
                         </div>
@@ -312,303 +213,4 @@
             </div>
         </div>
     </div>
-
-    <!-- Modal sửa -->
-    <div class="modal fade" id="sua" tabindex="-1" aria-labelledby="sua" aria-hidden="true">
-        <div class="modal-dialog modal-lg">
-            <div class="modal-content" style="border-radius: 20px;">
-                <div class="modal-header d-flex justify-content-center">
-                    <div>
-                        <h5 style="font-weight: bolder;">Sửa thông tin hạng phòng</h5>
-                    </div>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body">
-                    <div class="container">
-                        <div class="row">
-                            <div class="col-6">
-                                <label for="tenHangPhong" class="ms-1 mb-1 label-modal">
-                                    Tên hạng
-                                    phòng
-                                </label>
-                                <input type="text" id="EdittenHangPhong" class="form-control" placeholder="">
-                                <span id="EditerrorTenHangPhong" class="text-danger"></span>
-                                <!-- Thông báo lỗi -->
-                            </div>
-                            <div class="col-6">
-                                <label for="gia" class="ms-1 mb-1 label-modal">Giá</label>
-                                <input type="number" id="Editgia" class="form-control" placeholder="">
-                                <span id="EditerrorGia" class="text-danger"></span> <!-- Thông báo lỗi -->
-                            </div>
-                        </div>
-                        <div class="row mt-3">
-                            <div class="col-6">
-                                <label for="soGiuong" class="ms-1 mb-1 label-modal">Số giường</label>
-                                <input type="number" id="EditsoGiuong" class="form-control" placeholder="">
-                                <span id="EditerrorSoGiuong" class="text-danger"></span>
-                                <!-- Thông báo lỗi -->
-                            </div>
-                            <div class="col-6">
-                                <label for="dienTich" class="ms-1 mb-1 label-modal">Diện tích</label>
-                                <input type="number" id="EditdienTich" class="form-control" placeholder="">
-                                <span id="EditerrorDienTich" class="text-danger"></span>
-                                <!-- Thông báo lỗi -->
-                            </div>
-                        </div>
-
-                        <div class="row mt-3">
-                            <div class="col-6">
-                                <label class="mb-1 ms-1 label-modal">Ảnh </label>
-                                <input type="file" id="EditimageInput" accept="image/*">
-                                <span id="EditerrorImage" class="text-danger"></span> <!-- Thông báo lỗi -->
-                            </div>
-                            <div class="col-6">
-                                <label for="moTa" class="mb-1 ms-1 label-modal">Mô tả </label>
-                                <textarea id="EditmoTa" class="p-2 form-control" name="moTa" rows="4" cols="40"
-                                          placeholder="Nhập mô tả ở đây..."></textarea>
-                                <span id="EditerrorMoTa" class="text-danger"></span> <!-- Thông báo lỗi -->
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <!-- footer -->
-                <div class="container my-2">
-                    <div class="row" style="justify-content: flex-end;">
-                        <div class="col-3 m-2 d-flex justify-content-end">
-                            <button type="button" id="btnSua" class="btn btn-success" style="font-size: small;">
-                                Đồng ý
-                            </button>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <!-- javascript thêm  -->
-    <script>
-        document.getElementById('btnThem').addEventListener('click', function () {
-            // Lấy giá trị từ các trường
-            var tenHangPhong = document.getElementById('tenHangPhong').value.trim();
-            var gia = document.getElementById('gia').value.trim();
-            var soGiuong = document.getElementById('soGiuong').value.trim();
-            var dienTich = document.getElementById('dienTich').value.trim();
-            var image = document.getElementById('imageInput').value;
-            var moTa = document.getElementById('moTa').value.trim();
-
-            // Biến kiểm tra xem có lỗi không
-            var isValid = true;
-
-            // Biểu thức chính quy để kiểm tra ký tự đặc biệt (chỉ cho phép chữ cái, số, khoảng trắng)
-            var specialCharRegex = /[^a-zA-Z0-9\s]/g;
-
-            // Xóa thông báo lỗi cũ
-            document.getElementById('errorTenHangPhong').textContent = '';
-            document.getElementById('errorGia').textContent = '';
-            document.getElementById('errorSoGiuong').textContent = '';
-            document.getElementById('errorDienTich').textContent = '';
-            document.getElementById('errorImage').textContent = '';
-            document.getElementById('errorMoTa').textContent = '';
-
-            // Kiểm tra "Tên hạng phòng"
-            if (tenHangPhong === '') {
-                document.getElementById('errorTenHangPhong').textContent = 'Tên hạng phòng không được để trống';
-                isValid = false;
-            } else if (specialCharRegex.test(tenHangPhong)) {
-                document.getElementById('errorTenHangPhong').textContent = 'Tên hạng phòng không được chứa ký tự đặc biệt';
-                isValid = false;
-            }
-
-            // Kiểm tra "Giá"
-            if (gia === '' || isNaN(gia) || Number(gia) <= 0) {
-                document.getElementById('errorGia').textContent = 'Giá phải không được để trống';
-                isValid = false;
-            }
-
-            // Kiểm tra "Số giường"
-            if (soGiuong === '' || isNaN(soGiuong) || Number(soGiuong) <= 0) {
-                document.getElementById('errorSoGiuong').textContent = 'Số giường không được để trống';
-                isValid = false;
-            }
-
-            // Kiểm tra "Diện tích"
-            if (dienTich === '' || isNaN(dienTich) || Number(dienTich) <= 0) {
-                document.getElementById('errorDienTich').textContent = 'Diện tích không được để trống';
-                isValid = false;
-            }
-
-            // Kiểm tra "Ảnh"
-            if (image === '') {
-                document.getElementById('errorImage').textContent = 'Vui lòng chọn ảnh';
-                isValid = false;
-            }
-
-            // Kiểm tra "Mô tả"
-            if (moTa === '') {
-                document.getElementById('errorMoTa').textContent = 'Mô tả không được để trống';
-                isValid = false;
-            } else if (specialCharRegex.test(moTa)) {
-                document.getElementById('errorMoTa').textContent = 'Mô tả không được chứa ký tự đặc biệt';
-                isValid = false;
-            }
-
-            // Nếu tất cả các trường hợp đều hợp lệ, tiến hành xử lý thêm hạng phòng
-            if (isValid) {
-                alert('Thêm hạng phòng thành công.');
-                document.getElementById('EdittenHangPhong').value = '';
-                document.getElementById('Editgia').value = '';
-                document.getElementById('EditsoGiuong').value = '';
-                document.getElementById('EditdienTich').value = '';
-                document.getElementById('EditimageInput').value;
-                document.getElementById('EditmoTa').value = '';
-            }
-        });
-    </script>
-
-    <!-- Javasript sửa  -->
-    <script>
-        document.getElementById('btnSua').addEventListener('click', function () {
-            // Lấy giá trị từ các trường nhập liệu
-            var tenHangPhong = document.getElementById('EdittenHangPhong').value.trim();
-            var gia = document.getElementById('Editgia').value.trim();
-            var soGiuong = document.getElementById('EditsoGiuong').value.trim();
-            var dienTich = document.getElementById('EditdienTich').value.trim();
-            var image = document.getElementById('EditimageInput').value;
-            var moTa = document.getElementById('EditmoTa').value.trim();
-
-            // Biến kiểm tra hợp lệ
-            var isValid = true;
-
-            // Biểu thức chính quy để kiểm tra ký tự đặc biệt (không cho phép các ký tự đặc biệt)
-            var specialCharRegex = /[^a-zA-Z0-9\s]/g;
-
-            // Xóa thông báo lỗi cũ
-            document.getElementById('EditerrorTenHangPhong').textContent = '';
-            document.getElementById('EditerrorGia').textContent = '';
-            document.getElementById('EditerrorSoGiuong').textContent = '';
-            document.getElementById('EditerrorDienTich').textContent = '';
-            document.getElementById('errorImage').textContent = '';
-            document.getElementById('EditerrorMoTa').textContent = '';
-
-            // Kiểm tra "Tên hạng phòng"
-            if (tenHangPhong === '') {
-                document.getElementById('EditerrorTenHangPhong').textContent = 'Tên hạng phòng không được để trống';
-                isValid = false;
-            } else if (specialCharRegex.test(tenHangPhong)) {
-                document.getElementById('EditerrorTenHangPhong').textContent = 'Tên hạng phòng không được chứa ký tự đặc biệt';
-                isValid = false;
-            }
-
-            // Kiểm tra "Giá"
-            if (gia === '' || isNaN(gia) || Number(gia) <= 0) {
-                document.getElementById('EditerrorGia').textContent = 'Giá phải không được để trống';
-                isValid = false;
-            }
-
-            // Kiểm tra "Số giường"
-            if (soGiuong === '' || isNaN(soGiuong) || Number(soGiuong) <= 0) {
-                document.getElementById('EditerrorSoGiuong').textContent = 'Số giường không được để trống';
-                isValid = false;
-            }
-
-            // Kiểm tra "Diện tích"
-            if (dienTich === '' || isNaN(dienTich) || Number(dienTich) <= 0) {
-                document.getElementById('EditerrorDienTich').textContent = 'Diện tích không được để trống';
-                isValid = false;
-            }
-
-            // Kiểm tra "Ảnh"
-            if (image === '') {
-                document.getElementById('EditerrorImage').textContent = 'Vui lòng chọn ảnh';
-                isValid = false;
-            }
-
-            // Kiểm tra "Mô tả"
-            if (moTa === '') {
-                document.getElementById('EditerrorMoTa').textContent = 'Mô tả không được để trống';
-                isValid = false;
-            } else if (specialCharRegex.test(moTa)) {
-                document.getElementById('EditerrorMoTa').textContent = 'Mô tả không được chứa ký tự đặc biệt';
-                isValid = false;
-            }
-
-            // Nếu tất cả các trường hợp đều hợp lệ, tiếp tục xử lý
-            if (isValid) {
-                alert('Sửa thông tin hạng phòng thành công.');
-                document.getElementById('EdittenHangPhong').value = '';
-                document.getElementById('Editgia').value = '';
-                document.getElementById('EditsoGiuong').value = '';
-                document.getElementById('EditdienTich').value = '';
-                document.getElementById('EditimageInput').value;
-                document.getElementById('EditmoTa').value = '';
-
-            }
-        });
-
-    </script>
-
-    <!-- javascipt đổi mk -->
-    <script>
-        // Loại bỏ khoảng trắng trong khi người dùng nhập vào các ô mật khẩu
-        document.getElementById('mkHienTai').addEventListener('input', function () {
-            this.value = this.value.replace(/\s/g, '');
-        });
-
-        document.getElementById('mkMoi').addEventListener('input', function () {
-            this.value = this.value.replace(/\s/g, '');
-        });
-
-        document.getElementById('mkMoi1').addEventListener('input', function () {
-            this.value = this.value.replace(/\s/g, '');
-        });
-
-        document.getElementById('doimatkhau').addEventListener('click', function () {
-            // Lấy giá trị của các ô input
-            const mkHienTai = document.getElementById('mkHienTai').value.trim();
-            const mkMoi = document.getElementById('mkMoi').value.trim();
-            const mkMoi1 = document.getElementById('mkMoi1').value.trim();
-
-            // Xóa thông báo lỗi trước đó
-            document.getElementById('mkHienTaiError').textContent = '';
-            document.getElementById('mkMoiError').textContent = '';
-            document.getElementById('mkMoi1Error').textContent = '';
-
-            let isValid = true;
-
-            // Kiểm tra mật khẩu hiện tại
-            if (!mkHienTai) {
-                document.getElementById('mkHienTaiError').textContent = 'Vui lòng nhập mật khẩu hiện tại';
-                isValid = false;
-            }
-
-            // Kiểm tra mật khẩu mới
-            if (!mkMoi) {
-                document.getElementById('mkMoiError').textContent = 'Vui lòng nhập mật khẩu mới';
-                isValid = false;
-            } else if (mkMoi.length < 6) {
-                document.getElementById('mkMoiError').textContent = 'Mật khẩu mới phải có ít nhất 6 ký tự';
-                isValid = false;
-            }
-
-            // Kiểm tra nhập lại mật khẩu mới
-            if (!mkMoi1) {
-                document.getElementById('mkMoi1Error').textContent = 'Vui lòng nhập lại mật khẩu mới';
-                isValid = false;
-            } else if (mkMoi !== mkMoi1) {
-                document.getElementById('mkMoi1Error').textContent = 'Mật khẩu nhập lại không khớp';
-                isValid = false;
-            }
-
-            // Nếu không có lỗi, thực hiện các bước tiếp theo (ví dụ: gửi dữ liệu đến server)
-            if (isValid) {
-                // Thực hiện xử lý đổi mật khẩu tại đây
-                alert('Đổi mật khẩu thành công!');
-                document.getElementById('mkHienTai').value = '';
-                document.getElementById('mkMoi').value = '';
-                document.getElementById('mkMoi1').value = '';
-            }
-        });
-
-    </script>
 </div>
-
