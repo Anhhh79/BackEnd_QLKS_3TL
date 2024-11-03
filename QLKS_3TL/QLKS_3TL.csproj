@@ -25,6 +25,7 @@
     <Folder Include="Areas\LeTan\Data\" />
     <Folder Include="Areas\LeTan\Models\" />
     <Folder Include="Areas\LeTan\Views\" />
+    <Folder Include="Areas\QuanLy\Models\" />
   </ItemGroup>
 
 </Project>

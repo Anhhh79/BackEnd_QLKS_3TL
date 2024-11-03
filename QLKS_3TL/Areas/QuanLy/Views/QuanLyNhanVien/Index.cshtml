@@ -1,8 +1,7 @@
-﻿@model IEnumerable<QLKS_3TL.Areas.QuanLy.Models.NhanVienViewModal>
+﻿@model IEnumerable<QLKS_3TL.Data.NhanVien>
 @{
     ViewData["Title"] = "Quản lý nhân viên";
 }
-
 <div class="main" id="content">
     <nav class="navbar navbar-expand px-4 py-3">
         <div class="navbar-collapse collapse">
@@ -44,8 +43,8 @@
                         <input type="text" class="form-control input-border" placeholder="Thông tin nhân viên"
                                aria-label="Username" aria-describedby="basic-addon1" style="border: 0;">
                     </div>
-                    <button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#them"
-                            data-bs-dismiss="modal" style="width: 135px; font-size: small;">
+                    <button class="btn btn-success" id="btnThemNhanVien"
+                            style="width: 135px; font-size: small;">
                         Thêm nhân
                         viên
                     </button>
@@ -55,7 +54,7 @@
                         <table class="table">
                             <thead style="background: #0e2238;">
                                 <tr>
-                                    <th scope="col">STT</th>
+                                    <th scope="col">#</th>
                                     <th scope="col">Căn cước công dân</th>
                                     <th scope="col">Họ và tên</th>
                                     <th scope="col">Giới tính</th>
@@ -65,23 +64,22 @@
                                     <th scope="col"></th>
                                 </tr>
                             </thead>
-                            <tbody>
+                            <tbody id="tblBodyNhanVien">
                                 @{
                                     int soThuTu = 1;
                                 }
-                                @foreach (var item in Model)
+                                @foreach (var i in Model)
                                 {
                                     <tr class="row-item">
                                         <th scope="row">@soThuTu</th>
-                                        <td class="me-2">@item.Cccd</td>
-                                        <td>@item.HoTen</td>
-                                        <td>@item.GioiTinh</td>
-                                        <td>@item.SoDienThoai</td>
-                                        <td>@item.ChucVu</td>
-                                        <td>@item.DiaChi</td>
+                                        <td class="me-2">@i.Cccd</td>
+                                        <td>@i.HoTen</td>
+                                        <td>@i.GioiTinh</td>
+                                        <td>@i.SoDienThoai</td>
+                                        <td>@i.ChucVu</td>
+                                        <td>@i.DiaChi</td>
                                         <td class="d-flex  justify-content-end">
-                                            <a class="cusor me-2 mt-1" data-bs-toggle="modal"
-                                               data-bs-target="#chitiet"
+                                            <a class="cusor me-2 mt-1" onclick="ChiTietNhanVien('@i.MaNhanVien')"
                                                style="color: darkblue; font-style: italic; text-decoration: underline;">
                                                 Chi
                                                 tiết
@@ -96,9 +94,10 @@
                                                 Xóa
                                             </button>
                                         </td>
-                                    </tr>         
-                                        soThuTu++;
+                                    </tr>
+                                    soThuTu++;
                                 }
+
                             </tbody>
                         </table>
                     </div>
@@ -107,92 +106,7 @@
         </div>
     </main>
     <!-- Modal thêm nhân viên -->
-    <div class="modal fade" id="them" tabindex="-1" aria-labelledby="them" aria-hidden="true">
-        <div class="modal-dialog modal-lg">
-            <div class="modal-content" style="border-radius: 20px;">
-                <div class="modal-header d-flex justify-content-center">
-                    <div>
-                        <h5 style="font-weight: bolder;">Thêm nhân viên</h5>
-                    </div>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body">
-                    <div class="container">
-                        <div class="row">
-                            <div class="col-6">
-                                <label for="fullname" class="ms-1 mb-1 label-modal">Họ và Tên</label>
-                                <input type="text" class="form-control" id="fullname" placeholder="" required>
-                                <span id="fullnameError" class="error text-danger"></span>
-                            </div>
-                            <div class="col-6">
-                                <label class="mb-1 ms-1 label-modal">Giới tính</label>
-                                <select class="form-select" id="gender" required>
-                                    <option value="">Chọn giới tính</option>
-                                    <option value="Nam">Nam</option>
-                                    <option value="Nữ">Nữ</option>
-                                    <option value="Khác">Khác</option>
-                                </select>
-                                <span class="error text-danger" id="genderError"></span>
-                            </div>
-                        </div>
-                        <div class="row mt-3">
-                            <div class="col-6">
-                                <label for="cccd" class="ms-1 mb-1 label-modal">
-                                    Căn cước công
-                                    dân
-                                </label>
-                                <input type="number" inputmode="numeric" class="form-control" id="cccd"
-                                       placeholder="" required>
-                                <span id="cccdError" class="error text-danger"></span>
-                            </div>
-                            <div class="col-6">
-                                <label for="phone" class="ms-1 mb-1 label-modal">Số điện thoại</label>
-                                <input type="number" class="form-control" id="phone" placeholder="" required>
-                                <span id="phoneError" class="error text-danger"></span>
-                            </div>
-                        </div>
-                        <div class="row mt-3">
-                            <div class="col-6">
-                                <label class="mb-1 ms-1 label-modal">Chức vụ</label>
-                                <select class="form-select" id="position" required>
-                                    <option value="">Chọn chức vụ</option>
-                                    <option value="Quản lý">Quản lý</option>
-                                    <option value="Bảo vệ">Bảo vệ</option>
-                                    <option value="Lễ tân">Lễ tân</option>
-                                </select>
-                                <span class="error text-danger" id="positionError"></span>
-                            </div>
-                            <div class="col-6">
-                                <label for="address" class="ms-1 mb-1 label-modal">Địa chỉ</label>
-                                <input type="text" class="form-control" id="address" placeholder="" required>
-                                <span id="addressError" class="error text-danger"></span>
-                            </div>
-
-                            <div class="row mt-1">
-                                <div class="col-6">
-                                    <label class="mb-1 ms-1 label-modal">Ảnh </label>
-                                    <input type="file" id="AddimageInput" accept="image/*">
-                                    <span class="error text-danger" id="imageError"></span>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <!-- footer -->
-                <div class="container my-2">
-                    <div class="row" style="justify-content: flex-end;">
-                        <div class="col-3 m-2 d-flex justify-content-end">
-                            <button type="button" class="btn btn-success addEmployee"
-                                    style="font-size: small;">
-                                Thêm
-                                nhân viên
-                            </button>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
+    @await Html.PartialAsync("ModalCreate")
 
     <!-- Modal doi mk -->
     <div class="modal fade" id="doimk" tabindex="-1" aria-labelledby="moimk" aria-hidden="true">
@@ -246,92 +160,7 @@
     </div>
 
     <!-- Modal chi tiết -->
-    <div class="modal fade" id="chitiet" tabindex="-1" aria-labelledby="chitiet" aria-hidden="true">
-        <div class="modal-dialog modal-lg">
-            <div class="modal-content" style="border-radius: 20px;">
-                <div class="modal-header d-flex justify-content-center">
-                    <div>
-                        <h5 style="font-weight: bolder;">Thông tin nhân viên</h5>
-                    </div>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body">
-                    <div class="container">
-                        <div class="row">
-                            <div class="col-2">
-                                <img src="images/team-4.jpg" alt="" style="width: 130px;">
-                                <h5 class="text-center mt-2 ms-2" style="font-weight: 600;">Quản Lý</h5>
-                            </div>
-                            <div class="col-10">
-                                <div class="container ms-3">
-                                    <div class="row">
-                                        <h4 style="font-weight: 600;">
-                                            Huỳnh Quốc Bảo
-                                        </h4>
-                                    </div>
-                                    <div class="row mt-2">
-                                        <div class="col-8">
-                                            <h6>
-                                                <span style="font-weight: 600;">
-                                                    Căn
-                                                    cước công dân:
-                                                </span>
-                                                09977364764
-                                            </h6>
-                                        </div>
-                                        <div class="col-4">
-                                            <h6>
-                                                <span style="font-weight: 600;">
-                                                    Giới
-                                                    Tính:
-                                                </span> Nam
-                                            </h6>
-                                        </div>
-                                    </div>
-                                    <div class="row mt-2">
-                                        <div class="col-8">
-                                            <h6>
-                                                <span style="font-weight: 600;">
-                                                    Số
-                                                    điện thoại:
-                                                </span> 0977476400
-                                            </h6>
-                                        </div>
-                                        <div class="col-4">
-                                            <h6>
-                                                <span style="font-weight: 600;">
-                                                    Địa
-                                                    Chỉ:
-                                                </span> Cần Thơ
-                                            </h6>
-                                        </div>
-                                    </div>
-                                    <div class="row mt-2">
-                                        <div class="col-7">
-                                            <h6>
-                                                <span style="font-weight: 600;">
-                                                    Lương
-                                                    cơ bản:
-                                                </span> 15.000.000 VND
-                                            </h6>
-                                        </div>
-                                        <div class="col-5 d-flex pe-2  justify-content-end">
-                                            <h6>
-                                                <span style="font-weight: 600;">
-                                                    Mã
-                                                    Nhân Viên:
-                                                </span> QL00001
-                                            </h6>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
+    @await Html.PartialAsync("ModalChiTiet")
 
     <!-- Modal sửa -->
     <div class="modal fade" id="suaModal" tabindex="-1" aria-labelledby="suaModalLabel" aria-hidden="true">
@@ -414,7 +243,7 @@
         </div>
     </div>
 
-
+    <script src="~/js/NhanVienJs.js"></script>
     <!-- javascrit bắt lỗi đổi mk -->
     <script>
         // Loại bỏ khoảng trắng trong khi người dùng nhập vào các ô mật khẩu
@@ -494,7 +323,7 @@
             });
 
             // Biểu thức chính quy để kiểm tra ký tự đặc biệt
-            const specialCharPattern = /[!#$%^&*(),.?":{}|<>]/;
+            const specialCharPattern = /[!@@#$%^&*(),.?":{}|<>]/;
 
             // Kiểm tra Họ và Tên
             const fullname = document.getElementById('editFullname').value.trim();
@@ -583,117 +412,7 @@
             this.value = this.value.replace(/^\s+|\s+$/g, '');
         });
     </script>
-
-    <!-- Javascript bắt lỗi thêm -->
-    <script>
-        document.querySelector('.addEmployee').addEventListener('click', function (e) {
-            // Ngăn form submit nếu có lỗi
-            e.preventDefault();
-
-            // Đặt biến để kiểm tra hợp lệ
-            let isValid = true;
-
-            // Reset các thông báo lỗi trước khi kiểm tra
-            document.querySelectorAll('.error').forEach(function (el) {
-                el.textContent = '';
-            });
-
-            // Biểu thức chính quy để kiểm tra ký tự đặc biệt
-            const specialCharPattern = /[!#$%^&*(),.?":{}|<>]/;
-
-            // Kiểm tra Họ và Tên
-            const fullname = document.getElementById('fullname').value.trim();
-            if (fullname === '') {
-                document.getElementById('fullnameError').textContent = 'Họ và Tên không được để trống';
-                isValid = false;
-            } else if (specialCharPattern.test(fullname)) {
-                document.getElementById('fullnameError').textContent = 'Họ và Tên không được chứa ký tự đặc biệt';
-                isValid = false;
-            }
-
-            // Kiểm tra Giới tính
-            const gender = document.getElementById('gender').value;
-            if (gender === '') {
-                document.getElementById('genderError').textContent = 'Vui lòng chọn giới tính';
-                isValid = false;
-            }
-
-            // Kiểm tra Căn cước công dân (CCCD)
-            const cccd = document.getElementById('cccd').value.trim();
-            if (cccd === '') {
-                document.getElementById('cccdError').textContent = 'Căn cước công dân không được để trống';
-                isValid = false;
-            } else if (!/^\d{12}$/.test(cccd)) {
-                document.getElementById('cccdError').textContent = 'Căn cước công dân phải gồm 12 chữ số';
-                isValid = false;
-            }
-
-            // Kiểm tra Số điện thoại
-            const phone = document.getElementById('phone').value.trim();
-            if (phone === '') {
-                document.getElementById('phoneError').textContent = 'Số điện thoại không được để trống';
-                isValid = false;
-            } else if (!/^\d{10}$/.test(phone)) {
-                document.getElementById('phoneError').textContent = 'Số điện thoại phải gồm 10 chữ số';
-                isValid = false;
-            }
-
-            // Kiểm tra Chức vụ
-            const position = document.getElementById('position').value;
-            if (position === '') {
-                document.getElementById('positionError').textContent = 'Vui lòng chọn chức vụ';
-                isValid = false;
-            }
-
-            // Kiểm tra Địa chỉ
-            const address = document.getElementById('address').value.trim();
-            if (address === '') {
-                document.getElementById('addressError').textContent = 'Địa chỉ không được để trống';
-                isValid = false;
-            } else if (specialCharPattern.test(address)) {
-                document.getElementById('addressError').textContent = 'Địa chỉ không được chứa ký tự đặc biệt';
-                isValid = false;
-            }
-
-            // Kiểm tra Ảnh
-            const imageInput = document.getElementById('AddimageInput');
-            if (imageInput.files.length === 0) {
-                document.getElementById('imageError').textContent = 'Vui lòng chọn ảnh';
-                isValid = false;
-            }
-
-            // Nếu tất cả các trường đều hợp lệ, tiếp tục xử lý
-            if (isValid) {
-                alert("Bạn đã thêm thành công");
-
-                // Làm sạch các trường nhập liệu
-                document.getElementById('fullname').value = '';
-                document.getElementById('gender').value = '';
-                document.getElementById('cccd').value = '';
-                document.getElementById('phone').value = '';
-                document.getElementById('position').value = '';
-                document.getElementById('address').value = '';
-                imageInput.value = ''; // Xóa ảnh đã chọn
-
-                // Thực hiện các hành động tiếp theo, ví dụ như gửi form hoặc gọi API
-                // document.getElementById('addForm').submit(); // Nếu có form
-            } else {
-                console.log('Có lỗi trong dữ liệu nhập vào.');
-            }
-        });
-
-        // Xóa khoảng trắng cho các trường
-        document.getElementById('cccd').addEventListener('input', function () {
-            this.value = this.value.replace(/^\s+|\s+$/g, '');
-        });
-
-        document.getElementById('phone').addEventListener('input', function () {
-            this.value = this.value.replace(/^\s+|\s+$/g, '');
-        });
-
-
-    </script>
-
+    
     <!-- javacript đưa dữ liệu từ table lên modal -->
     <script>
         // Lắng nghe sự kiện khi modal Chỉnh sửa được mở
@@ -711,5 +430,5 @@
             });
         });
     </script>
-</div>
 
+</div>

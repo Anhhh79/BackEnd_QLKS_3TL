@@ -1,0 +1,76 @@
+﻿<div class="modal fade" id="ModalThemNhanVien" tabindex="-1" aria-labelledby="them" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content" style="border-radius: 20px;">
+            <div class="modal-header d-flex justify-content-center">
+                <h5 style="font-weight: bolder;">Thêm nhân viên</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div class="container">
+                    <div class="row">
+                        <div class="col-6">
+                            <label for="fullNameNhanVien" class="ms-1 mb-1 label-modal">Họ và Tên</label>
+                            <input type="text" class="form-control" id="fullNameNhanVien" placeholder="Họ và tên" required>
+                            <span id="fullnameError" class="error text-danger"></span>
+                        </div>
+                        <div class="col-6">
+                            <label class="mb-1 ms-1 label-modal">Giới tính</label>
+                            <select class="form-select" id="genderNhanVien" required>
+                                <option value="Nam">Nam</option>
+                                <option value="Nữ">Nữ</option>
+                                <option value="Khác">Khác</option>
+                            </select>
+                            <span class="error text-danger" id="genderError"></span>
+                        </div>
+                    </div>
+                    <div class="row mt-3">
+                        <div class="col-6">
+                            <label for="cccdNhanVien" class="ms-1 mb-1 label-modal">Căn cước công dân</label>
+                            <input type="number" class="form-control" id="cccdNhanVien" placeholder="Số căn cước công dân" required>
+                            <span id="cccdError" class="error text-danger"></span>
+                        </div>
+                        <div class="col-6">
+                            <label for="phoneNhanVien" class="ms-1 mb-1 label-modal">Số điện thoại</label>
+                            <input type="number" class="form-control" id="phoneNhanVien" placeholder="số điện thoại" required>
+                            <span id="phoneError" class="error text-danger"></span>
+                        </div>
+                    </div>
+                    <div class="row mt-3">
+                        <div class="col-6">
+                            <label class="mb-1 ms-1 label-modal">Chức vụ</label>
+                            <select class="form-select" id="positionNhanVien" required>
+                                <option value="Quản lý">Quản lý</option>
+                                <option value="Bảo vệ">Bảo vệ</option>
+                                <option value="Lễ tân">Lễ tân</option>
+                            </select>
+                            <span class="error text-danger" id="positionError"></span>
+                        </div>
+                        <div class="col-6">
+                            <label for="addressNhanVien" class="ms-1 mb-1 label-modal">Địa chỉ</label>
+                            <input type="text" class="form-control" id="addressNhanVien" placeholder="Địa chỉ" required>
+                            <span id="addressError" class="error text-danger"></span>
+                        </div>
+                    </div>
+                    <div class="row mt-3">
+                        <div class="col-6">
+                            <label for="LuongCoBanNhanVien" class="ms-1 mb-1 label-modal">Lương cơ bản</label>
+                            <input type="number" class="form-control" id="LuongCoBanNhanVien" placeholder="Lương cơ bản" required>
+                            <span id="LuongCoBanError" class="error text-danger"></span>
+                        </div>
+                       <div class="col-6">
+                            <label class="mb-1 ms-1 label-modal">Ảnh</label>
+                            <input type="file" id="AddimageInputNhanVien" accept="image/*">
+                            <span class="error text-danger" id="imageError"></span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- Footer -->
+            <div class="modal-footer">
+                <button type="button" class="btn btn-success addEmployee" id="btnSaveNhanVien" onclick="CheckDataNhanVien()" style="font-size: small;">Thêm nhân viên</button>
+            </div>
+            <div id="resultMessage" class="text-center my-2"></div> <!-- Nơi hiển thị thông báo -->
+        </div>
+    </div>
+</div>
+
