@@ -1,0 +1,79 @@
+﻿@using QLKS_3TL.Data
+@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+}
+@model HangPhong
+
+<div class="modal fade" id="editModal" tabindex="-1" role="dialog">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content" style="border-radius: 20px;">
+            <div class="modal-header d-flex justify-content-center">
+                <h5 style="font-weight: bolder;">Chỉnh sửa hạng phòng</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form id="editProductForm" asp-action="Edit" method="post" enctype="multipart/form-data">
+                    <input type="hidden" asp-for="MaHangPhong" /> <!-- Mã hạng phòng -->
+                    <div class="container">
+                        <div class="row mb-3">
+                            <div class="col-12">
+                                <label class="mb-1 ms-1 label-modal">Ảnh hiện tại</label><br />
+                                <img src="@Url.Content(Model.AnhHangPhong)" alt="Ảnh hạng phòng" style="max-width: 200px; max-height: 200px;" />
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-6">
+                                <label asp-for="TenHangPhong" class="ms-1 mb-1 label-modal">Tên hạng phòng</label>
+                                <input id="EdittenHangPhong" asp-for="TenHangPhong" class="form-control" />
+                                <span asp-validation-for="TenHangPhong" class="text-danger"></span>
+                            </div>
+                            <div class="col-6">
+                                <label asp-for="GiaHangPhong" class="ms-1 mb-1 label-modal">Giá</label>
+                                <input asp-for="GiaHangPhong" class="form-control" />
+                                <span asp-validation-for="GiaHangPhong" class="text-danger"></span>
+                            </div>
+                        </div>
+                        <div class="row mt-3">
+                            <div class="col-6">
+                                <label asp-for="SoGiuong" class="ms-1 mb-1 label-modal">Số giường</label>
+                                <input asp-for="SoGiuong" class="form-control" />
+                                <span asp-validation-for="SoGiuong" class="text-danger"></span>
+                            </div>
+                            <div class="col-6">
+                                <label asp-for="DienTich" class="ms-1 mb-1 label-modal">Diện tích</label>
+                                <input asp-for="DienTich" class="form-control" />
+                                <span asp-validation-for="DienTich" class="text-danger"></span>
+                            </div>
+                        </div>
+                        <div class="row mt-3">
+                            <div class="col-6">
+                                <label asp-for="AnhHangPhong" class="mb-1 ms-1 label-modal">Tải ảnh mới</label>
+                                <input asp-for="AnhHangPhong" type="file" accept="image/*">
+                                <span asp-validation-for="AnhHangPhong" class="text-danger"></span>
+                            </div>
+                            <div class="col-6">
+                                <label asp-for="MoTa" class="mb-1 ms-1 label-modal">Mô tả</label>
+                                <textarea asp-for="MoTa" class="p-2 form-control" rows="4" placeholder="Nhập mô tả ở đây..."></textarea>
+                                <span asp-validation-for="MoTa" class="text-danger"></span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="container my-2">
+                        <div class="row" style="justify-content: flex-end;">
+                            <div class="col-3 m-2 d-flex justify-content-end">
+                                <button type="submit" class="btn btn-warning" style="font-size: small;">
+                                    Cập nhật
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
