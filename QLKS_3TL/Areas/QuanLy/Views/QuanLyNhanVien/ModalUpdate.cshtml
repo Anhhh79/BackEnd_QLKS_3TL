@@ -1,4 +1,4 @@
-﻿<div class="modal fade" id="suaModal" tabindex="-1" aria-labelledby="suaModalLabel" aria-hidden="true">
+﻿<div class="modal fade" id="modalUpdateNhanVien" tabindex="-1" aria-labelledby="suaModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-lg">
         <div class="modal-content" style="border-radius: 20px;">
             <div class="modal-header d-flex justify-content-center">
@@ -6,17 +6,16 @@
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
-                <div class="container">
+                <div class="container" id="bodyModalUpdate">
                     <div class="row">
                         <div class="col-6">
-                            <label class="ms-1 mb-1">Họ và Tên</label>
+                            <label class="ms-1 mb-1 label-modal">Họ và Tên</label>
                             <input type="text" class="form-control" id="editFullname" required>
                             <span class="error text-danger" id="EditNameError"></span>
                         </div>
                         <div class="col-6">
-                            <label class="mb-1 ms-1">Giới tính</label>
+                            <label class="mb-1 ms-1 label-modal">Giới tính</label>
                             <select class="form-select" id="editGender" required>
-                                <option value="">Chọn giới tính</option>
                                 <option value="Nam">Nam</option>
                                 <option value="Nữ">Nữ</option>
                                 <option value="Khác">Khác</option>
@@ -26,21 +25,20 @@
                     </div>
                     <div class="row mt-3">
                         <div class="col-6">
-                            <label class="ms-1 mb-1">Căn cước công dân</label>
+                            <label class="ms-1 mb-1 label-modal">Căn cước công dân</label>
                             <input type="number" class="form-control" id="editCCCD" required>
                             <span class="error text-danger" id="EditcccdError"></span>
                         </div>
                         <div class="col-6">
-                            <label class="ms-1 mb-1">Số điện thoại</label>
+                            <label class="ms-1 mb-1 label-modal">Số điện thoại</label>
                             <input type="number" class="form-control" id="editPhone" required>
                             <span class="error text-danger" id="EditphoneError"></span>
                         </div>
                     </div>
                     <div class="row mt-3">
                         <div class="col-6">
-                            <label class="ms-1 mb-1">Chức vụ</label>
+                            <label class="ms-1 mb-1 label-modal">Chức vụ</label>
                             <select class="form-select" id="editPosition" required>
-                                <option value="">Chọn chức vụ</option>
                                 <option value="Quản lý">Quản lý</option>
                                 <option value="Bảo vệ">Bảo vệ</option>
                                 <option value="Lễ tân">Lễ tân</option>
@@ -48,15 +46,26 @@
                             <span class="error text-danger" id="EditpositionError"></span>
                         </div>
                         <div class="col-6">
-                            <label class="ms-1 mb-1">Địa chỉ</label>
+                            <label class="ms-1 mb-1 label-modal">Địa chỉ</label>
                             <input type="text" class="form-control" id="editAddress" required>
                             <span class="error text-danger" id="EditaddressError"></span>
                         </div>
                     </div>
                     <div class="row mt-3">
                         <div class="col-6">
-                            <label class="ms-1 mb-1">Ảnh </label>
-                            <input type="file" id="imageInput" accept="image/*" required>
+                            <label for="editLuongCoBan" class="ms-1 mb-1 label-modal">Lương cơ bản</label>
+                            <input type="number" class="form-control" id="editLuongCoBan" placeholder="Lương cơ bản" required>
+                            <span id="editLuongCoBanError" class="error text-danger"></span>
+                        </div>
+                        <div class="col-6">
+                            <label class="ms-1 mb-1 label-modal">Mã nhân viên</label>
+                            <input class="form-control" id="editMaNhanVien" placeholder="Mã nhân viên" required readonly>
+                        </div>
+                    </div>
+                    <div class="row mt-3">
+                        <div class="col-6">
+                            <label class="ms-1 mb-1 label-modal">Chọn ảnh mới </label>
+                            <input type="file" id="editAnhNhanVien" accept="image/*" required>
                             <span class="error text-danger" id="EditimageError"></span>
                         </div>
                     </div>
@@ -66,7 +75,7 @@
             <div class="container my-2">
                 <div class="row" style="justify-content: flex-end;">
                     <div class="col-3 m-2 d-flex justify-content-end">
-                        <button type="button" id="btnEdit" class="btn btn-success submit-btn"
+                        <button type="button" id="btnEdit" class="btn btn-success submit-btn" onclick="CheckDataEditNhanVien()"
                                 style="font-size: small;">
                             Đồng
                             ý

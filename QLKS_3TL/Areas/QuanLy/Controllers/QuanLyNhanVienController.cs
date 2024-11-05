@@ -28,6 +28,23 @@ namespace QLKS_3TL.Areas.QuanLy.Controllers
             }
         }
 
+        //load danh sách nhân viên
+        [HttpGet]
+        public async Task<JsonResult> LoadNhanViens()
+        {
+            try
+            {
+                var nhanViens = await db.NhanViens.OrderBy(nv => nv.MaNhanVien).ToListAsync();
+                // Trả về danh sách nhân viên dưới dạng JSON
+                return Json(new { success = true, data = nhanViens });
+            }
+            catch (Exception ex)
+            {
+                // Trả về thông tin lỗi dưới dạng JSON
+                return Json(new { success = false, message = ex.Message });
+            }
+        }
+
         //lấy thông tin chi tiết
         [HttpGet]
         public async Task<JsonResult> ChiTietNhanVien(string id)
@@ -43,7 +60,7 @@ namespace QLKS_3TL.Areas.QuanLy.Controllers
             return Json(new { success = true, data = nhanVien });
         }
 
-        // Hàm thêm nhân viên (POST)
+        // Hàm thêm nhân viên 
         [HttpPost]
         public async Task<JsonResult> Insert(NhanVien model, IFormFile AnhNhanVien)
         {
@@ -77,7 +94,6 @@ namespace QLKS_3TL.Areas.QuanLy.Controllers
                     {
                         lastNumber++;
                         newMaNhanVien = "NV" + lastNumber.ToString("D3");
-                        // Kiểm tra xem mã mới đã tồn tại hay chưa
                         existingNhanVien = await db.NhanViens
                             .FirstOrDefaultAsync(nv => nv.MaNhanVien == newMaNhanVien);
                     } while (existingNhanVien != null);
@@ -88,26 +104,28 @@ namespace QLKS_3TL.Areas.QuanLy.Controllers
                     model.MaNhanVien = "NV001"; // Khởi tạo nếu chưa có nhân viên nào
                 }
 
-                // Lưu file ảnh nếu có
+                // Xử lý ảnh nhân viên
                 if (AnhNhanVien != null && AnhNhanVien.Length > 0)
                 {
-                    // Đảm bảo thư mục lưu ảnh tồn tại
                     string imagesPath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/images");
                     if (!Directory.Exists(imagesPath))
                     {
                         Directory.CreateDirectory(imagesPath);
                     }
 
-                    // Đặt tên file duy nhất và lưu file vào thư mục images
-                    string fileName = $"NV_{Guid.NewGuid()}_{AnhNhanVien.FileName}";
+                    // Kiểm tra xem ảnh đã tồn tại hay chưa
+                    string fileName = AnhNhanVien.FileName;
                     string filePath = Path.Combine(imagesPath, fileName);
 
-                    using (var stream = new FileStream(filePath, FileMode.Create))
+                    if (!System.IO.File.Exists(filePath))
                     {
-                        await AnhNhanVien.CopyToAsync(stream);
+                        // Nếu file chưa tồn tại, lưu file mới
+                        using (var stream = new FileStream(filePath, FileMode.Create))
+                        {
+                            await AnhNhanVien.CopyToAsync(stream);
+                        }
                     }
-
-                    // Lưu đường dẫn ảnh vào model
+                    // Gán đường dẫn ảnh cho model
                     model.AnhNhanVien = "/images/" + fileName;
                 }
                 else
@@ -126,107 +144,98 @@ namespace QLKS_3TL.Areas.QuanLy.Controllers
                 return Json(new { success = false, message = "Đã xảy ra lỗi khi lưu thông tin nhân viên", error = ex.Message });
             }
         }
+
+        // Hàm xóa nhân viên
+        [HttpDelete]
+        public async Task<JsonResult> Delete(string maNhanVien)
+        {
+            try
+            {
+                var nhanVien = await db.NhanViens.FindAsync(maNhanVien);
+                if (nhanVien == null)
+                {
+                    return Json(new { success = false, message = "Không tìm thấy nhân viên." });
+                }
+
+                db.NhanViens.Remove(nhanVien);
+                await db.SaveChangesAsync();
+
+                return Json(new { success = true, message = "Xóa nhân viên thành công." });
+            }
+            catch (Exception ex)
+            {
+                return Json(new { success = false, message = "Lỗi khi xóa nhân viên: " + ex.Message });
+            }
+        }
+
+        // Hàm cập nhật nhân viên
+        [HttpPost]
+        public async Task<JsonResult> Update([FromForm] NhanVien nhanVien, IFormFile AnhNhanVien)
+        {
+            if (nhanVien == null)
+            {
+                return Json(new { success = false, message = "Dữ liệu không hợp lệ." });
+            }
+
+            try
+            {
+                // Tìm nhân viên theo mã
+                var nhanVienToUpdate = await db.NhanViens.FindAsync(nhanVien.MaNhanVien);
+                if (nhanVienToUpdate == null)
+                {
+                    return Json(new { success = false, message = "Không tìm thấy nhân viên." });
+                }
+
+                // Cập nhật thông tin nhân viên
+                nhanVienToUpdate.HoTen = nhanVien.HoTen;
+                nhanVienToUpdate.GioiTinh = nhanVien.GioiTinh;
+                nhanVienToUpdate.Cccd = nhanVien.Cccd;
+                nhanVienToUpdate.SoDienThoai = nhanVien.SoDienThoai;
+                nhanVienToUpdate.ChucVu = nhanVien.ChucVu;
+                nhanVienToUpdate.DiaChi = nhanVien.DiaChi;
+                nhanVienToUpdate.LuongCoBan = nhanVien.LuongCoBan;
+
+                // Xử lý ảnh nhân viên
+                if (AnhNhanVien != null && AnhNhanVien.Length > 0)
+                {
+                    string imagesPath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/images");
+                    if (!Directory.Exists(imagesPath))
+                    {
+                        Directory.CreateDirectory(imagesPath);
+                    }
+
+                    // Lấy tên file và kiểm tra nếu file đã tồn tại
+                    string fileName = Path.GetFileName(AnhNhanVien.FileName);
+                    string filePath = Path.Combine(imagesPath, fileName);
+
+                    if (!System.IO.File.Exists(filePath))
+                    {
+                        // Nếu file chưa tồn tại, lưu file mới
+                        using (var stream = new FileStream(filePath, FileMode.Create))
+                        {
+                            await AnhNhanVien.CopyToAsync(stream);
+                        }
+                    }
+
+                    // Cập nhật đường dẫn ảnh vào cơ sở dữ liệu
+                    nhanVienToUpdate.AnhNhanVien = "/images/" + fileName;
+                }
+                else
+                {
+                    // Giữ nguyên ảnh cũ hoặc đặt giá trị mặc định nếu không có ảnh nào trước đó
+                    nhanVienToUpdate.AnhNhanVien = nhanVienToUpdate.AnhNhanVien ?? "/images/account.png";
+                }
+
+                // Lưu thay đổi vào cơ sở dữ liệu
+                await db.SaveChangesAsync();
+
+                return Json(new { success = true, message = "Cập nhật nhân viên thành công!" });
+            }
+            catch (Exception ex)
+            {
+                return Json(new { success = false, message = "Lỗi khi cập nhật nhân viên: " + ex.Message });
+            }
+        }
     }
-
-
-    //// Hàm chỉnh sửa nhân viên (GET)
-    //[HttpGet]
-    //public async Task<IActionResult> Edit(string id)
-    //{
-    //    var nhanVien = await db.NhanViens.FindAsync(id);
-    //    if (nhanVien == null)
-    //    {
-    //        return NotFound();
-    //    }
-
-    //    var model = new NhanVienViewModel
-    //    {
-    //        MaNhanVien = nhanVien.MaNhanVien,
-    //        AnhNhanVien = nhanVien.AnhNhanVien,
-    //        HoTen = nhanVien.HoTen,
-    //        Cccd = nhanVien.Cccd,
-    //        SoDienThoai = nhanVien.SoDienThoai,
-    //        DiaChi = nhanVien.DiaChi,
-    //        ChucVu = nhanVien.ChucVu,
-    //        LuongCoBan = (decimal)nhanVien.LuongCoBan,
-    //        GioiTinh = nhanVien.GioiTinh
-    //    };
-
-    //    return View(model);
-    //}
-
-    //// Hàm chỉnh sửa nhân viên (POST)
-    //[HttpPost]
-    //public async Task<IActionResult> Edit(string id, NhanVienViewModel model)
-    //{
-    //    if (id != model.MaNhanVien)
-    //    {
-    //        return BadRequest();
-    //    }
-
-    //    if (ModelState.IsValid)
-    //    {
-    //        try
-    //        {
-    //            var nhanVien = await db.NhanViens.FindAsync(id);
-    //            if (nhanVien == null)
-    //            {
-    //                return NotFound();
-    //            }
-
-    //            nhanVien.AnhNhanVien = model.AnhNhanVien;
-    //            nhanVien.HoTen = model.HoTen;
-    //            nhanVien.Cccd = model.Cccd;
-    //            nhanVien.SoDienThoai = model.SoDienThoai;
-    //            nhanVien.DiaChi = model.DiaChi;
-    //            nhanVien.ChucVu = model.ChucVu;
-    //            nhanVien.LuongCoBan = model.LuongCoBan;
-    //            nhanVien.GioiTinh = model.GioiTinh;
-
-    //            db.NhanViens.Update(nhanVien);
-    //            await db.SaveChangesAsync();
-    //            return RedirectToAction(nameof(Index));
-    //        }
-    //        catch (DbUpdateConcurrencyException)
-    //        {
-    //            return StatusCode(500, "Không thể cập nhật dữ liệu.");
-    //        }
-    //    }
-    //    return View(model);
-    //}
-
-    //// Hàm xóa nhân viên (GET để hiển thị xác nhận)
-    //[HttpGet]
-    //public async Task<IActionResult> Delete(string id)
-    //{
-    //    var nhanVien = await db.NhanViens.FindAsync(id);
-    //    if (nhanVien == null)
-    //    {
-    //        return NotFound();
-    //    }
-
-    //    var model = new NhanVienViewModel
-    //    {
-    //        MaNhanVien = nhanVien.MaNhanVien,
-    //        HoTen = nhanVien.HoTen
-    //    };
-
-    //    return View(model);
-    //}
-
-    //// Hàm xóa nhân viên (POST để thực hiện xóa)
-    //[HttpPost, ActionName("Delete")]
-    //public async Task<IActionResult> DeleteConfirmed(string id)
-    //{
-    //    var nhanVien = await db.NhanViens.FindAsync(id);
-    //    if (nhanVien == null)
-    //    {
-    //        return NotFound();
-    //    }
-
-    //    db.NhanViens.Remove(nhanVien);
-    //    await db.SaveChangesAsync();
-    //    return RedirectToAction(nameof(Index));
-    //}
 }
 
