@@ -65,39 +65,37 @@
                                 </tr>
                             </thead>
                             <tbody id="tblBodyNhanVien">
+                                <!--code hàm LoadNhanVien() sẽ vào đây-->
                                 @{
-                                    int soThuTu = 1;
+                                    var soThuTu = 1;
                                 }
-                                @foreach (var i in Model)
+                                @foreach (var item in Model)
                                 {
                                     <tr class="row-item">
                                         <th scope="row">@soThuTu</th>
-                                        <td class="me-2">@i.Cccd</td>
-                                        <td>@i.HoTen</td>
-                                        <td>@i.GioiTinh</td>
-                                        <td>@i.SoDienThoai</td>
-                                        <td>@i.ChucVu</td>
-                                        <td>@i.DiaChi</td>
-                                        <td class="d-flex  justify-content-end">
-                                            <a class="cusor me-2 mt-1" onclick="ChiTietNhanVien('@i.MaNhanVien')"
+                                        <td class="me-2">@item.Cccd</td>
+                                        <td>@item.HoTen</td>
+                                        <td>@item.GioiTinh</td>
+                                        <td>@item.SoDienThoai</td>
+                                        <td>@item.ChucVu</td>
+                                        <td>@item.DiaChi</td>
+                                        <td class="d-flex justify-content-end">
+                                            <a class="cusor me-2 mt-1 chitietBtn" onclick="ChiTietNhanVien('@item.MaNhanVien')"
                                                style="color: darkblue; font-style: italic; text-decoration: underline;">
-                                                Chi
-                                                tiết
+                                                Chi tiết
                                             </a>
-                                            <button type="button" class="btn btn-warning me-2 edit-btn"
-                                                    data-bs-toggle="modal" data-bs-target="#suaModal"
+                                            <button type="button" class="btn btn-warning me-2 edit-btn" id="btnUpdateNhanVien" onclick="LoadModalUpdate('@item.MaNhanVien')"
                                                     style="font-size: small;">
                                                 Sửa
                                             </button>
-                                            <button type="button" class="btn btn-danger"
-                                                    style="font-size: small;">
+                                            <button type="button" class="btn btn-danger" onclick="DeleteNhanVien('@item.MaNhanVien')" style="font-size: small;">
                                                 Xóa
                                             </button>
                                         </td>
                                     </tr>
                                     soThuTu++;
+                                    <!-- Tăng biến số thứ tự sau khi render mỗi dòng -->
                                 }
-
                             </tbody>
                         </table>
                     </div>
@@ -163,87 +161,9 @@
     @await Html.PartialAsync("ModalChiTiet")
 
     <!-- Modal sửa -->
-    <div class="modal fade" id="suaModal" tabindex="-1" aria-labelledby="suaModalLabel" aria-hidden="true">
-        <div class="modal-dialog modal-lg">
-            <div class="modal-content" style="border-radius: 20px;">
-                <div class="modal-header d-flex justify-content-center">
-                    <h5 style="font-weight: bolder;">Chỉnh sửa nhân viên</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body">
-                    <div class="container">
-                        <div class="row">
-                            <div class="col-6">
-                                <label class="ms-1 mb-1">Họ và Tên</label>
-                                <input type="text" class="form-control" id="editFullname" required>
-                                <span class="error text-danger" id="EditNameError"></span>
-                            </div>
-                            <div class="col-6">
-                                <label class="mb-1 ms-1">Giới tính</label>
-                                <select class="form-select" id="editGender" required>
-                                    <option value="">Chọn giới tính</option>
-                                    <option value="Nam">Nam</option>
-                                    <option value="Nữ">Nữ</option>
-                                    <option value="Khác">Khác</option>
-                                </select>
-                                <span class="error text-danger" id="EditgenderError"></span>
-                            </div>
-                        </div>
-                        <div class="row mt-3">
-                            <div class="col-6">
-                                <label class="ms-1 mb-1">Căn cước công dân</label>
-                                <input type="number" class="form-control" id="editCCCD" required>
-                                <span class="error text-danger" id="EditcccdError"></span>
-                            </div>
-                            <div class="col-6">
-                                <label class="ms-1 mb-1">Số điện thoại</label>
-                                <input type="number" class="form-control" id="editPhone" required>
-                                <span class="error text-danger" id="EditphoneError"></span>
-                            </div>
-                        </div>
-                        <div class="row mt-3">
-                            <div class="col-6">
-                                <label class="ms-1 mb-1">Chức vụ</label>
-                                <select class="form-select" id="editPosition" required>
-                                    <option value="">Chọn chức vụ</option>
-                                    <option value="Quản lý">Quản lý</option>
-                                    <option value="Bảo vệ">Bảo vệ</option>
-                                    <option value="Lễ tân">Lễ tân</option>
-                                </select>
-                                <span class="error text-danger" id="EditpositionError"></span>
-                            </div>
-                            <div class="col-6">
-                                <label class="ms-1 mb-1">Địa chỉ</label>
-                                <input type="text" class="form-control" id="editAddress" required>
-                                <span class="error text-danger" id="EditaddressError"></span>
-                            </div>
-                        </div>
-                        <div class="row mt-3">
-                            <div class="col-6">
-                                <label class="ms-1 mb-1">Ảnh </label>
-                                <input type="file" id="imageInput" accept="image/*" required>
-                                <span class="error text-danger" id="EditimageError"></span>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+    @await Html.PartialAsync("ModalUpdate")
 
-                <div class="container my-2">
-                    <div class="row" style="justify-content: flex-end;">
-                        <div class="col-3 m-2 d-flex justify-content-end">
-                            <button type="button" id="btnEdit" class="btn btn-success submit-btn"
-                                    style="font-size: small;">
-                                Đồng
-                                ý
-                            </button>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
 
-    <script src="~/js/NhanVienJs.js"></script>
     <!-- javascrit bắt lỗi đổi mk -->
     <script>
         // Loại bỏ khoảng trắng trong khi người dùng nhập vào các ô mật khẩu
@@ -308,127 +228,6 @@
 
     </script>
 
-    <!-- Javascript bắt lỗi sửa -->
-    <script>
-        document.getElementById('btnEdit').addEventListener('click', function (e) {
-            // Ngăn form submit nếu có lỗi
-            e.preventDefault();
 
-            // Đặt biến để kiểm tra hợp lệ
-            let isValid = true;
-
-            // Reset các thông báo lỗi trước khi kiểm tra
-            document.querySelectorAll('.error').forEach(function (el) {
-                el.textContent = '';
-            });
-
-            // Biểu thức chính quy để kiểm tra ký tự đặc biệt
-            const specialCharPattern = /[!@@#$%^&*(),.?":{}|<>]/;
-
-            // Kiểm tra Họ và Tên
-            const fullname = document.getElementById('editFullname').value.trim();
-            if (fullname === '') {
-                document.getElementById('EditNameError').textContent = 'Họ và Tên không được để trống';
-                isValid = false;
-            } else if (specialCharPattern.test(fullname)) {
-                document.getElementById('EditNameError').textContent = 'Họ và Tên không được chứa ký tự đặc biệt';
-                isValid = false;
-            }
-
-            // Kiểm tra Giới tính
-            const gender = document.getElementById('editGender').value;
-            if (gender === '') {
-                document.getElementById('EditgenderError').textContent = 'Vui lòng chọn giới tính';
-                isValid = false;
-            }
-
-            // Kiểm tra Căn cước công dân (CCCD)
-            const cccd = document.getElementById('editCCCD').value.trim();
-            if (cccd === '') {
-                document.getElementById('EditcccdError').textContent = 'Căn cước công dân không được để trống';
-                isValid = false;
-            } else if (!/^\d{12}$/.test(cccd)) {
-                document.getElementById('EditcccdError').textContent = 'Căn cước công dân phải gồm 12 chữ số';
-                isValid = false;
-            }
-
-            // Kiểm tra Số điện thoại
-            const phone = document.getElementById('editPhone').value.trim();
-            if (phone === '') {
-                document.getElementById('EditphoneError').textContent = 'Số điện thoại không được để trống';
-                isValid = false;
-            } else if (!/^\d{10}$/.test(phone)) {
-                document.getElementById('EditphoneError').textContent = 'Số điện thoại phải gồm 10 chữ số';
-                isValid = false;
-            }
-
-            // Kiểm tra Chức vụ
-            const position = document.getElementById('editPosition').value;
-            if (position === '') {
-                document.getElementById('EditpositionError').textContent = 'Vui lòng chọn chức vụ';
-                isValid = false;
-            }
-
-            // Kiểm tra Địa chỉ
-            const address = document.getElementById('editAddress').value.trim();
-            if (address === '') {
-                document.getElementById('EditaddressError').textContent = 'Địa chỉ không được để trống';
-                isValid = false;
-            } else if (specialCharPattern.test(address)) {
-                document.getElementById('EditaddressError').textContent = 'Địa chỉ không được chứa ký tự đặc biệt';
-                isValid = false;
-            }
-
-            // Kiểm tra Ảnh
-            const imageInput = document.getElementById('imageInput');
-            if (imageInput.files.length === 0) {
-                document.getElementById('EditimageError').textContent = 'Vui lòng chọn ảnh';
-                isValid = false;
-            }
-
-            // Nếu tất cả các trường đều hợp lệ, tiếp tục xử lý
-            if (isValid) {
-                alert("Bạn đã sửa thành công");
-
-                // Làm sạch các trường nhập liệu
-                document.getElementById('editFullname').value = '';
-                document.getElementById('editGender').value = '';
-                document.getElementById('editCCCD').value = '';
-                document.getElementById('editPhone').value = '';
-                document.getElementById('editPosition').value = '';
-                document.getElementById('editAddress').value = '';
-                imageInput.value = ''; // Xóa ảnh đã chọn
-            } else {
-                console.log('Có lỗi trong dữ liệu nhập vào.');
-            }
-        });
-        // Xóa khoảng trắng cccd
-        document.getElementById('editCCCD').addEventListener('input', function () {
-            this.value = this.value.replace(/^\s+|\s+$/g, '');
-        });
-
-        // Xóa khoảng trắng sdt
-        document.getElementById('editPhone').addEventListener('input', function () {
-            this.value = this.value.replace(/^\s+|\s+$/g, '');
-        });
-    </script>
-    
-    <!-- javacript đưa dữ liệu từ table lên modal -->
-    <script>
-        // Lắng nghe sự kiện khi modal Chỉnh sửa được mở
-        document.querySelectorAll('.edit-btn').forEach(function (button) {
-            button.addEventListener('click', function () {
-                const row = this.closest('.row-item');
-                // Lấy thông tin từ các ô trong hàng
-                document.getElementById('editFullname').value = row.cells[2].innerText; // Họ và Tên
-                document.getElementById('editCCCD').value = row.cells[1].innerText; // Căn cước công dân
-                document.getElementById('editPhone').value = row.cells[4].innerText; // Số điện thoại
-                document.getElementById('editPosition').value = row.cells[5].innerText; // Chức vụ
-                document.getElementById('editAddress').value = row.cells[6].innerText;
-                document.getElementById('editGender').value = row.cells[3].innerText; // Địa chỉ
-
-            });
-        });
-    </script>
 
 </div>
