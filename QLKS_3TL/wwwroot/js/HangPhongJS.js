@@ -185,10 +185,8 @@ $(document).ready(function () {
     // Đăng ký sự kiện khi form được gửi
     $(document).on('submit', '#editProductForm', function (e) {
         e.preventDefault(); // Ngăn chặn hành động mặc định của form
-
         // Hiển thị spinner khi gửi yêu cầu
         $('#loadingSpinner').show();
-
         // Thực hiện AJAX POST để gửi dữ liệu lên server
         $.ajax({
             url: $(this).attr('action'), // URL lấy từ thuộc tính action của form

@@ -17,12 +17,6 @@
                 <form id="editProductForm" asp-action="Edit" method="post" enctype="multipart/form-data">
                     <input type="hidden" asp-for="MaHangPhong" /> <!-- Mã hạng phòng -->
                     <div class="container">
-                        <div class="row mb-3">
-                            <div class="col-12">
-                                <label class="mb-1 ms-1 label-modal">Ảnh hiện tại</label><br />
-                                <img src="@Url.Content(Model.AnhHangPhong)" alt="Ảnh hạng phòng" style="max-width: 200px; max-height: 200px;" />
-                            </div>
-                        </div>
                         <div class="row">
                             <div class="col-6">
                                 <label asp-for="TenHangPhong" class="ms-1 mb-1 label-modal">Tên hạng phòng</label>
@@ -52,6 +46,10 @@
                                 <label asp-for="AnhHangPhong" class="mb-1 ms-1 label-modal">Tải ảnh mới</label>
                                 <input asp-for="AnhHangPhong" type="file" accept="image/*">
                                 <span asp-validation-for="AnhHangPhong" class="text-danger"></span>
+                                <div>
+                                    <label class="mb-1 ms-1 label-modal">Ảnh hiện tại</label><br />
+                                    <img src="@Url.Content(Model.AnhHangPhong)" alt="Ảnh hạng phòng" style="max-width: 200px; max-height: 200px;" />
+                                </div>
                             </div>
                             <div class="col-6">
                                 <label asp-for="MoTa" class="mb-1 ms-1 label-modal">Mô tả</label>
