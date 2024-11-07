@@ -1,13 +1,64 @@
-﻿
+﻿    
     $('#createProductBtn').on('click', function () {
         $.get(createProductUrl, function (data) {
             $('#modalPlaceholder').html(data);
             $('#createModal').modal('show');
         });
     });
+function loadHangPhong() {
+    $.ajax({
+        url: load, // Đảm bảo URL đúng với controller của bạn
+        type: 'GET',
+        dataType: 'json',
+        success: function (response) {
+            if (response.success) {
+                let tableContent = '';
+                let stt = 1;
+
+                response.data.forEach(function (hp) {
+                    tableContent += `
+                        <tr>
+                            <th scope="row">${stt}</th>
+                            <td>${hp.maHangPhong || ''}</td>
+                            <td>${hp.tenHangPhong || ''}</td>
+                            <td style="padding-left: 37px;">${hp.soGiuong || ''}</td>
+                            <td style="padding-left: 30px;">${hp.dienTich || ''}</td>
+                            <td>${hp.giaHangPhong || ''} VND</td>
+                            <td class="d-flex justify-content-end">
+                                <a class="cusor me-2 mt-1 chitietBtn" onclick="loadRoomDetail('${hp.maHangPhong || ''}')"
+                                   style="color: darkblue; font-style: italic; text-decoration: underline;">
+                                    Chi tiết
+                                </a>
+                                <button type="button" class="btn btn-warning me-2 editBtn" data-toggle="modal" data-target="#editModal" data-id="${hp.maHangPhong || ''}" style="font-size: small;">
+                                    Sửa
+                                </button>
+                                <button type="button" class="btn btn-danger delete-btn" data-id="${hp.maHangPhong || ''}"
+                                        style="font-size: small;">
+                                    Xóa
+                                </button>
+                            </td>
+                        </tr>
+                    `;
+                    stt++;
+                });
+
+                $('#tblBody').html(tableContent);
+            } else {
+                alert('Lỗi: ' + response.message);
+            }
+        },
+        error: function (xhr, status, error) {
+            console.error('Error:', error);
+        }
+    });
+}
+
+
+
 
     // Tách hàm kiểm tra lỗi
-    function validateForm() {
+function validateForm() {
+        console.log("running")
         var isValid = true;
 
         // Lấy giá trị từ các trường
@@ -31,9 +82,6 @@
         // Kiểm tra "Tên hạng phòng"
         if (tenHangPhong === '') {
             document.getElementById('errorTenHangPhong').textContent = 'Tên hạng phòng không được để trống';
-            isValid = false;
-        } else if (specialCharRegex.test(tenHangPhong)) {
-            document.getElementById('errorTenHangPhong').textContent = 'Tên hạng phòng không được chứa ký tự đặc biệt';
             isValid = false;
         }
 
@@ -73,7 +121,6 @@
         return isValid;
     }
 
-    // Xử lý sự kiện khi biểu mẫu tạo sản phẩm được gửi
     $(document).on('submit', '#createProductForm', function (e) {
         e.preventDefault(); // Ngăn chặn hành động mặc định của biểu mẫu
 
@@ -94,8 +141,9 @@
             .done(function (response) {
                 console.log(response); // Thêm dòng này để xem phản hồi
                 if (response.success) {
-                    alert("Thêm sản phẩm thành công!");
-                    location.reload();
+                    alert("Thêm hạng phòng thành công!");
+                    $('#createModal').modal('hide');
+                    loadHangPhong();
                 } else {
                     alert("Có lỗi xảy ra: " + (response.message || "Đã xảy ra lỗi không xác định.")); // Kiểm tra và hiển thị thông báo
                 }
@@ -104,6 +152,8 @@
                 alert('Lỗi: ' + errorThrown);
             });
     });
+
+
     $(document).on('click', '.editBtn', function () {
         var maHangPhong = $(this).data('id'); // Lấy id của sản phẩm
         // Gọi AJAX để lấy nội dung modal từ server
@@ -114,111 +164,226 @@
             alert("Không thể tải modal. Kiểm tra lại đường dẫn hoặc controller.");
         });
     });
-    // Hàm kiểm tra lỗi cho phần cập nhật sản phẩm
-    function validateEditForm() {
-        var isValid = true;
+$(document).on('submit', '#editProductForm', function (e) {
+    e.preventDefault(); // Ngăn chặn hành động mặc định của form
 
-        // Lấy giá trị từ các trường
-        var tenHangPhong = document.getElementById('EdittenHangPhong').value.trim();
-        var gia = document.getElementById('Editgia').value.trim();
-        var soGiuong = document.getElementById('EditsoGiuong').value.trim();
-        var dienTich = document.getElementById('EditdienTich').value.trim();
-        var image = document.getElementById('EditimageInput').value;
-        var moTa = document.getElementById('EditmoTa').value.trim();
+    // Reset lỗi trước khi bắt đầu
+    resetErrors();
 
-        var specialCharRegex = /[^a-zA-Z0-9\s]/g; // Biểu thức kiểm tra ký tự đặc biệt
-
-        // Xóa thông báo lỗi cũ
-        document.getElementById('EditerrorTenHangPhong').textContent = '';
-        document.getElementById('EditerrorGia').textContent = '';
-        document.getElementById('EditerrorSoGiuong').textContent = '';
-        document.getElementById('EditerrorDienTich').textContent = '';
-        document.getElementById('EditerrorImage').textContent = '';
-        document.getElementById('EditerrorMoTa').textContent = '';
-
-        // Kiểm tra "Tên hạng phòng"
-        if (tenHangPhong === '') {
-            document.getElementById('EditerrorTenHangPhong').textContent = 'Tên hạng phòng không được để trống';
-            isValid = false;
-        } else if (specialCharRegex.test(tenHangPhong)) {
-            document.getElementById('EditerrorTenHangPhong').textContent = 'Tên hạng phòng không được chứa ký tự đặc biệt';
-            isValid = false;
-        }
-
-        // Kiểm tra "Giá"
-        if (gia === '' || isNaN(gia) || Number(gia) <= 0) {
-            document.getElementById('EditerrorGia').textContent = 'Giá phải không được để trống và lớn hơn 0';
-            isValid = false;
-        }
-
-        // Kiểm tra "Số giường"
-        if (soGiuong === '' || isNaN(soGiuong) || Number(soGiuong) <= 0) {
-            document.getElementById('EditerrorSoGiuong').textContent = 'Số giường không được để trống và lớn hơn 0';
-            isValid = false;
-        }
-
-        // Kiểm tra "Diện tích"
-        if (dienTich === '' || isNaN(dienTich) || Number(dienTich) <= 0) {
-            document.getElementById('EditerrorDienTich').textContent = 'Diện tích không được để trống và phải lớn hơn 0';
-            isValid = false;
-        }
-
-        // Kiểm tra "Ảnh"
-        if (image === '') {
-            document.getElementById('EditerrorImage').textContent = 'Vui lòng chọn ảnh';
-            isValid = false;
-        }
-
-        // Kiểm tra "Mô tả"
-        if (moTa === '') {
-            document.getElementById('EditerrorMoTa').textContent = 'Mô tả không được để trống';
-            isValid = false;
-        } else if (specialCharRegex.test(moTa)) {
-            document.getElementById('EditerrorMoTa').textContent = 'Mô tả không được chứa ký tự đặc biệt';
-            isValid = false;
-        }
-
-        return isValid;
+    var isValid = true;
+    var tenHangPhong = $('#EdittenHangPhong').val(); // Lấy giá trị từ input
+    console.log("Tên hạng phòng:", tenHangPhong); // Kiểm tra giá trị
+    if (!tenHangPhong) {
+        $('#EditerrorTenHangPhong').text("Tên hạng phòng không được để trống");
+        isValid = false; // Đánh dấu là lỗi
     }
 
-$(document).ready(function () {
-    // Đăng ký sự kiện khi form được gửi
-    $(document).on('submit', '#editProductForm', function (e) {
-        e.preventDefault(); // Ngăn chặn hành động mặc định của form
-        // Hiển thị spinner khi gửi yêu cầu
-        $('#loadingSpinner').show();
-        // Thực hiện AJAX POST để gửi dữ liệu lên server
+    // Kiểm tra Giá
+    var giaHangPhong = $('#Editgia').val().trim();
+    if (giaHangPhong === "" || isNaN(giaHangPhong) || giaHangPhong <= 0) {
+        $('#EditerrorGia').text("Giá hạng phòng phải là số lớn hơn 0.");
+        isValid = false;
+    }
+
+    // Kiểm tra Số giường
+    var soGiuong = $('#EditsoGiuong').val().trim();
+    if (soGiuong === "" || isNaN(soGiuong) || soGiuong <= 0) {
+        $('#EditerrorSoGiuong').text("Số giường phải là số lớn hơn 0.");
+        isValid = false;
+    }
+
+    // Kiểm tra Diện tích
+    var dienTich = $('#EditdienTich').val().trim();
+    if (dienTich === "" || isNaN(dienTich) || dienTich <= 0) {
+        $('#EditerrorDienTich').text("Diện tích phải là số lớn hơn 0.");
+        isValid = false;
+    }
+
+    // Kiểm tra Mô tả
+    var moTa = $('#EditmoTa').val().trim();
+    if (moTa === "") {
+        $('#EditerrorMoTa').text("Mô tả không được để trống.");
+        isValid = false;
+    }
+
+    // Kiểm tra ảnh (nếu có trường ảnh)
+    var anhHangPhong = $('#Edimage').prop('files')[0];
+    if (anhHangPhong && anhHangPhong.size > 5000000) { // Kiểm tra kích thước ảnh (5MB)
+        $('#EditerrorImage').text("Ảnh tải lên không được lớn hơn 5MB.");
+        isValid = false;
+    }
+
+    // Nếu tất cả trường hợp đều hợp lệ, thực hiện gửi dữ liệu
+    if (isValid) {
+        var form = $(this);
+        var formData = new FormData(form[0]);
+
         $.ajax({
-            url: $(this).attr('action'), // URL lấy từ thuộc tính action của form
-            type: 'POST',
-            data: new FormData(this), // Sử dụng FormData để gửi file
-            contentType: false, // Ngăn jQuery thiết lập contentType
-            processData: false, // Ngăn jQuery xử lý dữ liệu
+            url: form.attr('action'),
+            type: form.attr('method'),
+            data: formData,
+            contentType: false,
+            processData: false,
             success: function (response) {
-                console.log(response)
-                $('#loadingSpinner').hide(); // Ẩn spinner sau khi nhận được phản hồi
                 if (response.success) {
-                    // Hiển thị thông báo thành công
                     alert("Cập nhật thành công!");
-
-                    // Đóng modal
-                    $('#editModal').modal('hide');
-
-                    // Làm mới hoặc cập nhật danh sách trên trang
-                    location.reload(); // Hoặc bạn có thể dùng AJAX để cập nhật chỉ phần danh sách
+                    $('#editModal').modal('hide'); // Đóng modal khi thành công
+                    loadHangPhong(); // Tải lại danh sách
                 } else {
-                    // Hiển thị thông báo lỗi nếu có lỗi phía server
-                    alert("Có lỗi xảy ra: " + response.message); // Hiển thị thông báo lỗi chi tiết
+                    alert("Có lỗi xảy ra: " + (response.message || "Đã xảy ra lỗi không xác định."));
                 }
             },
             error: function (jqXHR, textStatus, errorThrown) {
-                $('#loadingSpinner').hide(); // Ẩn spinner nếu có lỗi
-                console.log("Chi tiết lỗi: ", jqXHR.responseText); // In chi tiết lỗi ra console
                 alert('Lỗi: ' + errorThrown);
             }
         });
-    });
+    }
 });
+
+// Hàm để reset lỗi
+function resetErrors() {
+    $('#EditerrorTenHangPhong').text("");
+    $('#EditerrorGia').text("");
+    $('#EditerrorSoGiuong').text("");
+    $('#EditerrorDienTich').text("");
+    $('#EditerrorMoTa').text("");
+    $('#EditerrorImage').text("");
+}
+
+
+
+// Hàm validate form trước khi gửi
+//function validateEditForm() {
+//    var isValid = true;
+
+//    // Lấy giá trị từ các trường
+//    var tenHangPhong = document.getElementById('EdittenHangPhong').value.trim();
+//    var gia = document.getElementById('Editgia').value.trim();
+//    var soGiuong = document.getElementById('EditsoGiuong').value.trim();
+//    var dienTich = document.getElementById('EditdienTich').value.trim();
+//    var image = document.getElementById('EditimageInput').value;
+//    var moTa = document.getElementById('EditmoTa').value.trim();
+
+//    var specialCharRegex = /[^a-zA-Z0-9\s]/g; // Biểu thức kiểm tra ký tự đặc biệt
+
+//    // Xóa thông báo lỗi cũ
+//    document.getElementById('EditerrorTenHangPhong').textContent = '';
+//    document.getElementById('EditerrorGia').textContent = '';
+//    document.getElementById('EditerrorSoGiuong').textContent = '';
+//    document.getElementById('EditerrorDienTich').textContent = '';
+//    document.getElementById('EditerrorImage').textContent = '';
+//    document.getElementById('EditerrorMoTa').textContent = '';
+
+//    // Kiểm tra "Tên hạng phòng"
+//    if (tenHangPhong === '') {
+//        document.getElementById('EditerrorTenHangPhong').textContent = 'Tên hạng phòng không được để trống';
+//        isValid = false;
+//    } else if (specialCharRegex.test(tenHangPhong)) {
+//        document.getElementById('EditerrorTenHangPhong').textContent = 'Tên hạng phòng không được chứa ký tự đặc biệt';
+//        isValid = false;
+//    }
+
+//    // Kiểm tra "Giá"
+//    if (gia === '' || isNaN(gia) || Number(gia) <= 0) {
+//        document.getElementById('EditerrorGia').textContent = 'Giá phải không được để trống và lớn hơn 0';
+//        isValid = false;
+//    }
+
+//    // Kiểm tra "Số giường"
+//    if (soGiuong === '' || isNaN(soGiuong) || Number(soGiuong) <= 0) {
+//        document.getElementById('EditerrorSoGiuong').textContent = 'Số giường không được để trống và lớn hơn 0';
+//        isValid = false;
+//    }
+
+//    // Kiểm tra "Diện tích"
+//    if (dienTich === '' || isNaN(dienTich) || Number(dienTich) <= 0) {
+//        document.getElementById('EditerrorDienTich').textContent = 'Diện tích không được để trống và phải lớn hơn 0';
+//        isValid = false;
+//    }
+
+//    // Kiểm tra "Ảnh"
+//    if (image === '') {
+//        document.getElementById('EditerrorImage').textContent = 'Vui lòng chọn ảnh';
+//        isValid = false;
+//    }
+
+//    // Kiểm tra "Mô tả"
+//    if (moTa === '') {
+//        document.getElementById('EditerrorMoTa').textContent = 'Mô tả không được để trống';
+//        isValid = false;
+//    } else if (specialCharRegex.test(moTa)) {
+//        document.getElementById('EditerrorMoTa').textContent = 'Mô tả không được chứa ký tự đặc biệt';
+//        isValid = false;
+//    }
+
+//    return isValid; // Trả về giá trị hợp lệ của form
+//}
+
+function validateEditForm() {
+    console.log("Running validateEditForm");
+    var isValid = true;
+
+    // Lấy giá trị từ các trường
+    var tenHangPhong = document.getElementById('EdittenHangPhong').value.trim();
+    var gia = document.getElementById('Editgia').value.trim();
+    var soGiuong = document.getElementById('EditsoGiuong').value.trim();
+    var dienTich = document.getElementById('EditdienTich').value.trim();
+    var image = document.getElementById('Edimage').value;
+    var moTa = document.getElementById('EditmoTa').value.trim();
+
+    var specialCharRegex = /[^a-zA-Z0-9\s]/g; // Biểu thức kiểm tra ký tự đặc biệt
+
+    // Xóa thông báo lỗi cũ
+    document.getElementById('EditerrorTenHangPhong').textContent = '';
+    document.getElementById('EditerrorGia').textContent = '';
+    document.getElementById('EditerrorSoGiuong').textContent = '';
+    document.getElementById('EditerrorDienTich').textContent = '';
+    document.getElementById('EditerrorImage').textContent = '';
+    document.getElementById('EditerrorMoTa').textContent = '';
+
+    // Kiểm tra "Tên hạng phòng"
+    if (tenHangPhong === '') {
+        document.getElementById('EditerrorTenHangPhong').textContent = 'Tên hạng phòng không được để trống';
+        isValid = false;
+    } else if (specialCharRegex.test(tenHangPhong)) {
+        document.getElementById('EditerrorTenHangPhong').textContent = 'Tên hạng phòng không được chứa ký tự đặc biệt';
+        isValid = false;
+    }
+
+    // Kiểm tra "Giá"
+    if (gia === '' || isNaN(gia) || Number(gia) <= 0) {
+        document.getElementById('EditerrorGia').textContent = 'Giá phải không được để trống và lớn hơn 0';
+        isValid = false;
+    }
+
+    // Kiểm tra "Số giường"
+    if (soGiuong === '' || isNaN(soGiuong) || Number(soGiuong) <= 0) {
+        document.getElementById('EditerrorSoGiuong').textContent = 'Số giường không được để trống và lớn hơn 0';
+        isValid = false;
+    }
+
+    // Kiểm tra "Diện tích"
+    if (dienTich === '' || isNaN(dienTich) || Number(dienTich) <= 0) {
+        document.getElementById('EditerrorDienTich').textContent = 'Diện tích không được để trống và phải lớn hơn 0';
+        isValid = false;
+    }
+
+    // Kiểm tra "Ảnh"
+    if (image === '') {
+        document.getElementById('EditerrorImage').textContent = 'Vui lòng chọn ảnh';
+        isValid = false;
+    }
+
+    // Kiểm tra "Mô tả"
+    if (moTa === '') {
+        document.getElementById('EditerrorMoTa').textContent = 'Mô tả không được để trống';
+        isValid = false;
+    } else if (specialCharRegex.test(moTa)) {
+        document.getElementById('EditerrorMoTa').textContent = 'Mô tả không được chứa ký tự đặc biệt';
+        isValid = false;
+    }
+    return isValid;
+}
 
 function loadRoomDetail(roomCode) {
     $.ajax({
@@ -262,7 +427,7 @@ $(document).on('click', '.delete-btn', function () {
             success: function (response) {
                 if (response.success) {
                     alert("Xóa thành công!");
-                    location.reload(); // Làm mới trang hoặc cập nhật danh sách
+                    loadHangPhong();
                 } else {
                     alert("Có lỗi xảy ra: " + response.message);
                 }

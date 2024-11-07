@@ -16,6 +16,30 @@ namespace QLKS_3TL.Areas.QuanLy.Controllers
         {
             return View(await dbContext.HangPhongs.ToListAsync());
         }
+
+        [HttpGet]
+        public async Task<JsonResult> LoadHangPhongs()
+        {
+            try
+            {
+                var hangphongs = await dbContext.HangPhongs
+                    .Select(hp => new {
+                        hp.MaHangPhong,
+                        hp.TenHangPhong,
+                        hp.SoGiuong,
+                        hp.DienTich,
+                        hp.GiaHangPhong
+                    }).ToListAsync();
+
+                return Json(new { success = true, data = hangphongs });
+            }
+            catch (Exception ex)
+            {
+                return Json(new { success = false, message = ex.Message });
+            }
+        }
+
+
         public IActionResult Create()
         {
             return PartialView("Create");
@@ -78,14 +102,12 @@ namespace QLKS_3TL.Areas.QuanLy.Controllers
         [HttpPost]
         public async Task<IActionResult> Edit([Bind("MaHangPhong, TenHangPhong, GiaHangPhong, MoTa, SoGiuong, DienTich")] HangPhong hangphong, IFormFile AnhHangPhong)
         {
-            // Kiểm tra xem hạng phòng có tồn tại trong cơ sở dữ liệu hay không
             var existingHangPhong = await dbContext.HangPhongs.FindAsync(hangphong.MaHangPhong);
             if (existingHangPhong == null)
             {
-                return NotFound(); // Nếu không tìm thấy, trả về lỗi 404
+                return NotFound();
             }
 
-            // Cập nhật các thuộc tính của hạng phòng
             existingHangPhong.TenHangPhong = hangphong.TenHangPhong;
             existingHangPhong.GiaHangPhong = hangphong.GiaHangPhong;
             existingHangPhong.MoTa = hangphong.MoTa;
@@ -95,39 +117,44 @@ namespace QLKS_3TL.Areas.QuanLy.Controllers
             // Kiểm tra xem có hình ảnh mới không
             if (AnhHangPhong != null && AnhHangPhong.Length > 0)
             {
-                // Xử lý lưu file ảnh vào thư mục images
+                var directory = Path.Combine("wwwroot/images");
+                if (!Directory.Exists(directory))
+                {
+                    Directory.CreateDirectory(directory);
+                }
+
                 var fileName = Path.GetFileName(AnhHangPhong.FileName);
-                var filePath = Path.Combine("wwwroot/images", fileName); // Đường dẫn lưu file vào thư mục images
+                var filePath = Path.Combine(directory, fileName);
                 using (var stream = new FileStream(filePath, FileMode.Create))
                 {
                     await AnhHangPhong.CopyToAsync(stream);
                 }
-                existingHangPhong.AnhHangPhong = "/images/" + fileName; // Cập nhật đường dẫn tương đối vào thuộc tính của mô hình
+                existingHangPhong.AnhHangPhong = "/images/" + fileName;
             }
-            // Nếu không có hình ảnh mới, giữ nguyên giá trị cũ của existingHangPhong.AnhHangPhong
             else
             {
-                // Giữ nguyên giá trị ảnh cũ nếu không có ảnh mới
-                existingHangPhong.AnhHangPhong = existingHangPhong.AnhHangPhong;
-            }
-            // Kiểm tra ModelState
-            if (ModelState.IsValid)
-            {
-                try
-                {
-                    dbContext.Update(existingHangPhong); // Cập nhật thông tin trong cơ sở dữ liệu
-                    await dbContext.SaveChangesAsync(); // Lưu thay đổi vào cơ sở dữ liệu
-                    return Json(new { success = true }); // Phản hồi thành công
-                }
-                catch (Exception ex)
-                {
-                    Console.WriteLine("Lỗi khi lưu dữ liệu: " + ex.Message); // In ra lỗi chi tiết
-                    return Json(new { success = false, message = ex.Message }); // Phản hồi lỗi
-                }
+                // Xóa lỗi yêu cầu `AnhHangPhong` khỏi `ModelState` nếu không có file ảnh mới
+                ModelState.Remove("AnhHangPhong");
             }
 
-            // Nếu ModelState không hợp lệ
-            return Json(new { success = false, message = "Dữ liệu không hợp lệ." });
+            if (!ModelState.IsValid)
+            {
+                var errors = ModelState.Values.SelectMany(v => v.Errors)
+                                              .Select(e => e.ErrorMessage)
+                                              .ToList();
+                return Json(new { success = false, message = "Dữ liệu không hợp lệ.", errors = errors });
+            }
+
+            try
+            {
+                dbContext.Update(existingHangPhong);
+                await dbContext.SaveChangesAsync();
+                return Json(new { success = true, message = "Cập nhật thành công!" });
+            }
+            catch (Exception ex)
+            {
+                return Json(new { success = false, message = "Lỗi khi lưu dữ liệu.", error = ex.Message });
+            }
         }
 
         [HttpGet]
