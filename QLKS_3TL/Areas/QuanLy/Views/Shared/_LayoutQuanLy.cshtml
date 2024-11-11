@@ -89,7 +89,7 @@
                     </a>
                 </li>
                 <li class="sidebar-item">
-                    <a  class="sidebar-link">
+                    <a asp-controller="QuanLyTaiKhoan" asp-action="Index" class="sidebar-link">
                         <i class="lni lni-cog"></i>
                         <span>Quản lý tài khoản</span>
                     </a>
@@ -117,9 +117,12 @@
         var createProductUrl = '@Url.Action("Create", "QuanLyHangPhong", new { area = "QuanLy" })';
                 console.log(createProductUrl)
     </script>
+
+    <!--Lấy file js-->
+    <script src="~/js/script.js"></script>
     <script src="~/js/NhanVienJs.js"></script>
     <script src="~/js/HangPhongJS.js"></script>
-    <script src="~/js/script.js"></script>
+    <script src="~/js/TaiKhoanJs.js"></script>
     <script>
        var getProductUrl = '@Url.Action("Edit", "QuanLyHangPhong", new { area = "QuanLy" })';
     </script>

@@ -157,6 +157,10 @@ namespace QLKS_3TL.Areas.QuanLy.Controllers
                     return Json(new { success = false, message = "Không tìm thấy nhân viên." });
                 }
 
+                // Kiểm tra mã nhân viên có trong bảng TaiKhoan hay không
+                var hasAccount = await db.TaiKhoans.AnyAsync(tk => tk.MaNhanVien == maNhanVien);
+                if (hasAccount) { return Json(new { success = false, message = "Bạn cần xóa tài khoản của nhân viên trước." }); }
+
                 db.NhanViens.Remove(nhanVien);
                 await db.SaveChangesAsync();
 
@@ -164,7 +168,7 @@ namespace QLKS_3TL.Areas.QuanLy.Controllers
             }
             catch (Exception ex)
             {
-                return Json(new { success = false, message = "Lỗi khi xóa nhân viên: " + ex.Message });
+                return Json(new { success = false, message = ex.Message });
             }
         }
 

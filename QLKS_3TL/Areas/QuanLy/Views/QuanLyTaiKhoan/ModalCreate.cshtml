@@ -1,0 +1,57 @@
+﻿<div class="modal fade" id="themTaiKhoan" tabindex="-1" aria-labelledby="them" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content" style="border-radius: 20px;">
+            <div class="modal-header d-flex justify-content-center">
+                <div>
+                    <h5 style="font-weight: bolder;">Thêm tài khoản</h5>
+                </div>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body pb-0">
+                <div class="container">
+                    <div class="row">
+                        <div class="col-6">
+                            <label for="" class="ms-1 mb-1 label-modal">Tài khoản</label>
+                            <select class="form-select" id="MaNhanVienSelect" required>
+                                <option value="">Chọn mã nhân viên</option>
+                                <option value="" id="maNhanVienDuocChon"></option>
+                            </select>
+                            <span id="errorMaNhanVienSelect" class="text-danger"></span> <!-- Thông báo lỗi cho mã nhân viên-->
+                        </div>
+                        <div class="col-6">
+                            <label for="" class="ms-1 mb-1 label-modal">Mật khẩu</label>
+                            <input type="password" id="passwordTaiKhoan" class="form-control" placeholder="Nhập mật khẩu"
+                                   aria-label="Username" aria-describedby="addon-wrapping">
+                            <span id="errorPasswordTaiKhoan" class="text-danger"></span> <!-- Thông báo lỗi cho mật khẩu -->
+                        </div>
+                    </div>
+                    <div class="row mt-2">
+                        <div class="col-6">
+                            <label class="ms-1 mb-1 label-modal">Họ và Tên:</label>
+                            <div>
+                                <h6 class="ms-2" id="HoTenNhanVien">Chưa chọn</h6>
+                            </div>
+                        </div>
+                        <div class="col-6">
+                            <label class="ms-1 mb-1 label-modal">Chức Vụ:</label>
+                            <div>
+                                <h6 class="ms-1" id="ChucVuNhanVien">Chưa chọn</h6>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- footer -->
+            <div class="container">
+                <div class="row" style="justify-content: flex-end;">
+                    <div class="col-3 m-2 d-flex justify-content-end">
+                        <button type="button" class="btn btn-success" id="addAccountBtn" onclick="checkDataTaikhoan()"
+                                style="font-size: small;">
+                            Thêm tài khoản
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

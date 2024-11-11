@@ -1,4 +1,4 @@
-﻿
+﻿@model IEnumerable<QLKS_3TL.Areas.QuanLy.Models.ThongTinTaiKhoan>
 @{
     ViewData["Title"] = "Quản lý tài khoản";
 }
@@ -41,8 +41,7 @@
                         <input type="text" class="form-control input-border" placeholder="Thông tin tài khoản"
                             aria-label="Username" aria-describedby="basic-addon1" style="border: 0;">
                     </div>
-                    <button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#them"
-                        data-bs-dismiss="modal" style="width: 135px; font-size: small;">Thêm tài khoản</button>
+                    <button type="button" class="btn btn-success" id="btnThemTaiKhoan" style="width: 135px; font-size: small;">Thêm tài khoản</button>
                 </div>
 
                 <div class="row mt-2">
@@ -50,7 +49,7 @@
                         <table class="table">
                             <thead style="background: #0e2238;">
                                 <tr>
-                                    <th scope="col">#</th>
+                                    <th scope="col">STT</th>
                                     <th scope="col">Họ và tên</th>
                                     <th scope="col">Chức vụ</th>
                                     <th scope="col">Tài khoản</th>
@@ -58,20 +57,27 @@
                                     <th scope="col"></th>
                                 </tr>
                             </thead>
-                            <tbody>
-                                <tr></tr>
-                                <th scope="row">1</th>
-                                <td>Huỳnh Quốc Bảo</td>
-                                <td>Quản lý</td>
-                                <td>admin</td>
-                                <td>admin1234</td>
-                                <td class="d-flex  justify-content-end">
-                                    <button type="button" class="btn btn-warning me-2" data-bs-toggle="modal"
-                                        data-bs-target="#sua" data-bs-dismiss="modal"
-                                        style="font-size: small;">Sửa</button>
-                                    <button type="button" class="btn btn-danger" style="font-size: small;">Xóa</button>
-                                </td>
-                                </tr>
+                            <tbody id="bodyThongTinTaiKhoan">
+                                @{
+                                    var soThuTu = 1;
+                                }
+                                @foreach(var i in Model)
+                                {
+                                    <tr>
+                                        <th scope="row">@soThuTu</th>
+                                        <td>@i.HoTen</td>
+                                        <td>@i.ChucVu</td>
+                                        <td>@i.TaiKhoan</td>
+                                        <td>@i.MatKhau</td>
+                                        <td class="d-flex justify-content-around">
+                                            <button type="button" class="btn btn-danger" onclick="DeleteTaiKhoan('@i.MaNhanVien')" style="font-size: small;">
+                                                Xóa
+                                            </button>
+                                        </td>
+                                    </tr>
+                                    soThuTu++;
+                                }
+                               
                             </tbody>
                         </table>
                     </div>
@@ -81,63 +87,7 @@
     </main>
 
     <!-- Modal thêm -->
-    <div class="modal fade" id="them" tabindex="-1" aria-labelledby="them" aria-hidden="true">
-        <div class="modal-dialog modal-lg">
-            <div class="modal-content" style="border-radius: 20px;">
-                <div class="modal-header d-flex justify-content-center">
-                    <div>
-                        <h5 style="font-weight: bolder;">Thêm tài khoản</h5>
-                    </div>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body pb-0">
-                    <div class="container">
-                        <div class="row">
-                            <div class="col-6">
-                                <label for="" class="ms-1 mb-1 label-modal">Tài khoản</label>
-                                <select class="form-select" id="position" required>
-                                    <option value="">Chọn mã nhân viên</option>
-                                    <option value="Quản lý">QL01</option>
-                                    <option value="Bảo vệ">BV01</option>
-                                    <option value="Lễ tân">LT01</option>
-                                </select>
-                                <span id="errorPosition" class="text-danger"></span> <!-- Thông báo lỗi cho chức vụ -->
-                            </div>
-                            <div class="col-6">
-                                <label for="" class="ms-1 mb-1 label-modal">Mật khẩu</label>
-                                <input type="password" id="password" class="form-control" placeholder=""
-                                    aria-label="Username" aria-describedby="addon-wrapping">
-                                <span id="errorPassword" class="text-danger"></span> <!-- Thông báo lỗi cho mật khẩu -->
-                            </div>
-                        </div>
-                        <div class="row mt-2">
-                            <div class="col-6">
-                                <label for="" class="ms-1 mb-1 label-modal">Họ và Tên:</label>
-                                <div>
-                                    <h6 class="ms-2">Châu Thanh Hoàng Nhân</h6>
-                                </div>
-                            </div>
-                            <div class="col-6">
-                                <label for="" class="ms-1 mb-1 label-modal">Chức Vụ:</label>
-                                <div>
-                                    <h6 class="ms-1">Quản Lý</h6>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <!-- footer -->
-                <div class="container">
-                    <div class="row" style="justify-content: flex-end;">
-                        <div class="col-3 m-2 d-flex justify-content-end">
-                            <button type="button" class="btn btn-success" id="addAccountBtn"
-                                style="font-size: small;">Thêm tài khoản</button>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
+    @await Html.PartialAsync("ModalCreate")
 
      <!-- Modal doi mk -->
      <div class="modal fade" id="doimk" tabindex="-1" aria-labelledby="moimk" aria-hidden="true">
@@ -188,166 +138,8 @@
         </div>
     </div>
 
-    <!-- Modal sửa -->
-    <div class="modal fade" id="sua" tabindex="-1" aria-labelledby="sua" aria-hidden="true">
-        <div class="modal-dialog modal-lg">
-            <div class="modal-content" style="border-radius: 20px;">
-                <div class="modal-header d-flex justify-content-center">
-                    <div>
-                        <h5 style="font-weight: bolder;">Sửa thông tin tài khoản</h5>
-                    </div>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body pb-0">
-                    <div class="container">
-                        <div class="row">
-                            <div class="col-6">
-                                <label for="" class="ms-1 mb-1 label-modal">Tài khoản</label>
-                                <select class="form-select" id="Editposition" required>
-                                    <option value="">Chọn mã nhân viên</option>
-                                    <option value="Quản lý">QL01</option>
-                                    <option value="Bảo vệ">BV01</option>
-                                    <option value="Lễ tân">LT01</option>
-                                </select>
-                                <span id="EditerrorPosition" class="text-danger"></span>
-                                <!-- Thông báo lỗi cho chức vụ -->
-                            </div>
-                            <div class="col-6">
-                                <label for="" class="ms-1 mb-1 label-modal">Mật khẩu</label>
-                                <input type="password" id="Editpassword" class="form-control" placeholder=""
-                                    aria-label="Username" aria-describedby="addon-wrapping">
-                                <span id="EditerrorPassword" class="text-danger"></span>
-                                <!-- Thông báo lỗi cho mật khẩu -->
-                            </div>
-                        </div>
-                        <div class="row mt-2">
-                            <div class="col-6">
-                                <label for="" class="ms-1 mb-1 label-modal">Họ và Tên:</label>
-                                <div>
-                                    <h6 class="ms-2">Châu Thanh Hoàng Nhân</h6>
-                                </div>
-                            </div>
-                            <div class="col-6">
-                                <label for="" class="ms-1 mb-1 label-modal">Chức Vụ:</label>
-                                <div>
-                                    <h6 class="ms-1">Quản Lý</h6>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <!-- footer -->
-                <div class="container">
-                    <div class="row" style="justify-content: flex-end;">
-                        <div class="col-3 m-2 d-flex justify-content-end">
-                            <button type="button" class="btn btn-success" id="Edit" style="font-size: small;">Đồng
-                                ý</button>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <!-- javascript nút thêm -->
-    <script>
-        document.getElementById('addAccountBtn').addEventListener('click', function () {
-            // Lấy giá trị từ các trường nhập liệu
-            const position = document.getElementById('position');
-            const passwordInput = document.getElementById('password');
-            const password = passwordInput.value.trim(); // Loại bỏ khoảng trắng
-
-            // Xóa thông báo lỗi trước đó (nếu có)
-            document.getElementById('errorPosition').innerText = '';
-            document.getElementById('errorPassword').innerText = '';
-
-            let hasError = false; // Biến để kiểm tra có lỗi hay không
-
-            // Biểu thức chính quy để kiểm tra ký tự đặc biệt
-            const specialCharRegex = /[!#$%^&*(),.?":{}|<>]/g;
-
-            // Kiểm tra chức vụ
-            if (position.value.trim() === '') {
-                document.getElementById('errorPosition').innerText = 'Vui lòng chọn chức vụ.';
-                hasError = true;
-            }
-
-            // Kiểm tra mật khẩu
-            if (password === '') {
-                document.getElementById('errorPassword').innerText = 'Vui lòng nhập mật khẩu.';
-                hasError = true;
-            } else if (password.length < 6) {
-                document.getElementById('errorPassword').innerText = 'Mật khẩu phải có ít nhất 6 ký tự.';
-                hasError = true;
-            } else if (specialCharRegex.test(password)) {
-                document.getElementById('errorPassword').innerText = 'Mật khẩu không được chứa ký tự đặc biệt.';
-                hasError = true;
-            }
-
-            // Nếu không có lỗi, tiếp tục xử lý thêm tài khoản
-            if (!hasError) {
-                alert("Thêm tài khoản thành công");
-                document.getElementById('position').value = '';
-                document.getElementById('password').value = '';
-            }
-        });
-
-        // Xóa khoảng trắng khi nhập vào trường mật khẩu
-        document.getElementById('password').addEventListener('input', function () {
-            this.value = this.value.replace(/^\s+|\s+$/g, '');
-        });
-    </script>
-    <!--Javascipt nút sửa  -->
-    <script>
-        document.getElementById('Edit').addEventListener('click', function () {
-            // Lấy giá trị từ các trường nhập liệu
-            const position = document.getElementById('Editposition');
-            const passwordInput = document.getElementById('Editpassword');
-            const password = passwordInput.value.trim(); // Loại bỏ khoảng trắng
-
-            // Xóa thông báo lỗi trước đó (nếu có)
-            document.getElementById('EditerrorPosition').innerText = '';
-            document.getElementById('EditerrorPassword').innerText = '';
-
-            let hasError = false; // Biến để kiểm tra có lỗi hay không
-
-            // Biểu thức chính quy để kiểm tra ký tự đặc biệt
-            const specialCharRegex = /[!#$%^&*(),.?":{}|<>]/g;
-
-            // Kiểm tra chức vụ
-            if (position.value.trim() === '') {
-                document.getElementById('EditerrorPosition').innerText = 'Vui lòng chọn chức vụ.';
-                hasError = true;
-            }
-
-            // Kiểm tra mật khẩu
-            if (password === '') {
-                document.getElementById('EditerrorPassword').innerText = 'Vui lòng nhập mật khẩu.';
-                hasError = true;
-            } else if (password.length < 6) {
-                document.getElementById('EditerrorPassword').innerText = 'Mật khẩu phải có ít nhất 6 ký tự.';
-                hasError = true;
-            } else if (specialCharRegex.test(password)) {
-                document.getElementById('EditerrorPassword').innerText = 'Mật khẩu không được chứa ký tự đặc biệt.';
-                hasError = true;
-            }
-
-            // Nếu không có lỗi, tiếp tục xử lý thêm tài khoản
-            if (!hasError) {
-                alert("Sửa thông tin tài khoản thành công");
-                document.getElementById('Editposition').value = '';
-                document.getElementById('Editpassword').value = '';
-            }
-        });
-
-        // Xóa khoảng trắng khi nhập vào trường mật khẩu
-        document.getElementById('password').addEventListener('input', function () {
-            this.value = this.value.replace(/^\s+|\s+$/g, '');
-        });
-    </script>
-
      <!-- javascrit bắt lỗi đổi mk -->
-     <script>
+    <!--<script>
         // Loại bỏ khoảng trắng trong khi người dùng nhập vào các ô mật khẩu
         document.getElementById('mkHienTai').addEventListener('input', function () {
             this.value = this.value.replace(/\s/g, '');
@@ -408,7 +200,7 @@
             }
         });
 
-    </script>
+    </script>-->
 
 </div>
 
