@@ -9,7 +9,9 @@ public partial class Phong
 
     public string? MaHangPhong { get; set; }
 
-    public virtual HangPhong? MaHangPhongNavigation { get; set; }
+
+    public virtual HangPhong? HangPhong { get; set; }
+
 
     public virtual ICollection<ThongTinDatPhong> ThongTinDatPhongs { get; set; } = new List<ThongTinDatPhong>();
 }

@@ -177,22 +177,15 @@ public partial class Qlks3tlContext : DbContext
 
         modelBuilder.Entity<Phong>(entity =>
         {
-            entity.HasKey(e => e.MaPhong).HasName("PK__ThongTin__20BD5E5B9EAAFBE2");
-
+            entity.HasKey(e => e.MaPhong);
             entity.ToTable("Phong");
 
-            entity.Property(e => e.MaPhong)
-                .HasMaxLength(50)
-                .IsUnicode(false);
-            entity.Property(e => e.MaHangPhong)
-                .HasMaxLength(50)
-                .IsUnicode(false);
-
-            entity.HasOne(d => d.MaHangPhongNavigation).WithMany(p => p.Phongs)
-                .HasForeignKey(d => d.MaHangPhong)
-                .HasConstraintName("FK__ThongTinP__MaHan__3F466844");
+            // Quan hệ giữa Phong và HangPhong
+            entity.HasOne(d => d.HangPhong)
+                  .WithMany(p => p.Phongs)  // Nhiều phòng thuộc một hạng phòng
+                  .HasForeignKey(d => d.MaHangPhong)
+                  .HasConstraintName("FK_Phongs_HangPhong");
         });
-
         modelBuilder.Entity<TaiKhoan>(entity =>
         {
             entity.HasKey(e => e.MaNhanVien).HasName("PK__TaiKhoan__77B2CA47BC4070FB");

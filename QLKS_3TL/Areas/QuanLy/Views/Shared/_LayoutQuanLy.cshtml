@@ -57,7 +57,7 @@
                             <a asp-controller="QuanLyHangPhong" asp-action="Index" class="sidebar-link" onclick="loadContent('HangPhong.html')">Hạng phòng</a>
                         </li>
                         <li class="sidebar-item">
-                            <a  class="sidebar-link">Phòng</a>
+                            <a asp-controller="QuanLyPhong" asp-action="Index" class="sidebar-link">Phòng</a>
                         </li>
                     </ul>
                 </li>
@@ -131,6 +131,22 @@
     </script>
     <script>
         var XoaProductUrl = '@Url.Action("Delete", "QuanLyHangPhong", new { area = "QuanLy" })';
+    </script>
+    <script>
+        var load = '@Url.Action("LoadHangPhongs", "QuanLyHangPhong", new { area = "QuanLy" })';
+    </script>
+    <script>
+        var LoadMahangPhong = '@Url.Action("LoadMaHangPhong", "QuanLyPhong", new { area = "QuanLy" })';
+    </script>
+    <script>
+        var CreateMahangPhong = '@Url.Action("Create", "QuanLyPhong", new { area = "QuanLy" })';
+    </script>
+    <script>
+        var loadphong = '@Url.Action("LoadPhong", "QuanLyPhong", new { area = "QuanLy" })';
+    </script>
+    <script>
+        var dlPhong = '@Url.Action("Delete", "QuanLyPhong", new { area = "QuanLy" })';
+        console.log(dlPhong);
     </script>
 </body>
 </html>

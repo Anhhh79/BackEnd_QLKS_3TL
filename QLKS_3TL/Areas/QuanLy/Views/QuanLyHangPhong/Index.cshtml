@@ -37,7 +37,7 @@
                     <div class="input-group d-flex align-items-center border border-dark rounded"
                          style="width: 300px;padding: 0;">
                         <i class="fa-solid fa-magnifying-glass fa-1x ms-2 "></i>
-                        <input type="text" class="form-control input-border" placeholder="Thông tin hóa đơn"
+                        <input type="text" id="searchInput" class="form-control input-border" placeholder="Thông tin phòng"
                                aria-label="Username" aria-describedby="basic-addon1" style="border: 0;">
                     </div>
                     <button type="button" class="btn btn-success" id="createProductBtn"
@@ -163,23 +163,23 @@
             <div class="modal-body">
                 <div class="container">
                     <div class="row">
-                        <div class="col-2">
+                        <div class="col-5">
                             <img id="modalRoomImage" src="" alt="Room Image" class="img-fluid">
                             <h5 class="text-center mt-2 ms-2" style="font-weight: 600;" id="modalRoomName"></h5>
                         </div>
-                        <div class="col-10">
-                            <div class="container ms-3">
+                        <div class="col-7 px-0">
+                            <div class="container">
                                 <div class="row">
                                     <h4 style="font-weight: 600;" id="modalRoomName"></h4>
                                 </div>
                                 <div class="row mt-2">
-                                    <div class="col-8">
+                                    <div class="col-6">
                                         <h6>
                                             <span style="font-weight: 600;">Mã hạng phòng:</span>
                                             <span id="modalRoomCode"></span>
                                         </h6>
                                     </div>
-                                    <div class="col-4">
+                                    <div class="col-6">
                                         <h6>
                                             <span style="font-weight: 600;">Số giường:</span>
                                             <span id="modalRoomBeds"></span>
@@ -187,13 +187,13 @@
                                     </div>
                                 </div>
                                 <div class="row mt-2">
-                                    <div class="col-8">
+                                    <div class="col-6">
                                         <h6>
                                             <span style="font-weight: 600;">Diện tích:</span>
                                             <span id="modalRoomArea"></span>
                                         </h6>
                                     </div>
-                                    <div class="col-4">
+                                    <div class="col-6">
                                         <h6>
                                             <span style="font-weight: 600;">Giá:</span>
                                             <span id="modalRoomPrice"></span>
