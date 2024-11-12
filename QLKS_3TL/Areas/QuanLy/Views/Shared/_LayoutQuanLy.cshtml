@@ -77,13 +77,13 @@
                     </ul>
                 </li>
                 <li class="sidebar-item">
-                    <a  class="sidebar-link" >
+                    <a   class="sidebar-link" >
                         <i class="lni lni-layout"></i>
                         <span>Thống kê doanh thu</span>
                     </a>
                 </li>
                 <li class="sidebar-item">
-                    <a  class="sidebar-link">
+                    <a asp-controller="QuanLyKhachHang" asp-action="Index" class="sidebar-link">
                         <i class="lni lni-popup"></i>
                         <span>Quản lý khách hàng</span>
                     </a>
@@ -124,6 +124,8 @@
     <script src="~/js/HangPhongJS.js"></script>
     <script src="~/js/TaiKhoanJs.js"></script>
     <script src="~/js/Phong.js"></script>
+    <script src="~/js/KhachHangJS.js"></script>
+
     <script>
        var getProductUrl = '@Url.Action("Edit", "QuanLyHangPhong", new { area = "QuanLy" })';
     </script>
