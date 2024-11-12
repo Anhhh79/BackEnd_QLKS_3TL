@@ -6,6 +6,19 @@
 
     //load ma nhân viên
     LoadMaNhanVienSelect();
+
+    //tìm kiếm tài khoản 
+    $('#timKiemTaiKhoan').on('input', function () {
+        var query = $(this).val().toLowerCase(); // Lấy giá trị tìm kiếm và chuyển thành chữ thường
+        $('#bodyThongTinTaiKhoan tr').each(function () {
+            var rowText = $(this).text().toLowerCase(); // Lấy toàn bộ văn bản của một dòng
+            if (rowText.includes(query)) {  // Nếu dòng chứa chuỗi tìm kiếm
+                $(this).show();  // Hiển thị dòng
+            } else {
+                $(this).hide();  // Ẩn dòng
+            }
+        });
+    });
 });
 
 //load thông tin tài khoản

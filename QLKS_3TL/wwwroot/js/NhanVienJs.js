@@ -4,6 +4,19 @@
         $('#ModalThemNhanVien').modal('show');
     });
 
+    //Tìm kiếm nhân viên
+    $('#timKiemNhanVien').on('input', function () {
+        var query = $(this).val().toLowerCase(); // Lấy giá trị tìm kiếm và chuyển thành chữ thường
+        $('#tblBodyNhanVien tr').each(function () {
+            var rowText = $(this).text().toLowerCase(); // Lấy toàn bộ văn bản của một dòng
+            if (rowText.includes(query)) {  // Nếu dòng chứa chuỗi tìm kiếm
+                $(this).show();  // Hiển thị dòng
+            } else {
+                $(this).hide();  // Ẩn dòng
+            }
+        });
+    });
+
     // Xóa khoảng trắng cho các trường khi thêm
     $('#cccdNhanVien').on('input', function () {
         $(this).val($(this).val().replace(/^\s+|\s+$/g, ''));
@@ -486,7 +499,6 @@ function CheckDataEditNhanVien() {
     return isValid; // Ngăn form submit nếu có lỗi
 }
 
-
 //Xóa thông tin nhân viên
 function DeleteNhanVien(maNhanVien) {
     if (!confirm("Bạn có chắc chắn muốn xóa nhân viên có mã: " + maNhanVien + "?.")) {
@@ -513,4 +525,5 @@ function DeleteNhanVien(maNhanVien) {
         }
     });
 }
+
 
