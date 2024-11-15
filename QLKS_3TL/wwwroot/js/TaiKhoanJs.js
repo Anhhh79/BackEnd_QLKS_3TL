@@ -139,7 +139,7 @@ function checkDataTaikhoan() {
 function InsertTaikhoan() {
     var maNhanVien = $('#MaNhanVienSelect').val();
     var matKhau = $('#passwordTaiKhoan').val().trim();
-    var chucVu = $('#ChucVuNhanVien').val();
+    var chucVu = $('#ChucVuNhanVien').text();
 
     // Xác định quyền truy cập dựa trên chức vụ
     var quyenTruyCapInput;
