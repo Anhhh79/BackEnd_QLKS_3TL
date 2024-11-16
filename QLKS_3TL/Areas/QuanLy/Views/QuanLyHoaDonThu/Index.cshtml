@@ -1,4 +1,5 @@
-﻿
+﻿@model IEnumerable<QLKS_3TL.Areas.QuanLy.Models.ThongTinHoaDonThu>
+
 @{
     ViewData["Title"] = "Hóa đơn thu";
 }
@@ -12,7 +13,7 @@
                 </li>
                 <li class="nav-item dropdown">
                     <a href="#" data-bs-toggle="dropdown" class="nav-icon pe-md-0">
-                        <img src="images/account.png" class="avatar img-fluid" alt="">
+                        <img src="~/images/account.png" class="avatar img-fluid" alt="">
                     </a>
                     <div class="dropdown-menu dropdown-menu-end rounded" style="width: 180px;">
                         <div class="row">
@@ -49,7 +50,7 @@
                         <table class="table">
                             <thead style="background: #0e2238;">
                                 <tr>
-                                    <th scope="col">#</th>
+                                    <th scope="col">STT</th>
                                     <th scope="col">Mã hóa đơn</th>
                                     <th scope="col">Người xuất hóa đơn</th>
                                     <th scope="col">Tên khách hàng</th>
@@ -59,21 +60,29 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                <tr></tr>
-                            <th scope="row">1</th>
-                            <td>HT01</td>
-                            <td>Nguyễn Văn A</td>
-                            <td>Nguyễn Văn B</td>
-                            <td>9/10/2024 - 12:14</td>
-                            <td>1.200.000 VND</td>
-                            <td class="d-flex  justify-content-end">
-                                <a class="cusor me-2 mt-1" data-bs-toggle="modal" data-bs-target="#chitiet"
-                                   style="color: darkblue; font-style: italic; text-decoration: underline;">
-                                    Chi
-                                    tiết
-                                </a>
-                            </td>
-                            </tr>
+                                @{
+                                    int soThuTu = 1;
+                                }
+                                @foreach (var i in Model)
+                                {
+                                    <tr>
+                                        <th scope="row">@soThuTu</th>
+                                        <td>@i.MaHoaDonThu</td>
+                                        <td>@i.TenNhanVien</td>
+                                        <td>@i.TenKhachHang</td>
+                                        <td>@i.ThoiGian</td>
+                                        <td>@i.TongGia VND</td>
+                                        <td class="d-flex  justify-content-end">
+                                            <a class="cusor me-2 mt-1" data-bs-toggle="modal" data-bs-target="#chitiet"
+                                               style="color: darkblue; font-style: italic; text-decoration: underline;">
+                                                Chi
+                                                tiết
+                                            </a>
+                                        </td>
+                                    </tr>
+                                    soThuTu++;
+                                }
+                                
                             </tbody>
                         </table>
                     </div>
@@ -133,61 +142,7 @@
         </div>
     </div>
     <!-- Modal chi tiết -->
-    <div class="modal fade" id="chitiet" tabindex="-1" aria-labelledby="chitiet" aria-hidden="true">
-        <div class="modal-dialog modal-lg">
-            <div class="modal-content" style="border-radius: 20px;">
-                <div class="modal-header d-flex justify-content-center">
-                    <div>
-                        <h5 style="font-weight: bolder;">Thông tin hóa đơn</h5>
-                    </div>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body">
-                    <div class="container">
-                        <div class="row">
-                            <div class="col-12 px-0">
-                                <div class="container">
-                                    <div class="row mt-2">
-                                        <div class="col-4">
-                                            <h6> <span style="font-weight: 600;">Mã hóa đơn: </span>HT01</h6>
-                                        </div>
-                                        <div class="col-4">
-                                            <h6><span style="font-weight: 600;">Loại hóa đơn:</span> Hóa đơn thu</h6>
-                                        </div>
-                                        <div class="col-4">
-                                            <h6><span style="font-weight: 600;">Mã phòng:</span> P01</h6>
-                                        </div>
-                                    </div>
-                                    <div class="row mt-2">
-                                        <div class="col-4">
-                                            <h6> <span style="font-weight: 600;">Người xuất: </span>Nguyễn Văn A</h6>
-                                        </div>
-                                        <div class="col-4">
-                                            <h6><span style="font-weight: 600;">Khách hàng:</span> Nguyễn Văn B</h6>
-                                        </div>
-                                        <div class="col-4">
-                                            <h6><span style="font-weight: 600;">Thời gian:</span> 9/10/2024 - 12:14</h6>
-                                        </div>
-                                    </div>
-                                    <div class="row mt-2">
-                                        <div class="col-4">
-                                            <h6> <span style="font-weight: 600;">Ngày nhận: </span> 7/10/2024</h6>
-                                        </div>
-                                        <div class="col-4">
-                                            <h6><span style="font-weight: 600;">Ngày trả:</span> 8/10/2024</h6>
-                                        </div>
-                                        <div class="col-4">
-                                            <h6><span style="font-weight: 600;">Tổng giá trị:</span> 1.200.000 VND</h6>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
+    @await Html.PartialAsync("ModalChiTiet")
 
     <!-- javascrit bắt lỗi đổi mk -->
     <script>

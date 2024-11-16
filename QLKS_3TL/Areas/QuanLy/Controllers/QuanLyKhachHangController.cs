@@ -14,7 +14,6 @@ namespace QLKS_3TL.Areas.QuanLy.Controllers
         public QuanLyKhachHangController(Qlks3tlContext context) => db = context;
 
         //Hàm hiển thị danh sách khách hàng
-        [HttpGet]
         public async Task<IActionResult> Index()
         {
             try
