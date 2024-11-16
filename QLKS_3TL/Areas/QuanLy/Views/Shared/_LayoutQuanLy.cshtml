@@ -24,7 +24,7 @@
     <link href="https://cdn.lineicons.com/4.0/lineicons.css" rel="stylesheet" />
 
     <!-- Custom CSS -->
-    <link rel="stylesheet" href="~/css/style.css">
+    <link rel="stylesheet" href="~/css/style.css"> 
 </head>
 <body>
     <div class="wrapper">
@@ -100,7 +100,6 @@
                 <a class="sidebar-link"><i class="lni lni-exit"></i><span>Đổi mật khẩu</span></a>
             </div>
         </div>
-
         @RenderBody()
     </div>
 
@@ -148,7 +147,7 @@
         var loadphong = '@Url.Action("LoadPhong", "QuanLyPhong", new { area = "QuanLy" })';
     </script>
     <script>
-        var dlPhong = '@Url.Action("Delete", "QuanLyPhong", new { area = "QuanLy" })';
+        var dlPhong = '@Url.Action("Xoa", "QuanLyPhong", new { area = "QuanLy" })';
         console.log(dlPhong);
     </script>
 </body>

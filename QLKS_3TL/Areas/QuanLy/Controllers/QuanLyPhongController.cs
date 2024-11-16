@@ -87,17 +87,41 @@ namespace QLKS_3TL.Areas.QuanLy.Controllers
             return Json(new { success = true, message = "Thêm phòng thành công!" });
         }
 
+        //[HttpPost]
+        //public JsonResult Delete(string maPhong)
+        //{
+        //    var item = dbContext.Phongs.FirstOrDefault(h => h.MaPhong == maPhong);
+        //    if (item != null)
+        //    {
+        //        dbContext.Phongs.Remove(item);
+        //        dbContext.SaveChanges();
+        //        return Json(new { success = true, message = "Xóa thành công" });
+        //    }
+        //    return Json(new { success = false, message = "Không tìm thấy mục cần xóa" });
+        //}
         [HttpPost]
-        public JsonResult Delete(string maPhong)
+        public JsonResult Xoa(string maPhong)
         {
             var item = dbContext.Phongs.FirstOrDefault(h => h.MaPhong == maPhong);
-            if (item != null)
+
+            if (item == null)
+            {
+                return Json(new { success = false, message = "Không tìm thấy mục cần xóa" });
+            }
+
+            try
             {
                 dbContext.Phongs.Remove(item);
                 dbContext.SaveChanges();
                 return Json(new { success = true, message = "Xóa thành công" });
             }
-            return Json(new { success = false, message = "Không tìm thấy mục cần xóa" });
+            catch (Exception ex)
+            {
+                // Log lỗi nếu cần, ví dụ: log.Error(ex);
+
+                return Json(new { success = false, message = "Không thể xóa phòng này vì vẫn còn dữ liệu liên quan ở bảng khác" });
+            }
         }
+
     }
 }

@@ -445,10 +445,6 @@ $(document).on('click', '.delete-btn', function () {
                 } else {
                     alert("Có lỗi xảy ra: " + response.message);
                 }
-            },
-            error: function (jqXHR, textStatus, errorThrown) {
-                console.error("Chi tiết lỗi: ", jqXHR.responseText);
-                alert('Lỗi: ' + errorThrown);
             }
         });
     }
