@@ -40,21 +40,37 @@ namespace QLKS_3TL.Areas.Admin.Controllers
                     if (taiKhoan != null)
                     {
                         _logger.LogInformation("Login successful for user: {TaiKhoan}", model.TaiKhoan);
-                        // Lưu thông tin vào session
-                        HttpContext.Session.SetString("TaiKhoan", model.TaiKhoan);
 
-                        // Kiểm tra quyền truy cập và chuyển hướng
-                        if (taiKhoan.QuyenTruyCap == "3")
+                        // Lấy thông tin nhân viên tương ứng
+                        var nhanVien = await dbContext.NhanViens
+                            .FirstOrDefaultAsync(nv => nv.MaNhanVien == taiKhoan.MaNhanVien);
+                        if (nhanVien != null)
                         {
-                            return RedirectToAction("Index", "Home", new { area = "QuanLy" });
-                        }
-                        else if (taiKhoan.QuyenTruyCap == "2")
-                        {
-                            return RedirectToAction("PageForRole2", "Home");
+                            // Lưu thông tin vào session (ví dụ: tên, ảnh đại diện)
+                            HttpContext.Session.SetString("TaiKhoan", model.TaiKhoan);
+                            HttpContext.Session.SetString("HoTen", nhanVien.HoTen ?? "Unknown");
+                            HttpContext.Session.SetString("AnhNhanVien", nhanVien.AnhNhanVien ?? "/images/default-avatar.png");
+                            HttpContext.Session.SetString("MaNhanVien", nhanVien.MaNhanVien ?? "Unknown");
+
+                            // Kiểm tra quyền truy cập và chuyển hướng
+                            if (taiKhoan.QuyenTruyCap == "1")
+                            {
+                                return RedirectToAction("Index", "QuanLyNhanVien", new { area = "QuanLy" });
+                            }
+                            else if (taiKhoan.QuyenTruyCap == "2")
+                            {
+                                return RedirectToAction("PageForRole2", "Home");
+                                // dẫn đường link đến lễ tân
+                            }
+                            else
+                            {
+                                return RedirectToAction("Index", "Home");
+                            }
                         }
                         else
                         {
-                            return RedirectToAction("Index", "Home");
+                            _logger.LogWarning("User not found in NhanVien table for account: {TaiKhoan}", model.TaiKhoan);
+                            ModelState.AddModelError("", "Thông tin người dùng không hợp lệ.");
                         }
                     }
                     else
@@ -77,7 +93,6 @@ namespace QLKS_3TL.Areas.Admin.Controllers
                     _logger.LogWarning(error.ErrorMessage);
                 }
             }
-
             return View(model);
         }
 

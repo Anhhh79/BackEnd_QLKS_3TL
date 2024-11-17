@@ -10,12 +10,14 @@ builder.Services.AddSession(options =>
     options.Cookie.HttpOnly = true;
     options.Cookie.IsEssential = true;
 });
-
 // Add services to the container.
 builder.Services.AddControllersWithViews();
 //Đăng ký chuỗi kết nối CSDL
 builder.Services.AddDbContext<Qlks3tlContext>(options => { options.UseSqlServer(builder.Configuration.GetConnectionString("Conn3TL")); });
-    var app = builder.Build();
+
+builder.Services.AddHttpContextAccessor();
+
+var app = builder.Build();
 
     // Configure the HTTP request pipeline.
 if (!app.Environment.IsDevelopment())
