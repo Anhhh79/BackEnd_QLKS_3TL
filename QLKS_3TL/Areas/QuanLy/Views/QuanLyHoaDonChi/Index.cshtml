@@ -1,0 +1,132 @@
+﻿@model IEnumerable<QLKS_3TL.Data.HoaDonChi>
+@{
+    ViewData["Title"] = "Hóa đơn chi";
+}
+
+<div class="main" id="content">
+    <nav class="navbar navbar-expand px-4 py-3">
+        <div class="navbar-collapse collapse">
+            <ul class="navbar-nav justify-content-between" style="width: 1380px;">
+                <li>
+                    <h2 style="font-weight: bolder;">Hóa đơn Chi</h2>
+                </li>
+                @await Html.PartialAsync("~/Areas/Admin/Views/DoiMatKhau/Index.cshtml")
+            </ul>
+        </div>
+    </nav>
+    <main class="content px-3 py-3">
+        <div class="container-fluid">
+            <div>
+
+                <div class="row justify-content-between mx-1 mb-4">
+                    <div class="input-group d-flex align-items-center border border-dark rounded"
+                         style="width: 300px;padding: 0;">
+                        <i class="fa-solid fa-magnifying-glass fa-1x ms-2 "></i>
+                        <input type="text" id="seachHoaDonChi" class="form-control input-border" placeholder="Thông tin hóa đơn"
+                               aria-label="Username" aria-describedby="basic-addon1" style="border: 0;">
+                    </div>
+                    <button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#hoadonchi"
+                            data-bs-dismiss="modal" style="width: 130px; font-size: small;">
+                        Lập hóa đơn
+                    </button>
+                </div>
+
+                <div class="row mt-2">
+                    <div class="col-12">
+                        <table class="table" id="hoaDonList">
+                            <thead style="background: #0e2238;">
+                                <tr>
+                                    <th scope="col">#</th>
+                                    <th scope="col">Mã hóa đơn</th>
+                                    <th scope="col">Người xuất hóa đơn</th>
+                                    <th scope="col">Tên mặt hàng</th>
+                                    <th scope="col">Số lượng</th>
+                                    <th scope="col">Giá</th>
+                                    <th scope="col">Tổng giá trị</th>
+                                    <th scope="col" class="text-center">Thời gian</th>
+                                </tr>
+                            </thead>
+                            <tbody id="tblHoaDonChi">
+                                @{
+                                    int stt = 1;
+                                }
+                                @foreach (var item in Model)
+                                {
+                                    <tr>
+                                        <th scope="row">@stt</th>
+                                        <td>@item.MaHoaDonChi</td>
+                                        <td>@item.MaNhanVien</td>
+                                        <td>@item.TenMatHang</td>
+                                        <td>@item.SoLuong</td>
+                                        <td>@item.GiaMatHang</td>
+                                        <td>@item.TongGia VND</td> <!-- Định dạng tiền tệ -->
+                                        <td class="text-center">@item.ThoiGian?.ToString("dd/MM/yyyy - hh:mm tt")</td>
+                                    </tr>
+                                    stt = stt + 1;
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Modal lập hóa đơn chi -->
+    <div class="modal fade" id="hoadonchi" tabindex="-1" aria-labelledby="them" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content" style="border-radius: 20px;">
+                <div class="modal-header d-flex justify-content-center">
+                    <div>
+                        <h5 style="font-weight: bolder;">Lập hóa đơn</h5>
+                    </div>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="container">
+                        <div class="row">
+                            <div class="col-6">
+                                <label for="tenMatHang" class="ms-1 mb-1 label-modal">Tên mặt hàng</label>
+                                <input type="text" id="tenMatHang" class="form-control" placeholder=""
+                                       aria-label="Tên mặt hàng" aria-describedby="addon-wrapping">
+                                <span id="errorTenMatHang" class="text-danger"></span> <!-- Thông báo lỗi -->
+                            </div>
+                            <div class="col-6">
+                                <label for="soLuong" class="ms-1 mb-1 label-modal">Số lượng</label>
+                                <input type="number" id="soLuong" class="form-control" placeholder=""
+                                       aria-label="Số lượng" aria-describedby="addon-wrapping">
+                                <span id="errorSoLuong" class="text-danger"></span> <!-- Thông báo lỗi -->
+                            </div>
+                        </div>
+                        <div class="row mt-3">
+                            <div class="col-6">
+                                <label for="gia" class="ms-1 mb-1 label-modal">Giá</label>
+                                <input type="number" id="giaMatHang" class="form-control" placeholder="" aria-label="Giá"
+                                       aria-describedby="addon-wrapping">
+                                <span id="errorGia" class="text-danger"></span> <!-- Thông báo lỗi -->
+                            </div>
+                            <div class="col-6">
+                                <label for="tongGiaTri" class="ms-1 mb-1 label-modal">Tổng giá trị:</label>
+                                <input type="text" id="tongGia" class="form-control" placeholder="" readonly
+                                       aria-label="Tổng giá trị" aria-describedby="addon-wrapping">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- footer -->
+                <div class="container my-2">
+                    <div class="row" style="justify-content: flex-end;">
+                        <div class="col-3 m-2 d-flex justify-content-end">
+                            <button type="button" id="Dongy" class="btn btn-success" style="font-size: small;">
+                                Đồng
+                                ý
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+

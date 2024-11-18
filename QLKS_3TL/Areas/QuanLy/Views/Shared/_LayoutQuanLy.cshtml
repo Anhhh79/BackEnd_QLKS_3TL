@@ -72,7 +72,7 @@
                             <a class="sidebar-link" asp-controller="QuanLyHoaDonThu" asp-action="Index">Hóa đơn thu</a>
                         </li>
                         <li class="sidebar-item">
-                            <a class="sidebar-link">Hóa đơn chi</a>
+                            <a class="sidebar-link" asp-controller="QuanLyHoaDonChi" asp-action="Index">Hóa đơn chi</a>
                         </li>
                     </ul>
                 </li>
@@ -124,6 +124,7 @@
     <script src="~/js/TaiKhoanJs.js"></script>
     <script src="~/js/Phong.js"></script>
     <script src="~/js/KhachHangJS.js"></script>
+    <script src="~/js/HoaDonChi.js"></script>
 
     <script>
        var getProductUrl = '@Url.Action("Edit", "QuanLyHangPhong", new { area = "QuanLy" })';
@@ -148,11 +149,9 @@
     </script>
     <script>
         var dlPhong = '@Url.Action("Xoa", "QuanLyPhong", new { area = "QuanLy" })';
-        console.log(dlPhong);
     </script>
     <script>
         var getmk = '@Url.Action("ChangePassword", "DoiMatKhau", new { area = "Admin" })';
-        console.log(getmk);
     </script>
 </body>
 </html>
