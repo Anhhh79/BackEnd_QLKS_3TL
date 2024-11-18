@@ -13,14 +13,13 @@
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
-    <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="8.0.6" />
+    <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="8.0.7" />
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Areas\KhachHang\Controllers\" />
+    <Folder Include="Areas\Admin\Data\" />
     <Folder Include="Areas\KhachHang\Data\" />
     <Folder Include="Areas\KhachHang\Models\" />
-    <Folder Include="Areas\KhachHang\Views\" />
     <Folder Include="Areas\LeTan\Controllers\" />
     <Folder Include="Areas\LeTan\Data\" />
     <Folder Include="Areas\LeTan\Models\" />

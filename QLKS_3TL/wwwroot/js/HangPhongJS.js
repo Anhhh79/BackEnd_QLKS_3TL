@@ -264,75 +264,6 @@ function resetErrors() {
     $('#EditerrorImage').text("");
 }
 
-
-
-// Hàm validate form trước khi gửi
-//function validateEditForm() {
-//    var isValid = true;
-
-//    // Lấy giá trị từ các trường
-//    var tenHangPhong = document.getElementById('EdittenHangPhong').value.trim();
-//    var gia = document.getElementById('Editgia').value.trim();
-//    var soGiuong = document.getElementById('EditsoGiuong').value.trim();
-//    var dienTich = document.getElementById('EditdienTich').value.trim();
-//    var image = document.getElementById('EditimageInput').value;
-//    var moTa = document.getElementById('EditmoTa').value.trim();
-
-//    var specialCharRegex = /[^a-zA-Z0-9\s]/g; // Biểu thức kiểm tra ký tự đặc biệt
-
-//    // Xóa thông báo lỗi cũ
-//    document.getElementById('EditerrorTenHangPhong').textContent = '';
-//    document.getElementById('EditerrorGia').textContent = '';
-//    document.getElementById('EditerrorSoGiuong').textContent = '';
-//    document.getElementById('EditerrorDienTich').textContent = '';
-//    document.getElementById('EditerrorImage').textContent = '';
-//    document.getElementById('EditerrorMoTa').textContent = '';
-
-//    // Kiểm tra "Tên hạng phòng"
-//    if (tenHangPhong === '') {
-//        document.getElementById('EditerrorTenHangPhong').textContent = 'Tên hạng phòng không được để trống';
-//        isValid = false;
-//    } else if (specialCharRegex.test(tenHangPhong)) {
-//        document.getElementById('EditerrorTenHangPhong').textContent = 'Tên hạng phòng không được chứa ký tự đặc biệt';
-//        isValid = false;
-//    }
-
-//    // Kiểm tra "Giá"
-//    if (gia === '' || isNaN(gia) || Number(gia) <= 0) {
-//        document.getElementById('EditerrorGia').textContent = 'Giá phải không được để trống và lớn hơn 0';
-//        isValid = false;
-//    }
-
-//    // Kiểm tra "Số giường"
-//    if (soGiuong === '' || isNaN(soGiuong) || Number(soGiuong) <= 0) {
-//        document.getElementById('EditerrorSoGiuong').textContent = 'Số giường không được để trống và lớn hơn 0';
-//        isValid = false;
-//    }
-
-//    // Kiểm tra "Diện tích"
-//    if (dienTich === '' || isNaN(dienTich) || Number(dienTich) <= 0) {
-//        document.getElementById('EditerrorDienTich').textContent = 'Diện tích không được để trống và phải lớn hơn 0';
-//        isValid = false;
-//    }
-
-//    // Kiểm tra "Ảnh"
-//    if (image === '') {
-//        document.getElementById('EditerrorImage').textContent = 'Vui lòng chọn ảnh';
-//        isValid = false;
-//    }
-
-//    // Kiểm tra "Mô tả"
-//    if (moTa === '') {
-//        document.getElementById('EditerrorMoTa').textContent = 'Mô tả không được để trống';
-//        isValid = false;
-//    } else if (specialCharRegex.test(moTa)) {
-//        document.getElementById('EditerrorMoTa').textContent = 'Mô tả không được chứa ký tự đặc biệt';
-//        isValid = false;
-//    }
-
-//    return isValid; // Trả về giá trị hợp lệ của form
-//}
-
 function validateEditForm() {
     console.log("Running validateEditForm");
     var isValid = true;
@@ -445,14 +376,81 @@ $(document).on('click', '.delete-btn', function () {
                 } else {
                     alert("Có lỗi xảy ra: " + response.message);
                 }
-            },
-            error: function (jqXHR, textStatus, errorThrown) {
-                console.error("Chi tiết lỗi: ", jqXHR.responseText);
-                alert('Lỗi: ' + errorThrown);
             }
         });
     }
 });
+$(document).ready(function () {
+    $('#doimatkhau').on('click', function () {
+        const currentPassword = $('#mkHienTai').val().trim();
+        const newPassword = $('#mkMoi').val().trim();
+        const confirmNewPassword = $('#mkMoi1').val().trim();
 
+        // Xóa các thông báo lỗi cũ
+        $('.text-danger').text('');
 
+        // Kiểm tra các trường rỗng
+        if (!currentPassword || !newPassword || !confirmNewPassword) {
+            if (!currentPassword) {
+                $('#mkHienTaiError').text('Vui lòng nhập mật khẩu hiện tại.');
+            }
+            if (!newPassword) {
+                $('#mkMoiError').text('Vui lòng nhập mật khẩu mới.');
+            }
+            if (!confirmNewPassword) {
+                $('#mkMoi1Error').text('Vui lòng xác nhận mật khẩu mới.');
+            }
+            return;
+        }
+
+        // Kiểm tra mật khẩu mới phải đủ mạnh
+        if (newPassword.length < 6) {
+            $('#mkMoiError').text('Mật khẩu mới phải có ít nhất 6 ký tự.');
+            return;
+        }
+
+        // Kiểm tra mật khẩu mới không trùng với mật khẩu cũ
+        if (currentPassword === newPassword) {
+            $('#mkMoiError').text('Mật khẩu mới không được giống mật khẩu hiện tại.');
+            return;
+        }
+
+        // Gửi dữ liệu qua AJAX
+        $.ajax({
+            url: '/Admin/DoiMatKhau/ChangePassword',
+            type: 'POST',
+            contentType: 'application/json',
+            headers: {
+                'RequestVerificationToken': $('input[name="__RequestVerificationToken"]').val()
+            },
+            data: JSON.stringify({
+                CurrentPassword: currentPassword,
+                NewPassword: newPassword,
+                ConfirmNewPassword: confirmNewPassword
+            }),
+            success: function (response) {
+                if (response.success) {
+                    alert(response.message);
+                    $('#userName').text(response.userName);
+                    $('#avatar').attr('src', response.avatarUrl);
+                    $('#doimk').modal('hide');
+                } else {
+                    if (response.errors) {
+                        $('#mkHienTaiError').text(response.errors);
+                    } else {
+                        alert(response.message);
+                    }
+                }
+            },
+            error: function (xhr, status, error) {
+                console.error('Error:', error);
+                alert('Đã xảy ra lỗi trong quá trình xử lý.');
+            }
+        });
+    });
+});
+
+$('#doimk').on('hidden.bs.modal', function () {
+    $('.modal-backdrop').remove(); // Xóa phần tử backdrop còn sót
+});
 

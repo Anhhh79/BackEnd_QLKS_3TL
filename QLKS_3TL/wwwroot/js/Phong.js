@@ -8,7 +8,7 @@
 });
 
 function loadPhong() {
-    console.log("Load đã chạy");
+    console.log("Load đã chạy của phòng");
     $.ajax({
         url: '/QuanLy/QuanLyPhong/LoadPhong', // Thay bằng URL chính xác của bạn
         type: 'GET',
@@ -22,24 +22,22 @@ function loadPhong() {
                 // Duyệt qua dữ liệu phòng trả về
                 response.data.forEach(function (item) {
                     tableContent += `
-                        <tr>
-                            <th scope="row">${stt}</th>
-                            <td>${item.maHangPhong || ''}</td>
-                            <td>${item.tenHangPhong || ''}</td>
-                            <td style="padding-left: 30px;">${item.maPhong || ''}</td>
-                            <td>${item.giaHangPhong ? item.giaHangPhong + ' VND' : ''}</td>
-                            <td class="d-flex justify-content-end">
-                                <button type="button" class="btn btn-danger delete-btn" data-id="${item.maPhong || ''}" style="font-size: small;">
-                                    Xóa
-                                </button>
-                            </td>
-                        </tr>
-                    `;
+                            <tr>
+                                <th scope="row">${stt}</th>
+                                <td>${item.maHangPhong || ''}</td>
+                                <td>${item.tenHangPhong || ''}</td>
+                                <td style="padding-left: 30px;">${item.maPhong || ''}</td>
+                                <td>${item.giaHangPhong ? item.giaHangPhong + ' VND' : ''}</td> 
+                                <td class="d-flex justify-content-end">
+                                   <button type="button" class="btn btn-danger delete-button" data-id="${item.maPhong || ''}"  style="font-size: small;">Xóa</button>
+                                </td>
+                            </tr>
+                        `;
                     stt++;
                 });
 
                 // Cập nhật bảng bằng nội dung mới
-                $('#tblBody').html(tableContent);
+                $('#tblBodyPhong').html(tableContent);
             } else {
                 alert('Lỗi: ' + response.message);
             }
@@ -82,7 +80,7 @@ $('#btnOpenModal').on('click', function () {
 });
 
 function ThemPhong() {
-    console.log("Bạn đã bấm vào nút Thêm phòng 111");
+    console.log("Bạn đã bấm vào nút Thêm phòng");
 
     // Lấy giá trị của các input trong modal
     var hangPhong = $('#HangPhong').val();
@@ -130,7 +128,7 @@ function ThemPhong() {
 $(document).ready(function () {
     $('#timkiemphong').on('input', function () {
         var query = $(this).val().toLowerCase(); // Lấy giá trị tìm kiếm và chuyển thành chữ thường
-        $('#tblBody tr').each(function () {
+        $('#tblBodyPhong tr').each(function () {
             var rowText = $(this).text().toLowerCase(); // Lấy toàn bộ văn bản của một dòng
             if (rowText.includes(query)) {  // Nếu dòng chứa chuỗi tìm kiếm
                 $(this).show();  // Hiển thị dòng
@@ -141,8 +139,39 @@ $(document).ready(function () {
     });
 });
 
+//$(document).ready(function () {
+//    $('.delete-button').click(function () {
+//        var maPhong = $(this).data('id');  // Lấy giá trị từ data-id
+//        console.log(maPhong);  // Kiểm tra giá trị
+//        if (maPhong === undefined || maPhong === "") {
+//            alert("Giá trị MaPhong không hợp lệ.");
+//            return;
+//        }
+
+//        if (confirm('Bạn có chắc muốn xóa mục này?')) {
+//            $.ajax({
+//                url: '/QuanLy/QuanLyPhong/Xoa',
+//                type: 'POST',
+//                data: { maPhong: maPhong },
+//                success: function (response) {
+//                    if (response.success) {
+//                        alert(response.message);
+//                        loadPhong()
+//                    } else {
+//                        alert(response.message); // Hiển thị thông báo lỗi
+//                    }
+//                },
+//                error: function () {
+//                    alert('Có lỗi xảy ra, vui lòng thử lại');
+//                }
+//            });
+//        }
+//    });
+//});
+
 $(document).ready(function () {
-    $('.delete-button').click(function () {
+    // Gán sự kiện động cho nút xóa
+    $(document).on('click', '.delete-button', function () {
         var maPhong = $(this).data('id');  // Lấy giá trị từ data-id
         console.log(maPhong);  // Kiểm tra giá trị
         if (maPhong === undefined || maPhong === "") {
@@ -152,13 +181,13 @@ $(document).ready(function () {
 
         if (confirm('Bạn có chắc muốn xóa mục này?')) {
             $.ajax({
-                url: dlPhong,
+                url: '/QuanLy/QuanLyPhong/Xoa', // URL đúng cho action xóa
                 type: 'POST',
                 data: { maPhong: maPhong },
                 success: function (response) {
                     if (response.success) {
                         alert(response.message);
-                        loadPhong()
+                        loadPhong();  // Load lại danh sách phòng sau khi xóa
                     } else {
                         alert(response.message); // Hiển thị thông báo lỗi
                     }
@@ -170,4 +199,3 @@ $(document).ready(function () {
         }
     });
 });
-

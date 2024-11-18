@@ -1,0 +1,228 @@
+﻿  <!-- Tra cứu đặt phòng -->
+<section id="tracuu" class="min-vh-100 d-flex text-center align-items-center" style="background-image: url('@Url.Content("~/images/pexels-rpnickson-2559941.jpg")'); background-position: center;
+    background-size: cover; margin-bottom: 0px; padding-top: 100px ">
+    <div class="container">
+        <div class="row">
+            <div class="col-12">
+                <h1 class="text-white pb-3">TRA CỨU ĐẶT PHÒNG</h1>
+            </div>
+            <div class="col-12 d-flex justify-content-center">
+                <div class="input-group mb-3" style="width: 600;">
+                    <input id="SoDienThoaiTraCuu" type="text" class="form-control" placeholder="Nhập số điện thoại"
+                           aria-label="Recipient's username" aria-describedby="basic-addon2">
+                    <a class="btn btn-Secondary text-center" onclick="validatePhoneNumber(), clearPhoneNumber()"
+                       id="btnTraCuu"><i class="fa-solid fa-magnifying-glass pt-1"></i></i></a>
+                </div>
+            </div>
+
+        </div>
+        <!-- modal OTP -->
+        <div class="modal fade" id="OTPTraCuu" tabindex="-1" aria-labelledby="Lichsu" aria-hidden="true"
+             onclick="clearOtpInputs()">
+            <div class="modal-dialog modal-lg">
+                s
+                <div class="modal-content" style="border-radius: 20px;">
+                    <!-- header -->
+                    <div class="modal-header d-flex justify-content-center">
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <!-- body -->
+                    <div class=" modal-body bg-body-tertiary d-block">
+                        <div class="row justify-content-center m-5">
+                            <div class="col-12 col-md-6 col-lg-4" style="min-width: 500px;">
+                                <div class="card bg-white border-0"
+                                     style="box-shadow: 0 12px 15px rgba(0, 0, 0, 0.02);">
+                                    <div class="card-body text-center">
+                                        <h4>Xác Nhận OTP</h4>
+                                        <p>Mã OTP sẽ được gửi qua số điện thoại của bạn</p>
+                                        <div class="otp-field mb-2">
+                                            <input type="number" maxlength="1" class="otp-input" />
+                                            <input type="number" maxlength="1" class="otp-input" />
+                                            <input type="number" maxlength="1" class="otp-input" />
+                                            <input type="number" maxlength="1" class="otp-input" />
+                                            <input type="number" maxlength="1" class="otp-input" />
+                                            <input type="number" maxlength="1" class="otp-input" />
+                                        </div>
+                                        <div id="otpError" class="text-danger pb-2"></div>
+                                        <a class="btn btn-warning text-light mb-3" onclick="checkOTPTraCuu()">
+                                            Xác
+                                            Nhận
+                                        </a>
+                                        <p class="resend text-muted mb-0">
+                                            Didn't receive code? <a href=""
+                                                                    class="text-warning">
+                                                Request
+                                                again
+                                            </a>
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>>
+    <!-- modal hien thi lich su dat phong -->
+    <div class="modal fade" id="LichSuDatPhong" tabindex="-1" aria-labelledby="LichSuDatPhong" aria-hidden="true">
+        <div class="modal-dialog modal-xl">
+            <div class="modal-content" style="border-radius: 20px;">
+                <!-- header -->
+                <div class="modal-header d-flex justify-content-center">
+                    <div>
+                        <h5>Lịch Sử Đặt Phòng</h5>
+                    </div>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <!-- Cot tieu de -->
+                <div class="modal-body">
+                    <div class="container" style="background: #fdf9c9;border-radius: 20px; font-weight: 600 ">
+                        <div class="row">
+                            <div class="col-2" style="padding: 15px 0 15px 15px;">Thời Gian Đặt</div>
+                            <div class="col-2" style="padding: 15px 0 15px 0;">Họ và Tên</div>
+                            <div class="col-1" style="padding: 15px 0 15px 0;">SĐT</div>
+                            <div class="col-2" style="padding: 15px 0 15px 0;">Tên Phòng / Hạng</div>
+                            <div class="col-2" style="padding: 15px 0 15px 0;">Ngày Nhận / Trả</div>
+                            <div class="col-2" style="padding: 15px 0 15px 0;">Thanh Toán</div>
+                            <div class="col-1" style="padding: 15px 0 15px 0;"> </div>
+
+                        </div>
+                    </div>
+                    <!-- Container header -->
+                    <div class="container mt-2 d-flex pt-2">
+                        <span style="font-weight: 700; font-size: 16px;">
+                            Thông tin
+                            đặt phòng:
+                        </span>
+                    </div>
+                    <!-- Container body -->
+                    <!-- du lieu dat phong -->
+                    <div class="pt-2">
+                        <div class="container mt-2 shadow div-hover"
+                             style="background:white;border-radius: 20px; font-weight: 600 ">
+                            <div class="row">
+                                <div class="col-2 thongTinLichSuDatPhong" style="padding: 15px 10px 15px 15px;">
+                                    <span>
+                                        11:29 /
+                                        18-10-2024
+                                    </span>
+                                </div>
+                                <div class="col-2 thongTinLichSuDatPhong" style="padding: 15px 10px 15px 0;">
+                                    <span>Nguyễn Bảo Anh</span>
+                                </div>
+                                <div class="col-1 thongTinLichSuDatPhong" style="padding: 15px 0 15px 0;">
+                                    <span>0353971435</span>
+                                </div>
+                                <div class="col-2 thongTinLichSuDatPhong" style="padding: 15px 10px 15px 10px;">
+                                    <span>P01</span> /
+                                    <span>
+                                        Phong
+                                        VIP1
+                                    </span>
+                                </div>
+                                <div class="col-2 thongTinLichSuDatPhong" style="padding: 15px 10px 15px 0;">
+                                    <span>20-10-2024</span> /
+                                    <span>24-10-2024</span>
+                                </div>
+                                <div class="col-2 thongTinLichSuDatPhong" style="padding: 15px 0 15px 0;">
+                                    <span><b>900.000</b></span>
+                                    <b>VND</b>
+                                </div>
+                                <div class="col-1 thongTinLichSuDatPhong" style="padding: 15px 0 15px 15px; ">
+                                    <button class="btn btn-Danger btn-sm">Hủy</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="pt-2">
+                        <div class="container mt-2 shadow div-hover"
+                             style="background:white;border-radius: 20px; font-weight: 600 ">
+                            <div class="row">
+                                <div class="col-2 thongTinLichSuDatPhong" style="padding: 15px 10px 15px 15px;">
+                                    <span>
+                                        11:29 /
+                                        18-10-2024
+                                    </span>
+                                </div>
+                                <div class="col-2 thongTinLichSuDatPhong" style="padding: 15px 10px 15px 0;">
+                                    <span>Nguyễn Bảo Anh</span>
+                                </div>
+                                <div class="col-1 thongTinLichSuDatPhong" style="padding: 15px 0 15px 0;">
+                                    <span>0353971435</span>
+                                </div>
+                                <div class="col-2 thongTinLichSuDatPhong" style="padding: 15px 10px 15px 10px;">
+                                    <span>P01</span> /
+                                    <span>
+                                        Phong
+                                        VIP1
+                                    </span>
+                                </div>
+                                <div class="col-2 thongTinLichSuDatPhong" style="padding: 15px 10px 15px 0;">
+                                    <span>20-10-2024</span> /
+                                    <span>24-10-2024</span>
+                                </div>
+                                <div class="col-2 thongTinLichSuDatPhong" style="padding: 15px 0 15px 0;">
+                                    <span><b>900.000</b></span>
+                                    <b>VND</b>
+                                </div>
+                                <div class="col-1 thongTinLichSuDatPhong" style="padding: 15px 0 15px 15px; ">
+                                    <button class="btn btn-Danger btn-sm">Hủy</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="pt-2">
+                        <div class="container mt-2 shadow div-hover"
+                             style="background:white;border-radius: 20px; font-weight: 600 ">
+                            <div class="row">
+                                <div class="col-2 thongTinLichSuDatPhong" style="padding: 15px 10px 15px 15px;">
+                                    <span>
+                                        11:29 /
+                                        18-10-2024
+                                    </span>
+                                </div>
+                                <div class="col-2 thongTinLichSuDatPhong" style="padding: 15px 10px 15px 0;">
+                                    <span>Nguyễn Bảo Anh</span>
+                                </div>
+                                <div class="col-1 thongTinLichSuDatPhong" style="padding: 15px 0 15px 0;">
+                                    <span>0353971435</span>
+                                </div>
+                                <div class="col-2 thongTinLichSuDatPhong" style="padding: 15px 10px 15px 10px;">
+                                    <span>P01</span> /
+                                    <span>
+                                        Phong
+                                        VIP1
+                                    </span>
+                                </div>
+                                <div class="col-2 thongTinLichSuDatPhong" style="padding: 15px 10px 15px 0;">
+                                    <span>20-10-2024</span> /
+                                    <span>24-10-2024</span>
+                                </div>
+                                <div class="col-2 thongTinLichSuDatPhong" style="padding: 15px 0 15px 0;">
+                                    <span><b>900.000</b></span>
+                                    <b>VND</b>
+                                </div>
+                                <div class="col-1 thongTinLichSuDatPhong" style="padding: 15px 0 15px 15px; ">
+                                    <button class="btn btn-Danger btn-sm">Hủy</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+                <!-- footer -->
+                <div class="container mt-3 mb-3">
+                    <div class="row" style="justify-content: flex-end;">
+                        <div class="col-3 m-2 d-flex justify-content-end">
+                            <a href="Datphong.html" class="btn bg-color text-light">
+                                Đặt
+                                Phòng Ngay
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>

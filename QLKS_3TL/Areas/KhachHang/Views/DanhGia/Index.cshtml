@@ -1,0 +1,122 @@
+﻿  <!-- Danh Gia -->
+<section id="danhgia" style="padding-top: 90px;">
+    <div class="container shadow-lg mt-5 mb-5">
+        <div class="text-center pt-3 pb-0">
+            <h2>Đánh Giá Khách Sạn</h2>
+        </div>
+        <hr>
+        <div class="container">
+            <div class="row p-5 pt-2 pb-4">
+                <div class="col-4 text-center">
+                    <div>
+                        <h3 class="text-warning"><span>5</span> / 5</h3>
+                    </div>
+                    <div class="star-rating mb-1">
+                        <label for="star5" title="5 stars"><i class="fas fa-star"></i></label>
+                        <label for="star4" title="4 stars"><i class="fas fa-star"></i></label>
+                        <label for="star3" title="3 stars"><i class="fas fa-star"></i></label>
+                        <label for="star2" title="2 stars"><i class="fas fa-star"></i></label>
+                        <label for="star1" title="1 star"><i class="fas fa-star"></i></label>
+                    </div>
+                    <div class="mb-3">(<span>100</span> đánh giá)</div>
+                    <div>
+                        <a class="btn bg-color text-light" data-bs-toggle="modal"
+                           data-bs-target="#modalDanhGia">Gửi Đánh Giá Của Bạn</a>
+                    </div>
+                </div>
+                <div class="col-8 pt-3">
+                    <div class="row">
+                        <div class="col">
+                            <span class="p-2 border border-warning bg-light">Tất cả (<span>100</span>)</span>
+                        </div>
+                        <div class="col">
+                            <span class="p-2 border border-warning bg-light">
+                                5 Sao
+                                (<span>80</span>)
+                            </span>
+                        </div>
+                        <div class="col">
+                            <span class="p-2 border border-warning bg-light">
+                                4 Sao
+                                (<span>10</span>)
+                            </span>
+                        </div>
+                        <div class="col">
+                            <span class="p-2 border border-warning bg-light">
+                                3 Sao
+                                (<span>7</span>)
+                            </span>
+                        </div>
+                        <div class="col">
+                            <span class="p-2 border border-warning bg-light">
+                                2
+                                Sao(<span>2</span>)
+                            </span>
+                        </div>
+                        <div class="col">
+                            <span class="p-2 border border-warning bg-light">
+                                1 Sao
+                                (<span>1</span>)
+                            </span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- modal danh gia -->
+    <div class="modal fade" id="modalDanhGia">
+        <div class="modal-dialog">
+            <div class="modal-content p-3 pb-0">
+                <!-- Nội dung của modal -->
+                <!-- modal headder -->
+                <div class="modal-header d-flex justify-content-center">
+                    <div>
+                        <h5>Đánh Giá Khách Sạn 3TL</h5>
+                    </div>
+                    <button type="button" class="btn-close" onclick="clearDataAssessInput(), clearStarAssess()"
+                            data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <!-- modal body -->
+                <div class="modal-body">
+                    <div class="mb-3">
+                        <label for="fullNameAssess" class="form-label">Họ Và Tên</label>
+                        <input type="text" id="fullNameAssess" class="form-control Assess"
+                               placeholder="Nhập họ tên của bạn" aria-label="Full name" required>
+                        <div id="fullNameError" class="text-danger" style="font-size: 0.875rem;"></div>
+                    </div>
+                    <div class="mb-3">
+                        <label for="PhoneNumberAssess" class="form-label">Số Điện Thoại</label>
+                        <input type="tel" class="form-control Assess" id="PhoneNumberAssess"
+                               aria-describedby="phoneNumber" placeholder="Nhập số điện thoại đã đặt phòng"
+                               pattern="[0-9]{10}" title="Số điện thoại gồm 10 chữ số" required>
+                        <div id="phoneNumberError" class="text-danger" style="font-size: 0.875rem;"></div>
+                    </div>
+                    <!-- <div class="mb-3">
+                        <label for="ContentAssess" class="form-label">Nội Dung Đánh Giá</label>
+                        <textarea class="form-control Assess" id="ContentAssess" rows="3"
+                            placeholder="Nội dung đánh giá của bạn về khách sạn 3TL"></textarea>
+                    </div> -->
+                    <label for="" class="form-label">Đánh Giá Của Bạn Về Khách Sạn:</label>
+                    <div class="star-rating mb-3">
+                        <input type="radio" class="star" id="star5" name="rating" value="5" required />
+                        <label for="star5" title="5 stars"><i class="fas fa-star"></i></label>
+                        <input type="radio" class="star" id="star4" name="rating" value="4" />
+                        <label for="star4" title="4 stars"><i class="fas fa-star"></i></label>
+                        <input type="radio" class="star" id="star3" name="rating" value="3" />
+                        <label for="star3" title="3 stars"><i class="fas fa-star"></i></label>
+                        <input type="radio" class="star" id="star2" name="rating" value="2" />
+                        <label for="star2" title="2 stars"><i class="fas fa-star"></i></label>
+                        <input type="radio" class="star" id="star1" name="rating" value="1" />
+                        <label for="star1" title="1 star"><i class="fas fa-star"></i></label>
+                    </div>
+                    <div id="starRatingError" class="text-danger" style="font-size: 0.875rem;"></div>
+                </div>
+                <!-- modal footer -->
+                <div class="modal-footer">
+                    <a class="btn btn-warning text-light" onclick="validateAssessmentForm()">Gửi Đánh Giá</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>

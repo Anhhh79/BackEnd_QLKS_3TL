@@ -1,0 +1,88 @@
+﻿@{
+    var userName = Context.Session.GetString("HoTen");
+    var avatarUrl = Context.Session.GetString("AnhNhanVien");
+    var MaNhanVien = Context.Session.GetString("MaNhanVien");
+}
+<li class="nav-item dropdown">
+    @if (!string.IsNullOrEmpty(userName))
+    {
+        <a href="#" id="dropdownToggle" class="nav-icon pe-md-0 dropdown-toggle" aria-expanded="false">
+            <img src="@avatarUrl" class="avatar img-fluid" alt="Tài khoản">
+        </a>
+        <ul id="dropdownMenu" class="dropdown-menu dropdown-menu-end">
+            <li>
+                <h3 class="dropdown-header" style="font-weight:600; font-size:larger; color:black">@userName</h3>
+            </li>
+            <li><a class="dropdown-item" href="#" data-bs-toggle="modal" data-bs-target="#doimk">Đổi mật khẩu</a></li>
+            <li>
+    <a class="dropdown-item" style="color:red" href="/KhachHang/Home/Index">Đăng xuất</a>
+</li>
+
+        </ul>
+    }
+    else
+    {
+        <a href="/Account/Login" class="nav-link">Đăng nhập</a>
+    }
+</li>
+
+<!-- Modal đổi mật khẩu -->
+<div class="modal fade" id="doimk" tabindex="-1" aria-labelledby="doimkLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content" style="border-radius: 20px;">
+            <div class="modal-header d-flex justify-content-center">
+                <h5 class="modal-title fw-bold">Đổi mật khẩu</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div class="container px-5">
+                    <form id="changePasswordForm">
+                        <div class="mb-3">
+                            <label for="mkHienTai" class="form-label">Mật khẩu hiện tại</label>
+                            <input type="password" class="form-control" id="mkHienTai" name="CurrentPassword" required>
+                            <span id="mkHienTaiError" class="text-danger"></span>
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="mkMoi" class="form-label">Mật khẩu mới</label>
+                            <input type="password" class="form-control" id="mkMoi" name="NewPassword" required>
+                            <span id="mkMoiError" class="text-danger"></span>
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="mkMoi1" class="form-label">Nhập lại mật khẩu mới</label>
+                            <input type="password" class="form-control" id="mkMoi1" name="ConfirmNewPassword" required>
+                            <span id="mkMoi1Error" class="text-danger"></span>
+                        </div>
+                    </form>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-warning text-white" id="doimatkhau">Đổi mật khẩu</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+    const dropdownToggle = document.getElementById('dropdownToggle');
+    const dropdownMenu = document.getElementById('dropdownMenu');
+
+    // Toggle dropdown visibility
+    dropdownToggle.addEventListener('click', function (e) {
+        e.preventDefault(); // Ngăn hành vi mặc định
+        dropdownMenu.classList.toggle('show'); // Thêm/xóa class "show"
+    });
+
+    // Close dropdown if clicked outside
+    document.addEventListener('click', function (e) {
+        if (!dropdownToggle.contains(e.target) && !dropdownMenu.contains(e.target)) {
+            dropdownMenu.classList.remove('show'); // Xóa class "show" khi nhấn bên ngoài
+        }
+    });
+});
+</script>
