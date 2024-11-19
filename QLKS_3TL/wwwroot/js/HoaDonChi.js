@@ -7,6 +7,16 @@
             let htmlContent = '';
             let stt = 1;
             data.forEach(function (item) {
+                const formattedDate = item.thoiGian
+                    ? new Date(item.thoiGian).toLocaleString('vi-VN', {
+                        day: '2-digit',
+                        month: '2-digit',
+                        year: 'numeric',
+                        hour: '2-digit',
+                        minute: '2-digit',
+                        hour12: true,
+                    })
+                    : 'N/A';
                 htmlContent += `
                     <tr>
                         <th scope="row">${stt}</th>
@@ -16,7 +26,7 @@
                         <td>${item.soLuong}</td>
                         <td>${item.giaMatHang}</td>
                         <td>${item.tongGia} VND</td>
-                        <td class="text-center">${item.hoiGian?.ToString("dd/MM/yyyy - hh:mm tt")}</td>
+                        <td class="text-center">${formattedDate}</td>
                     </tr>
                 `;
                 stt++;

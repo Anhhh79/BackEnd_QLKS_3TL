@@ -255,20 +255,21 @@ function CheckDataFormThanhToan() {
 
 }
 
-//ngan dong modal
-$(document).ready(function () {
-    // Khi modal mở ra
-    $('#LichSuDatPhong').on('show.bs.modal', function (e) {
-        // Ngăn modal đóng khi nhấn vào bên ngoài
-        $(this).attr('data-bs-backdrop', 'static');
-        $(this).attr('data-bs-keyboard', 'false');
-    });
-    // Ngăn modal đóng khi nhấn vào modal
-    $('#LichSuDatPhong').on('click', function (e) {
-        if ($(e.target).is(this)) {
-            e.preventDefault(); // Ngăn chặn hành động mặc định
-        }
-    });
-});
+////ngan dong modal
+//$(document).ready(function () {
+//    // Khi modal mở ra
+//    $('#LichSuDatPhong').on('show.bs.modal', function (e) {
+//        // Ngăn modal đóng khi nhấn vào bên ngoài
+//        $(this).attr('data-bs-backdrop', 'static');
+//        $(this).attr('data-bs-keyboard', 'false');
+//    });
+//    // Ngăn modal đóng khi nhấn vào modal
+//    $('#LichSuDatPhong').on('click', function (e) {
+//        if ($(e.target).is(this)) {
+//            e.preventDefault(); // Ngăn chặn hành động mặc định
+//        }
+//    });
+//});
+
 
 

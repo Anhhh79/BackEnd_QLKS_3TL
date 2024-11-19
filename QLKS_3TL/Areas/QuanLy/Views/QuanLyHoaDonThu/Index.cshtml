@@ -23,7 +23,7 @@
                     <div class="input-group d-flex align-items-center border border-dark rounded"
                          style="width: 300px;padding: 0;">
                         <i class="fa-solid fa-magnifying-glass fa-1x ms-2 "></i>
-                        <input type="text" class="form-control input-border" placeholder="Thông tin hóa đơn"
+                        <input type="text" class="form-control input-border" id="timKiemHoaDonThu" placeholder="Thông tin hóa đơn"
                                aria-label="Username" aria-describedby="basic-addon1" style="border: 0;">
                     </div>
                 </div>
@@ -42,7 +42,7 @@
                                     <th scope="col"></th>
                                 </tr>
                             </thead>
-                            <tbody>
+                            <tbody id="bodyThongTinHoaDonThu">
                                 @{
                                     int soThuTu = 1;
                                 }

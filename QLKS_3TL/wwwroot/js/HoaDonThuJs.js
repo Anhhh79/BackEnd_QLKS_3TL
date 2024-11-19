@@ -1,4 +1,18 @@
-﻿// Hàm load thông tin hóa đơn và hiển thị trong modal
+﻿$(document).ready(function () {
+    //tìm kiếm tài khoản 
+    $('#timKiemHoaDonThu').on('input', function () {
+        var query = $(this).val().toLowerCase(); // Lấy giá trị tìm kiếm và chuyển thành chữ thường
+        $('#bodyThongTinHoaDonThu tr').each(function () {
+            var rowText = $(this).text().toLowerCase(); // Lấy toàn bộ văn bản của một dòng
+            if (rowText.includes(query)) {  // Nếu dòng chứa chuỗi tìm kiếm
+                $(this).show();  // Hiển thị dòng
+            } else {
+                $(this).hide();  // Ẩn dòng
+            }
+        });
+    });
+});
+// Hàm load thông tin hóa đơn và hiển thị trong modal
 function loadHoaDonThu(maHoaDon) {
     // Gửi AJAX request để lấy thông tin hóa đơn
     const baseUrl = `/QuanLy/QuanLyHoaDonThu/ChiTietHoaDonThu/`
