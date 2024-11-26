@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap');
+﻿@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap');
 
 ::after,
 ::before {
@@ -44,10 +44,10 @@ body {
     flex-direction: column;
 }
 
-#sidebar.expand {
-    width: 260px;
-    min-width: 260px;
-}
+    #sidebar.expand {
+        width: 260px;
+        min-width: 260px;
+    }
 
 .toggle-btn {
     background-color: transparent;
@@ -56,20 +56,20 @@ body {
     padding: 1rem 1.5rem;
 }
 
-.toggle-btn i {
-    font-size: 1.5rem;
-    color: #FFF;
-}
+    .toggle-btn i {
+        font-size: 1.5rem;
+        color: #FFF;
+    }
 
 .sidebar-logo {
     margin: auto 0;
 }
 
-.sidebar-logo a {
-    color: #FFF;
-    font-size: 1.15rem;
-    font-weight: 600;
-}
+    .sidebar-logo a {
+        color: #FFF;
+        font-size: 1.15rem;
+        font-weight: 600;
+    }
 
 #sidebar:not(.expand) .sidebar-logo,
 #sidebar:not(.expand) a.sidebar-link span {
@@ -130,7 +130,7 @@ a.sidebar-link:hover {
     display: none;
 }
 
-#sidebar:not(.expand) .sidebar-item:hover .has-dropdown+.sidebar-dropdown {
+#sidebar:not(.expand) .sidebar-item:hover .has-dropdown + .sidebar-dropdown {
     display: block;
     max-height: 15em;
     width: 100%;
@@ -171,13 +171,13 @@ a.sidebar-link:hover {
 
 /* tắt border input chỗ tìm kiếm */
 .input-border:focus {
-    outline: none !important;  /* Tắt viền outline */
+    outline: none !important; /* Tắt viền outline */
     box-shadow: none !important; /* Tắt hiệu ứng shadow nếu có */
     border: none !important; /* Nếu muốn tắt luôn border khi focus */
 }
 
 /* label */
-.label-modal{
+.label-modal {
     font-size: 16px;
     font-weight: 600;
     line-height: 19px;
@@ -186,19 +186,22 @@ a.sidebar-link:hover {
 .cusor {
     cursor: pointer;
 }
-@media (min-width: 768px) {}
 
-/* Ẩn spinners trên tất cả các trình duyệt */
-input[type=number]::-webkit-inner-spin-button,
-input[type=number]::-webkit-outer-spin-button {
-    -webkit-appearance: none;
-    margin: 0;
+.scroll-content {
+    height: 200px;
+    width: 160px;
+    overflow-y: scroll;
 }
 
-/* Ẩn spinners trên Firefox */
-input[type=number] {
-    -moz-appearance: textfield;
+.dropdown-item:active {
+    color: black;
+    background-color: white;
 }
+
+.dropdown-item:hover {
+    background-color: white;
+}
+
 
 .dropdown-menu {
     position: absolute !important;
@@ -207,3 +210,8 @@ input[type=number] {
     right: 0 !important;
     z-index: 1050 !important;
 }
+
+@media (min-width: 768px) {
+}
+
+

@@ -1,9 +1,9 @@
 ﻿function loadHoaDonList() {
+    console.log("Load đã chạy");
     $.ajax({
         url: '/QuanLy/QuanLyHoaDonChi/GetHoaDonList',
         type: 'GET',
         success: function (data) {
-            // Duyệt qua dữ liệu JSON và cập nhật danh sách hóa đơn trên trang
             let htmlContent = '';
             let stt = 1;
             data.forEach(function (item) {
@@ -31,7 +31,7 @@
                 `;
                 stt++;
             });
-            $('#hoaDonList tbody').html(htmlContent);  // Cập nhật bảng
+            $('#tblHoaDonChi').append(htmlContent);
         },
         error: function (xhr, status, error) {
             console.error(error); // Log lỗi
@@ -39,6 +39,7 @@
         }
     });
 }
+
 
 //tìm kiếm 
 $(document).ready(function () {
@@ -117,6 +118,13 @@ $(document).ready(function () {
                 alert(response); // Hiển thị thông báo thành công
                 $('#hoadonchi').modal('hide'); // Ẩn modal sau khi thành công
                 loadHoaDonList() // Reload để cập nhật danh sách hóa đơn
+
+
+                // Xóa dữ liệu các input
+                $('#tenMatHang').val('');
+                $('#soLuong').val('');
+                $('#giaMatHang').val('');
+                $('#tongGia').val('');
             },
             error: function (xhr, status, error) {
                 console.error(error); // Log lỗi
@@ -137,4 +145,6 @@ $(document).ready(function () {
 
 $('#hoadonchi').on('hidden.bs.modal', function () {
     $('.modal-backdrop').remove(); // Xóa phần tử backdrop còn sót
+    $('body').removeClass('modal-open'); // Gỡ bỏ class `modal-open`
+    $('body').css('overflow', ''); // Khôi phục cuộn cho trang
 });

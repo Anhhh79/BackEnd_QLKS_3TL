@@ -40,5 +40,4 @@ app.UseAuthorization();
 app.MapControllerRoute(
     name: "default",
     pattern: "{area=KhachHang}/{controller=Home}/{action=Index}/{id?}");
-
 app.Run();

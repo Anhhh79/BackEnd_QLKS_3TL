@@ -16,6 +16,7 @@ namespace QLKS_3TL.Areas.QuanLy.Controllers
         //Hàm hiển thị danh sách khách hàng
         public async Task<IActionResult> Index()
         {
+            ViewData["Layout"] = "~/Areas/LeTan/Views/Shared/_LayoutLeTan.cshtml"; // Layout của Lễ Tân
             try
             {
                 // Lấy dữ liệu từ bảng KhachHang và liên kết với ThongTinDatPhong thông qua khóa ngoại MaKhachHang

@@ -23,8 +23,9 @@ namespace QLKS_3TL.Areas.QuanLy.Controllers
         public IActionResult GetHoaDonList()
         {
             var hoaDonList = dbContext.HoaDonChis.ToList();
-            return Json(hoaDonList); 
+            return Json(hoaDonList); // Trả về một mảng JSON
         }
+
 
         [HttpPost]
         public async Task<IActionResult> LuuHoaDon([FromBody] HoaDonChiViewModel hoaDonViewModel)
