@@ -1,4 +1,6 @@
 ﻿
+@using QLKS_3TL.Data
+@model IEnumerable<ThongTinDatPhong>
 <div class="main" id="content">
     <div class="main" id="content">
         <nav class="navbar navbar-expand px-4 py-3">
@@ -36,19 +38,37 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    <tr>
-                                        <th scope="row">1</th>
-                                        <td class="me-2">MDP0001</td>
-                                        <td>Nguyễn Bảo Anh</td>
-                                        <td>012345678</td>
-                                        <td>Phòng VIP</td>
-                                        <td>12h30 - 7/9/2024</td>
-                                        <td>900.000 <span>VND</span></td>
-                                        <td class="d-flex  justify-content-center">
-                                            <span><button class="btn btn-success" style="font-size: small;" data-bs-toggle="modal" data-bs-target="#XacNhan1" data-bs-dismiss="modal">Xác Nhận</button></span>
-                                            <span style="padding-left: 10px;"><button class="btn btn-danger" style="font-size: small;">Hủy</button></span>
-                                        </td>
-                                    </tr>
+                                    @{
+                                        int stt = 1;
+                                    }
+                                    @foreach(var item in Model)
+                                    {
+                                        <tr>
+                                            <input type="hidden" id="maDatPhong" name="maDatPhong" value="@item.MaDatPhong">
+                                            <input type="hidden" id="maKhachHang" name="maKhachHang" value="@item.MaKhachHang">
+                                            <input type="hidden" id="maHangPhong" name="maHangPhong" value="@item.MaHangPhong">
+                                            <th scope="row">@stt</th>
+                                            <td class="me-2">@item.MaDatPhong</td>
+                                            <td>@item.MaKhachHangNavigation?.HoTen</td>
+                                            <td>@item.MaKhachHangNavigation?.SoDienThoai</td>
+                                            <td>@item.MaHangPhongNavigation?.TenHangPhong</td>
+                                            <td>
+                                                @item.ThoiGianDatPhong?.ToString("dd/MM/yyyy - hh:mm tt")
+                                            </td>
+                                            <td>
+                                                @item.TongThanhToan?.ToString("#,0", new System.Globalization.CultureInfo("vi-VN"))
+                                            </td>
+                                            <td class="d-flex  justify-content-center">
+                                                <span>
+                                                    <button class="btn btn-success" id="btnXacNhan" style="font-size: small;" data-madatphong="@item.MaDatPhong" data-makhachhang="@item.MaKhachHang" data-mahangphong="@item.MaHangPhong"
+                                                            onclick="loadBookingDetails(this)">
+                                                        Xác Nhận
+                                                    </button>
+                                                </span>
+                                                <span style="padding-left: 10px;"><button class="btn btn-danger" style="font-size: small;">Hủy</button></span>
+                                            </td>
+                                        </tr>
+                                    }
                                 </tbody>
                             </table>
                         </div>
@@ -58,14 +78,12 @@
         </main>
     </div>
 </div>
-
-<!-- modal -->
 <div class="modal fade" id="XacNhan1" tabindex="-1" aria-labelledby="chitiet" aria-hidden="true">
     <div class="modal-dialog modal-lg">
         <div class="modal-content" style="border-radius: 20px">
             <div class="modal-header d-flex justify-content-center">
                 <div>
-                    <h5 style="font-weight: bolder;">Thông tin đặt phòng </h5>
+                    <h5 style="font-weight: bolder;">Thông tin đặt phòng</h5>
                 </div>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
@@ -76,194 +94,52 @@
                             <div class="container">
                                 <div class="row mt-2">
                                     <div class="col-4">
-                                        <h6>
-                                            <span style="font-weight: 600;">
-                                                Họ
-                                                tên:
-                                            </span>Nguyễn Văn Nhật
-                                        </h6>
+                                        <h6><span style="font-weight: 600;">Họ tên:</span> <span id="HoTen"></span></h6>
                                     </div>
                                     <div class="col-4">
-                                        <h6>
-                                            <span style="font-weight: 600;">
-                                                Số
-                                                điện thoại:
-                                            </span> 012345678
-                                        </h6>
+                                        <h6><span style="font-weight: 600;">Số điện thoại:</span> <span id="SoDienThoai"></span></h6>
                                     </div>
                                     <div class="col-4">
-                                        <h6>
-                                            <span style="font-weight: 600;">
-                                                Giới
-                                                tính:
-                                            </span>Nam
-                                        </h6>
+                                        <h6><span style="font-weight: 600;">Giới tính:</span> <span id="GioiTinh"></span></h6>
                                     </div>
                                 </div>
                                 <div class="row mt-2">
                                     <div class="col-4">
-                                        <h6>
-                                            <span style="font-weight: 600;">CCCD:</span>
-                                            091275632831
-                                        </h6>
+                                        <h6><span style="font-weight: 600;">CCCD:</span> <span id="CCCD"></span></h6>
                                     </div>
                                     <div class="col-4">
-                                        <h6>
-                                            <span style="font-weight: 600;">
-                                                Ngày
-                                                nhận:
-                                            </span>25/09/2024
-                                        </h6>
+                                        <h6><span style="font-weight: 600;">Ngày nhận:</span> <span id="NgayNhan"></span></h6>
                                     </div>
                                     <div class="col-4">
-                                        <h6>
-                                            <span style="font-weight: 600;">
-                                                Ngày
-                                                Trả:
-                                            </span> 27/09/2024
-                                        </h6>
+                                        <h6><span style="font-weight: 600;">Ngày trả:</span> <span id="NgayTra"></span></h6>
                                     </div>
                                 </div>
                                 <div class="row mt-2">
                                     <div class="col-4">
-                                        <h6>
-                                            <span style="font-weight: 600;">
-                                                Email:
-                                            </span> nhat029@gmail.com
-                                        </h6>
+                                        <h6><span style="font-weight: 600;">Email:</span> <span id="Email"></span></h6>
                                     </div>
                                     <div class="col-4">
-                                        <h6>
-                                            <span style="font-weight: 600;">
-                                                Tổng
-                                                số ngày:
-                                            </span> 2
-                                        </h6>
+                                        <h6><span style="font-weight: 600;">Số lượng phòng:</span> <span id="SoLuongPhong"></span></h6>
                                     </div>
                                     <div class="col-4">
-                                        <h6>
-                                            <span style="font-weight: 600;">
-                                                Hạng
-                                                phòng:
-                                            </span> VIP
-                                        </h6>
+                                        <h6><span style="font-weight: 600;">Hạng phòng:</span> <span id="HangPhong"></span></h6>
                                     </div>
-
                                 </div>
                                 <div class="row mt-2">
                                     <div class="col-4 dropdown">
-                                        <h6 class="dropdown-toggle cusor" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
-                                            <span style="font-weight: 600;">
-                                                Chọn phòng:
-                                            </span>
-                                        </h6>
+                                        <h6 class="dropdown-toggle cusor" id="dropdownMenuButton1"
+                                                data-bs-toggle="dropdown" aria-expanded="false">
+                                         <span style="font-weight: 600;">Chọn phòng:</span>
+                                     </h6>
                                         <div class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
-                                            <div class="dropdown-item scroll-content">
-                                                <div class="row">
-                                                    <div class="col-6">
-                                                        P01
-                                                    </div>
-                                                    <div class="col-6 d-flex justify-content-end">
-                                                        <input type="checkbox" name="checkboxGroup" style="transform: scale(1.4);" class="cusor" value="P01">
-                                                    </div>
-                                                </div>
-
-                                                <div class="row">
-                                                    <div class="col-6">
-                                                        P02
-                                                    </div>
-                                                    <div class="col-6 d-flex justify-content-end">
-                                                        <input type="checkbox" name="checkboxGroup" style="transform: scale(1.4);" class="cusor" value="P01">
-                                                    </div>
-                                                </div>
-
-                                                <div class="row">
-                                                    <div class="col-6">
-                                                        P03
-                                                    </div>
-                                                    <div class="col-6 d-flex justify-content-end">
-                                                        <input type="checkbox" name="checkboxGroup" style="transform: scale(1.4);" class="cusor" value="P01">
-                                                    </div>
-                                                </div>
-
-                                                <div class="row">
-                                                    <div class="col-6">
-                                                        P04
-                                                    </div>
-                                                    <div class="col-6 d-flex justify-content-end">
-                                                        <input type="checkbox" name="checkboxGroup" style="transform: scale(1.4);" class="cusor" value="P01">
-                                                    </div>
-                                                </div>
-
-                                                <div class="row">
-                                                    <div class="col-6">
-                                                        P05
-                                                    </div>
-                                                    <div class="col-6 d-flex justify-content-end">
-                                                        <input type="checkbox" name="checkboxGroup" style="transform: scale(1.4);" class="cusor" value="P01">
-                                                    </div>
-                                                </div>
-
-                                                <div class="row">
-                                                    <div class="col-6">
-                                                        P06
-                                                    </div>
-                                                    <div class="col-6 d-flex justify-content-end">
-                                                        <input type="checkbox" name="checkboxGroup" style="transform: scale(1.4);" class="cusor" value="P01">
-                                                    </div>
-                                                </div>
-
-                                                <div class="row">
-                                                    <div class="col-6">
-                                                        P01
-                                                    </div>
-                                                    <div class="col-6 d-flex justify-content-end">
-                                                        <input type="checkbox" name="checkboxGroup" style="transform: scale(1.4);" class="cusor" value="P01">
-                                                    </div>
-                                                </div>
-
-                                                <div class="row">
-                                                    <div class="col-6">
-                                                        P07
-                                                    </div>
-                                                    <div class="col-6 d-flex justify-content-end">
-                                                        <input type="checkbox" name="checkboxGroup" style="transform: scale(1.4);" class="cusor" value="P01">
-                                                    </div>
-                                                </div>
-
-                                                <div class="row">
-                                                    <div class="col-6">
-                                                        P08
-                                                    </div>
-                                                    <div class="col-6 d-flex justify-content-end">
-                                                        <input type="checkbox" name="checkboxGroup" style="transform: scale(1.4);" class="cusor" value="P01">
-                                                    </div>
-                                                </div>
-
-                                                <div class="row">
-                                                    <div class="col-6">
-                                                        P09
-                                                    </div>
-                                                    <div class="col-6 d-flex justify-content-end">
-                                                        <input type="checkbox" name="checkboxGroup" style="transform: scale(1.4);" class="cusor" value="P01">
-                                                    </div>
-                                                </div>
-                                            </div>
+                                            <div id="DanhSachPhong" class="dropdown-item scroll-content"></div>
                                         </div>
                                     </div>
-                                    <div class="col-4 ">
-                                        <h6>
-                                            <span style="font-weight: 600;">
-                                                Yêu cầu:
-                                            </span>Sạch sẽ
-                                        </h6>
+                                    <div class="col-4">
+                                        <h6><span style="font-weight: 600;">Yêu cầu:</span> <span id="YeuCauThem"></span></h6>
                                     </div>
-                                    <div class="col-4 ">
-                                        <h6>
-                                            <span style="font-weight: 600;">
-                                                Thanh toán:
-                                            </span> 900000 VND
-                                        </h6>
+                                    <div class="col-4">
+                                        <h6><span style="font-weight: 600;">Thanh toán:</span> <span id="TongThanhToan"></span></h6>
                                     </div>
                                 </div>
                             </div>
@@ -272,8 +148,152 @@
                 </div>
             </div>
             <div class="container my-2 d-flex justify-content-end">
-                <button type="button" class="btn btn-success">Hoàn tất</button>
+                <button type="button" class="btn btn-success" id="btnHoanTat">Hoàn tất</button>
             </div>
         </div>
     </div>
 </div>
+
+
+<script>
+    function loadBookingDetails(button) {
+    const bookingId = $(button).data('madatphong'); // Lấy mã đặt phòng từ data-madatphong
+    console.log("Mã đặt phòng:", bookingId); // Kiểm tra giá trị mã đặt phòng
+
+    $.ajax({
+        url:'/LeTan/XacNhanDatPhong/GetBookingDetails', // URL API của bạn
+        type: 'GET',
+        data: { maDatPhong: bookingId },
+        success: function (data) {
+            console.log(data); // Kiểm tra dữ liệu nhận được
+
+            // Cập nhật các trường trong modal
+            $("#HoTen").text(data.hoTen || "N/A");
+            $("#SoDienThoai").text(data.soDienThoai || "N/A");
+            $("#GioiTinh").text(data.gioiTinh || "N/A");
+            $("#CCCD").text(data.cccd || "N/A");
+            $("#NgayNhan").text(data.ngayNhan || "N/A");
+            $("#NgayTra").text(data.ngayTra || "N/A");
+            $("#Email").text(data.email || "N/A");
+            $("#SoLuongPhong").text(data.soLuongPhong || "N/A");
+            $("#HangPhong").text(data.tenHangPhong || "N/A");
+            $("#TongThanhToan").text(data.tongThanhToan ? `${data.tongThanhToan} VND` : "0 VND");
+            $("#YeuCauThem").text(data.yeuCauThem || "Không có yêu cầu");
+
+            // Xử lý danh sách phòng
+            const roomList = $("#DanhSachPhong");
+            roomList.empty(); // Xóa danh sách cũ trước khi thêm
+
+            let roomCount = 0; // Đếm số phòng đã chọn
+
+            data.phongs.forEach(room => {
+                roomList.append(`
+                    <div class="row">
+                        <div class="col-6">${room}</div>
+                        <div class="col-6 d-flex justify-content-end">
+                            <input type="checkbox" class="room-checkbox" name="checkboxGroup" style="transform: scale(1.4);" class="cusor" value="${room}">
+                        </div>
+                    </div>
+                `);
+            });
+
+            // Đảm bảo số lượng phòng không vượt quá số lượng người dùng đã đặt
+            const maxRoomCount = data.soLuongPhong;
+
+            // Lắng nghe sự kiện khi chọn phòng 
+            $(".room-checkbox").on('change', function() {
+                const selectedRooms = $(".room-checkbox:checked").length;
+                if (selectedRooms > maxRoomCount) {
+                    // Nếu số phòng đã chọn lớn hơn số phòng đã đặt, thông báo và bỏ chọn phòng vừa chọn
+                    alert(`Bạn chỉ được chọn tối đa ${maxRoomCount} phòng.`);
+                    $(this).prop('checked', false);
+                }
+            });
+
+            // Hiển thị modal
+            $("#XacNhan1").modal("show");
+        },
+        error: function () {
+            alert("Có lỗi xảy ra khi tải dữ liệu.");
+        }
+    });
+}
+</script>
+<script>
+ document.getElementById("btnHoanTat").addEventListener("click", function() {
+    // Lấy số lượng phòng từ span trong modal
+    const soLuongPhong = parseInt(document.getElementById("SoLuongPhong").innerText);
+    const danhSachPhong = [];
+    const selectedRooms = document.querySelectorAll(".room-checkbox:checked");
+
+    // Kiểm tra nếu không có phòng nào được chọn
+    if (selectedRooms.length === 0) {
+        alert("Vui lòng chọn ít nhất một phòng.");
+        return;
+    }
+
+    // Lấy danh sách các phòng đã chọn và thêm vào mảng danhSachPhong
+    selectedRooms.forEach(function(room) {
+        danhSachPhong.push(room.value);
+    });
+
+    // Kiểm tra số lượng phòng đã chọn
+    if (soLuongPhong === 1 && danhSachPhong.length !== 1) {
+        alert("Vui lòng chọn 1 phòng.");
+        return;
+    } else if (soLuongPhong > 1 && danhSachPhong.length !== soLuongPhong) {
+        alert("Vui lòng chọn đúng số lượng phòng.");
+        return;
+    }
+
+    // Lấy các thông tin từ các thẻ span trong modal (ngày nhận, ngày trả, tổng thanh toán,...)
+    const maDatPhong = document.getElementById("maDatPhong").value;  // Lấy từ input hidden
+    const maKhachHang = document.getElementById("maKhachHang").value;  // Lấy từ input hidden
+    const maHangPhong = document.getElementById("maHangPhong").value; // Mã hạng phòng
+    const ngayNhan = document.getElementById("NgayNhan").innerText;
+    const ngayTra = document.getElementById("NgayTra").innerText;
+    const yeuCauThem = document.getElementById("YeuCauThem").innerText;
+    const tongThanhToan = parseFloat(document.getElementById("TongThanhToan").innerText);
+
+    console.log(maKhachHang);
+    console.log(maHangPhong);
+    console.log(maDatPhong);
+    console.log(danhSachPhong);
+    // Gửi dữ liệu thông qua AJAX
+    $.ajax({
+        url: '/LeTan/XacNhanDatPhong/XuLyThongTinDatPhong',  // Địa chỉ API xử lý
+        type: 'POST',
+        contentType: 'application/json',
+        data: JSON.stringify({
+            MaDatPhong: maDatPhong,
+            MaKhachHang: maKhachHang,
+            MaHangPhong: maHangPhong,
+            SoLuongPhong: soLuongPhong,
+            DanhSachPhong: danhSachPhong,
+            NgayNhan: ngayNhan, // Đảm bảo định dạng ngày đúng, ví dụ "2024-12-01"
+            NgayTra: ngayTra,   // Đảm bảo định dạng ngày đúng
+            YeuCauThem: yeuCauThem,
+            TongThanhToan: tongThanhToan
+        }),
+        success: function(response) {
+            console.log(response);  // Đoạn này giúp debug kết quả trả về từ server
+            if (response.success) {
+                alert('Cập nhật thành công!');
+                $('#XacNhan1').modal('hide');  // Đóng modal khi cập nhật thành công
+
+                location.reload();
+            } else {
+                alert('Cập nhật thành công!');
+                $('#XacNhan1').modal('hide');  // Đóng modal khi cập nhật thành công
+
+                location.reload();
+            }
+        },
+        error: function(xhr, status, error) {
+            console.error("Error:", error); 
+            console.error("Response Text:", xhr.responseText);
+            alert('Đã có lỗi xảy ra! Vui lòng kiểm tra kết nối hoặc thử lại sau.');
+        }
+    });
+});
+</script>
