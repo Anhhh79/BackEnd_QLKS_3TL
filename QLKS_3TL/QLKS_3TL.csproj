@@ -19,7 +19,6 @@
   <ItemGroup>
     <Folder Include="Areas\Admin\Data\" />
     <Folder Include="Areas\KhachHang\Data\" />
-    <Folder Include="Areas\KhachHang\Models\" />
     <Folder Include="Areas\LeTan\Data\" />
   </ItemGroup>
 

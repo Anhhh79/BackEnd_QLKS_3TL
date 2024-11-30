@@ -127,9 +127,6 @@ function validateForm() {
         if (moTa === '') {
             document.getElementById('errorMoTa').textContent = 'Mô tả không được để trống';
             isValid = false;
-        } else if (specialCharRegex.test(moTa)) {
-            document.getElementById('errorMoTa').textContent = 'Mô tả không được chứa ký tự đặc biệt';
-            isValid = false;
         }
 
         return isValid;
@@ -323,10 +320,7 @@ function validateEditForm() {
     if (moTa === '') {
         document.getElementById('EditerrorMoTa').textContent = 'Mô tả không được để trống';
         isValid = false;
-    } else if (specialCharRegex.test(moTa)) {
-        document.getElementById('EditerrorMoTa').textContent = 'Mô tả không được chứa ký tự đặc biệt';
-        isValid = false;
-    }
+    } 
     return isValid;
 }
 
