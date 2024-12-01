@@ -336,107 +336,107 @@ document.getElementById("DatPhongTrong").addEventListener("click", function () {
   
 </script>
 <!-- Bắt lỗi NHận Phòng -->
-<script>
-    document.getElementById("NhanPhong").addEventListener("click", function () {
-        let isValid = true;
+<!--<script>
+     document.getElementById("NhanPhong").addEventListener("click", function () {
+         let isValid = true;
 
-        // Lấy giá trị từ các input fields
-        const name = document.getElementById("TenDatDat").value.trim();
-        const phone = document.getElementById("SdtDatDat").value.trim();
-        const gender = document.getElementById("gioiTinhDatDat").value;
-        const cccd = document.getElementById("CccdDatDat").value.trim();
-        const checkInDate = document.getElementById("NgayNhanDaDat").value.trim();
-        const checkOutDate = document.getElementById("NgayTraDaDat").value.trim();
-        const email = document.getElementById("EmailDatDat").value.trim();
-        const roomClass = document.getElementById("HPDaDat").value;
-        const roomName = document.getElementById("TPDatDat").value;
-        const request = document.getElementById("YeuCauDaDat").value.trim();
-        const payment = document.getElementById("TtDaDat").value.trim();
+         // Lấy giá trị từ các input fields
+         const name = document.getElementById("TenDatDat").value.trim();
+         const phone = document.getElementById("SdtDatDat").value.trim();
+         const gender = document.getElementById("gioiTinhDatDat").value;
+         const cccd = document.getElementById("CccdDatDat").value.trim();
+         const checkInDate = document.getElementById("NgayNhanDaDat").value.trim();
+         const checkOutDate = document.getElementById("NgayTraDaDat").value.trim();
+         const email = document.getElementById("EmailDatDat").value.trim();
+         const roomClass = document.getElementById("HPDaDat").value;
+         const roomName = document.getElementById("TPDatDat").value;
+         const request = document.getElementById("YeuCauDaDat").value.trim();
+         const payment = document.getElementById("TtDaDat").value.trim();
 
-        // Reset lỗi
-        document.getElementById("nameError").textContent = "";
-        document.getElementById("phoneError").textContent = "";
-        document.getElementById("genderError").textContent = "";
-        document.getElementById("cccdError").textContent = "";
-        document.getElementById("checkInDateError").textContent = "";
-        document.getElementById("checkOutDateError").textContent = "";
-        document.getElementById("emailError").textContent = "";
-        document.getElementById("roomClassError").textContent = "";
-        document.getElementById("roomNameError").textContent = "";
-        document.getElementById("requestError").textContent = "";
-        document.getElementById("paymentError").textContent = "";
+         // Reset lỗi
+         document.getElementById("nameError").textContent = "";
+         document.getElementById("phoneError").textContent = "";
+         document.getElementById("genderError").textContent = "";
+         document.getElementById("cccdError").textContent = "";
+         document.getElementById("checkInDateError").textContent = "";
+         document.getElementById("checkOutDateError").textContent = "";
+         document.getElementById("emailError").textContent = "";
+         document.getElementById("roomClassError").textContent = "";
+         document.getElementById("roomNameError").textContent = "";
+         document.getElementById("requestError").textContent = "";
+         document.getElementById("paymentError").textContent = "";
 
-        // Kiểm tra tên
-        if (name === "") {
-            document.getElementById("nameError").textContent = "Vui lòng nhập họ tên";
-            isValid = false;
-        }
+         // Kiểm tra tên
+         if (name === "") {
+             document.getElementById("nameError").textContent = "Vui lòng nhập họ tên";
+             isValid = false;
+         }
 
-        // Kiểm tra số điện thoại
-        if (phone === "" || !/^\d{10,11}$/.test(phone)) {
-            document.getElementById("phoneError").textContent = "Vui lòng nhập số điện thoại hợp lệ";
-            isValid = false;
-        }
+         // Kiểm tra số điện thoại
+         if (phone === "" || !/^\d{10,11}$/.test(phone)) {
+             document.getElementById("phoneError").textContent = "Vui lòng nhập số điện thoại hợp lệ";
+             isValid = false;
+         }
 
-        // Kiểm tra giới tính
-        if (gender === "") {
-            document.getElementById("genderError").textContent = "Vui lòng chọn giới tính";
-            isValid = false;
-        }
+         // Kiểm tra giới tính
+         if (gender === "") {
+             document.getElementById("genderError").textContent = "Vui lòng chọn giới tính";
+             isValid = false;
+         }
 
-        // Kiểm tra CCCD
-        if (cccd === "" || !/^\d{9,12}$/.test(cccd)) {
-            document.getElementById("cccdError").textContent = "Vui lòng nhập CCCD hợp lệ";
-            isValid = false;
-        }
+         // Kiểm tra CCCD
+         if (cccd === "" || !/^\d{9,12}$/.test(cccd)) {
+             document.getElementById("cccdError").textContent = "Vui lòng nhập CCCD hợp lệ";
+             isValid = false;
+         }
 
-        // Kiểm tra ngày nhận và ngày trả
-        if (checkInDate === "") {
-            document.getElementById("checkInDateError").textContent = "Vui lòng chọn ngày nhận";
-            isValid = false;
-        }
-        if (checkOutDate === "") {
-            document.getElementById("checkOutDateError").textContent = "Vui lòng chọn ngày trả";
-            isValid = false;
-        }
+         // Kiểm tra ngày nhận và ngày trả
+         if (checkInDate === "") {
+             document.getElementById("checkInDateError").textContent = "Vui lòng chọn ngày nhận";
+             isValid = false;
+         }
+         if (checkOutDate === "") {
+             document.getElementById("checkOutDateError").textContent = "Vui lòng chọn ngày trả";
+             isValid = false;
+         }
 
-        // Kiểm tra email
-        if (email === "" || !/\S+@@\S+\.\S+/.test(email)) {
-            document.getElementById("emailError").textContent = "Vui lòng nhập email hợp lệ";
-            isValid = false;
-        }
+         // Kiểm tra email
+         if (email === "" || !/\S+@@\S+\.\S+/.test(email)) {
+             document.getElementById("emailError").textContent = "Vui lòng nhập email hợp lệ";
+             isValid = false;
+         }
 
-        // Kiểm tra hạng phòng
-        if (roomClass === "") {
-            document.getElementById("roomClassError").textContent = "Vui lòng chọn hạng phòng";
-            isValid = false;
-        }
+         // Kiểm tra hạng phòng
+         if (roomClass === "") {
+             document.getElementById("roomClassError").textContent = "Vui lòng chọn hạng phòng";
+             isValid = false;
+         }
 
-        // Kiểm tra tên phòng
-        if (roomName === "") {
-            document.getElementById("roomNameError").textContent = "Vui lòng chọn tên phòng";
-            isValid = false;
-        }
+         // Kiểm tra tên phòng
+         if (roomName === "") {
+             document.getElementById("roomNameError").textContent = "Vui lòng chọn tên phòng";
+             isValid = false;
+         }
 
-        // Kiểm tra yêu cầu
-        if (request === "") {
-            document.getElementById("requestError").textContent = "Vui lòng nhập yêu cầu";
-            isValid = false;
-        }
+         // Kiểm tra yêu cầu
+         if (request === "") {
+             document.getElementById("requestError").textContent = "Vui lòng nhập yêu cầu";
+             isValid = false;
+         }
 
-        // Kiểm tra thanh toán
-        if (payment === "") {
-            document.getElementById("paymentError").textContent = "Vui lòng nhập số tiền thanh toán";
-            isValid = false;
-        }
+         // Kiểm tra thanh toán
+         if (payment === "") {
+             document.getElementById("paymentError").textContent = "Vui lòng nhập số tiền thanh toán";
+             isValid = false;
+         }
 
-        // Nếu có lỗi, không cho phép submit
-        if (!isValid) {
-            return;
-        }
+         // Nếu có lỗi, không cho phép submit
+         if (!isValid) {
+             return;
+         }
 
-        // Xử lý khi tất cả đều hợp lệ
-        alert("Nhận phòng thành công!");
-    });
+         // Xử lý khi tất cả đều hợp lệ
+         alert("Nhận phòng thành công!");
+     });
 
-</script>
+ </script>-->
