@@ -78,7 +78,7 @@
                             <label class="mx-4 mb-2" style="font-size: 18px;font-weight: 600;line-height: 19px;">Ngày nhận: </label>
                             <div class="input-group flex-nowrap mx-4 border rounded text-center" style="width: 215px; background: #EEEEEE;">
                                 <i class="fa fa-calendar-alt" style="margin-top:13px; margin-left:20px"></i>
-                                <input class="py-2 mx-2 rounded" id="myID" class="ps-2" style="width: 140px;border: 0;background: #EEEEEE;" placeholder="Ngày Nhận">
+                                <input class="py-2 mx-2 rounded" id="ngayNhan" class="ps-2 myID" style="width: 140px;border: 0;background: #EEEEEE;" placeholder="Ngày Nhận">
                             </div>
                         </div>
 
@@ -86,25 +86,25 @@
                             <label class="mx-4 mb-2" style="font-size: 18px;font-weight: 600;line-height: 19px;">Ngày trả: </label>
                             <div class="input-group flex-nowrap mx-4 border rounded text-center" style="width: 215px; background: #EEEEEE;">
                                 <i class="fa fa-calendar-alt" style="margin-top:13px; margin-left:20px"></i>
-                                <input class="py-2 mx-2 rounded" id="myID" class="ps-2" style="width: 140px;border: 0;background: #EEEEEE;" placeholder="Ngày trả">
+                                <input class="py-2 mx-2 rounded" id="ngayTra" class="ps-2 myID" style="width: 140px;border: 0;background: #EEEEEE;" placeholder="Ngày trả">
                             </div>
                         </div>
 
                         <div>
                             <label class="mx-4 mb-2" style="font-size: 18px;font-weight: 600;line-height: 19px;">Mức Giá Phòng / Đêm: </label>
-                            <select class="form-select mx-4 " style="width: 220px; background: #EEEEEE ;" aria-label="Default select example">
-                                <option selected>&lt; 0 VND</option>
-                                <option value="1">&gt; 5 trăm VND</option>
-                                <option value="2">5 trăm - 1 triệu VND</option>
-                                <option value="3">1 triệu - 2 triệu VND</option>
-                                <option value="4">2 triệu - 4 triệu VND</option>
-                                <option value="5">&lt; 5 triệu VND</option>
+                            <select id="mucGia" class="form-select mx-4 " style="width: 220px; background: #EEEEEE ;" aria-label="Default select example">
+                                <option selected value="0">&lt; 0 VND</option>
+                                <option value="500000">&gt; 5 trăm VND</option>
+                                <option value="500000-1000000">5 trăm - 1 triệu VND</option>
+                                <option value="1000000-2000000">1 triệu - 2 triệu VND</option>
+                                <option value="2000000-4000000">2 triệu - 4 triệu VND</option>
+                                <option value="5000000">&lt; 5 triệu VND</option>
                             </select>
 
                         </div>
                         <div>
                             <label class="mx-4 mb-2" style="font-size: 18px;font-weight: 600;line-height: 19px;">Số Giường: </label>
-                            <select class="form-select mx-4 me-5 " style="width: 220px; background: #EEEEEE ;"
+                            <select id="soGiuong" class="form-select mx-4 me-5 " style="width: 220px; background: #EEEEEE ;"
                                     aria-label="Default select example">
                                 <option value="1" selected>1 giường</option>
                                 <option value="2">2 giường</option>
@@ -113,7 +113,7 @@
 
                         </div>
                         <div class="d-flex justify-content-md-end me-4">
-                            <button class="btn bg-color" type="button" style="width: 150px; color: azure; height: 38px; margin-top: 25px;">
+                            <button class="btn bg-color" id="btnTimKiem" type="button" style="width: 150px; color: azure; height: 38px; margin-top: 25px;">
                                 <i class="fa-solid fa-magnifying-glass"></i> Tìm Kiếm
                             </button>
                         </div>
@@ -518,6 +518,39 @@
         });
     </script>
     <script src="~/js/DatPhongOnl.js"></script>
+    <script>
+        document.querySelector('#btnTimKiem').addEventListener('click', function () {
+            console.log("bạn đã bấm vào nút tìm kiếm")
+            // Thu thập dữ liệu từ form
+            const data = {
+                NgayNhan: document.querySelector('#ngayNhan').value,
+                NgayTra: document.querySelector('#ngayTra').value,
+                MucGia: document.querySelector('#mucGia').value,
+                SoGiuong: document.querySelector('#soGiuong').value
+            };
+
+            // Gửi dữ liệu tới API Controller
+            fetch('/KhachHang/DatPhongOnl/KiemTraThongTin', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(data)
+            })
+                .then(response => response.json())
+                .then(result => {
+                    // Hiển thị kết quả
+                    if (result.success) {
+                        alert('Tìm kiếm thành công!');
+                        console.log(result.data);
+                    } else {
+                        alert('Không tìm thấy kết quả phù hợp!');
+                    }
+                })
+                .catch(error => console.error('Error:', error));
+        });
+    </script>
+
 </body>
 
 </html>
