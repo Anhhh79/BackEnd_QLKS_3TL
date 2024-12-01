@@ -1,0 +1,442 @@
+﻿@model IEnumerable<QLKS_3TL.Areas.LeTan.Models.ThongTinPhongLT>
+
+<div class="main" id="content">
+    <nav class="navbar navbar-expand px-4 py-3">
+        <div class="navbar-collapse collapse">
+            <ul class="navbar-nav justify-content-between" style="width: 1380px;">
+                <li>
+                    <h2 style="font-weight: bolder;">Danh sách phòng</h2>
+                </li>
+                <li class="nav-item dropdown">
+                    <a href="#" data-bs-toggle="dropdown" class="nav-icon pe-md-0">
+                        <img src="~/images/account.png" class="avatar img-fluid" alt="">
+                    </a>
+                    <div class="dropdown-menu dropdown-menu-end rounded" style="width: 180px;">
+                        <div class="row">
+                            <h4 style="font-weight: 600; font-size: larger;" class="ms-2">Huỳnh Quốc Bảo
+                            </h4>
+                        </div>
+                        <div class="d-flex">
+                            <a class="ms-2 cusor" data-bs-toggle="modal" data-bs-target="#doimk">Đổi mật
+                                khẩu</a>
+                        </div>
+                        <div class="d-flex">
+                            <a class="ms-2 cusor" style="color: red;">Đăng xuất</a>
+                        </div>
+                    </div>
+                </li>
+            </ul>
+        </div>
+    </nav>
+    <main class="content px-3 py-3">
+        <div class="container-fluid">
+            <div>
+                <div class="input-group d-flex align-items-center border border-dark rounded"
+                    style="width: 300px;padding: 0;">
+                    <i class="fa-solid fa-magnifying-glass fa-1x ms-2 "></i>
+                    <input type="text" class="form-control input-border" placeholder="Thông tin phòng"
+                        aria-label="Username" aria-describedby="basic-addon1" style="border: 0;">
+                </div>
+                <div class="row mt-2">
+                    <div class="col-12">
+                        <table class="table">
+                            <thead style="background: #0e2238;">
+                                <tr>
+                                    <th scope="col">STT</th>
+                                    <th scope="col">Mã phòng</th>
+                                    <th scope="col">Tên Hạng Phòng</th>
+                                    <th scope="col"></th>
+                                    <th scope="col">Giá Phòng</th>
+                                    <th scope="col"></th>
+                                    <th scope="col">Trạng thái</th>
+                                    <th scope="col"></th>
+                                </tr>
+                            </thead>
+                            <tbody id="tblBodyThongTinPhongLT">
+                                @{
+                                    int soThuTu = 1;
+                                }
+
+                                @foreach(var i in Model)
+                                {
+                                    <tr>
+                                        <th scope="row">@soThuTu</th>
+                                        <td class="me-2">@i.MaPhong</td>
+                                        <td>@i.TenHangPhong</td>
+                                        <td></td>
+
+                                        <td>@i.GiaPhong / h</td>
+                                        <td></td>
+                                        @if (i.TrangThai == "Trống" || i.TrangThai == "Đã thanh toán")
+                                        {
+                                            <td class="text-secondary">Trống</td>
+                                            <td>
+                                                <button type="button" class="btn btn-secondary btn-sm" data-bs-toggle="modal"
+                                                        data-bs-target="#roomModal">
+                                                    Chọn phòng
+                                                </button>
+                                            </td>
+                                        }
+                                        @if(i.TrangThai == "Đã đặt")
+                                        {
+                                            <td class="text-warning">@i.TrangThai</td>
+                                            <td>
+                                                <button type="button" class="btn btn-warning btn-sm" onclick="ThongTinNhanPhong('@i.MaDatPhong')">
+                                                    Nhận phòng
+                                                </button>
+                                            </td>
+                                        }
+                                        @if (i.TrangThai == "Đang hoạt động")
+                                        {
+                                            <td class="text-success">@i.TrangThai</td>
+                                            <td>
+                                                <button type="button" class="btn btn-success btn-sm" style=" padding-left: 16px;padding-right: 16px;" onclick="ThongTinTraPhong('@i.MaDatPhong')">
+                                                    Trả phòng
+                                                </button>
+                                            </td>
+                                        }
+                                    </tr>
+                                    soThuTu++;
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+</div>
+<!-- Modal doi mk -->
+<div class="modal fade" id="doimk" tabindex="-1" aria-labelledby="moimk" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content" style="border-radius: 20px;">
+            <div class="modal-header d-flex justify-content-center">
+                <div>
+                    <h5 style="font-weight: bolder;">Đổi mật khẩu</h5>
+                </div>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body" id="modalContent">
+                <div class="container px-5">
+                    <div class="row">
+                        <div class="col-12">
+                            <label for="fullname" class="ms-1 mb-1 label-modal">Mật khẩu hiện tại</label>
+                            <input type="password" class="form-control" id="mkHienTai" placeholder="" required>
+                            <span id="mkHienTaiError" class="error text-danger"></span>
+                        </div>
+                    </div>
+                    <div class="row mt-3">
+                        <div class="col-12">
+                            <label for="cccd" class="ms-1 mb-1 label-modal">Mật khẩu mới</label>
+                            <input class="form-control" type="password" id="mkMoi" placeholder="" required>
+                            <span id="mkMoiError" type="password" class="error text-danger"></span>
+                        </div>
+                    </div>
+                    <div class="row mt-3">
+                        <div class="col-12">
+                            <label for="address" class="ms-1 mb-1 label-modal">Nhập lại mật khẩu mới</label>
+                            <input type="text" class="form-control" id="mkMoi1" placeholder="" required>
+                            <span id="mkMoi1Error" class="error text-danger"></span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- footer -->
+            <div class="container my-2">
+                <div class="row" style="justify-content: flex-end;">
+                    <div class="col-3 m-2 d-flex justify-content-end" style="width: 200px;">
+                        <button type="button" class="btn btn-warning" id="doimatkhau"
+                            style="font-size: medium; color: white;">Đổi mật khẩu</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Modal cho nút chọn phòng -->
+@await Html.PartialAsync("ModalChonPhong");
+<!-- Modal cho nút nhận phòng  -->
+@await Html.PartialAsync("ModalNhanPhong");
+<!-- Modal cho nút Trả phòng -->
+@await Html.PartialAsync("ModalTraPhong");
+<!-- javascrit bắt lỗi đổi mk -->
+<script>
+    // Loại bỏ khoảng trắng trong khi người dùng nhập vào các ô mật khẩu
+    document.getElementById('mkHienTai').addEventListener('input', function () {
+        this.value = this.value.replace(/\s/g, '');
+    });
+
+    document.getElementById('mkMoi').addEventListener('input', function () {
+        this.value = this.value.replace(/\s/g, '');
+    });
+
+    document.getElementById('mkMoi1').addEventListener('input', function () {
+        this.value = this.value.replace(/\s/g, '');
+    });
+
+    document.getElementById('doimatkhau').addEventListener('click', function () {
+        // Lấy giá trị của các ô input
+        const mkHienTai = document.getElementById('mkHienTai').value.trim();
+        const mkMoi = document.getElementById('mkMoi').value.trim();
+        const mkMoi1 = document.getElementById('mkMoi1').value.trim();
+
+        // Xóa thông báo lỗi trước đó
+        document.getElementById('mkHienTaiError').textContent = '';
+        document.getElementById('mkMoiError').textContent = '';
+        document.getElementById('mkMoi1Error').textContent = '';
+
+        let isValid = true;
+
+        // Kiểm tra mật khẩu hiện tại
+        if (!mkHienTai) {
+            document.getElementById('mkHienTaiError').textContent = 'Vui lòng nhập mật khẩu hiện tại';
+            isValid = false;
+        }
+
+        // Kiểm tra mật khẩu mới
+        if (!mkMoi) {
+            document.getElementById('mkMoiError').textContent = 'Vui lòng nhập mật khẩu mới';
+            isValid = false;
+        } else if (mkMoi.length < 6) {
+            document.getElementById('mkMoiError').textContent = 'Mật khẩu mới phải có ít nhất 6 ký tự';
+            isValid = false;
+        }
+
+        // Kiểm tra nhập lại mật khẩu mới
+        if (!mkMoi1) {
+            document.getElementById('mkMoi1Error').textContent = 'Vui lòng nhập lại mật khẩu mới';
+            isValid = false;
+        } else if (mkMoi !== mkMoi1) {
+            document.getElementById('mkMoi1Error').textContent = 'Mật khẩu nhập lại không khớp';
+            isValid = false;
+        }
+
+        // Nếu không có lỗi, thực hiện các bước tiếp theo (ví dụ: gửi dữ liệu đến server)
+        if (isValid) {
+            // Thực hiện xử lý đổi mật khẩu tại đây
+            alert('Đổi mật khẩu thành công!');
+            document.getElementById('mkHienTai').value = '';
+            document.getElementById('mkMoi').value = '';
+            document.getElementById('mkMoi1').value = '';
+        }
+    });
+
+</script>
+<script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+<script>
+    flatpickr(".datepicker", {
+        dateFormat: "d/m/yy",
+    });
+</script>
+<!-- bẮT LỖI ĐẶT PHÒNG -->
+<script>
+    function validateForm() {
+    let isValid = true;
+
+    // Lấy giá trị từ các input fields
+    const name = document.getElementById("TenTrong").value.trim();
+    const phone = document.getElementById("SdtTrong").value.trim();
+    const gender = document.getElementById("GioiTingTrong").value;
+    const cccd = document.getElementById("CccdTRong").value.trim();
+    const checkInDate = document.getElementById("NgayNhanTrong").value.trim();
+    const checkOutDate = document.getElementById("NgayTraTrong").value.trim();
+    const email = document.getElementById("EmailTrong").value.trim();
+    const songay = document.getElementById("NgayTrong").value.trim();
+
+    const roomClass = document.getElementById("HPTrong").value;
+    const roomName = document.getElementById("TPTrong").value;
+    const request = document.getElementById("YeuCauTrong").value.trim();
+    const payment = document.getElementById("TtTrong").value.trim();
+
+    // Hàm đặt lỗi
+    function setError(elementId, message) {
+        document.getElementById(elementId).textContent = message;
+        isValid = false;
+    }
+
+    // Reset lỗi
+    document.querySelectorAll(".error").forEach(el => el.textContent = "");
+
+    // Kiểm tra tên
+    if (name === "") setError("NameError", "Vui lòng nhập họ tên");
+
+    // Kiểm tra số điện thoại
+    if (phone === "" || !/^\d{10,11}$/.test(phone)) {
+        setError("PhoneError", "Vui lòng nhập số điện thoại hợp lệ");
+    }
+
+    // Kiểm tra giới tính
+    if (gender === "") setError("GenderError", "Vui lòng chọn giới tính");
+
+    // Kiểm tra CCCD
+    if (cccd === "" || !/^\d{9,12}$/.test(cccd)) {
+        setError("CccdError", "Vui lòng nhập CCCD hợp lệ");
+    }
+
+    // Kiểm tra ngày nhận và ngày trả
+    if (checkInDate === "") setError("CheckInDateError", "Vui lòng chọn ngày nhận");
+    if (checkOutDate === "") setError("CheckOutDateError", "Vui lòng chọn ngày trả");
+    if (checkInDate && checkOutDate && new Date(checkInDate) >= new Date(checkOutDate)) {
+        setError("CheckOutDateError", "Ngày trả phải lớn hơn ngày nhận");
+    }
+
+    // Kiểm tra email
+    if (email === "" || !/\S+@@\S+\.\S+/.test(email)) {
+        setError("EmailError", "Vui lòng nhập email hợp lệ");
+    }
+
+    // Kiểm tra hạng phòng
+    if (roomClass === "") setError("RoomClassError", "Vui lòng chọn hạng phòng");
+
+    // Kiểm tra tên phòng
+    if (roomName === "") setError("RoomNameError", "Vui lòng chọn tên phòng");
+
+    // Kiểm tra yêu cầu
+    // if (request === "") setError("RequestError", "Vui lòng nhập yêu cầu");
+
+    // Kiểm tra thanh toán
+    if (payment === "") setError("PaymentError", "Vui lòng nhập số tiền thanh toán");
+
+    // Trả về trạng thái hợp lệ
+    return isValid;
+}
+
+function resetForm() {
+    // Đặt lại giá trị của các trường input
+    document.getElementById("TenTrong").value = "";
+    document.getElementById("SdtTrong").value = "";
+    document.getElementById("GioiTingTrong").selectedIndex = 0; // Reset select
+    document.getElementById("CccdTRong").value = "";
+    document.getElementById("NgayNhanTrong").value = "";
+    document.getElementById("NgayTraTrong").value = "";
+    document.getElementById("EmailTrong").value = "";
+    document.getElementById("HPTrong").selectedIndex = 0; // Reset select
+    document.getElementById("TPTrong").selectedIndex = 0; // Reset select
+    document.getElementById("YeuCauTrong").value = "";
+    document.getElementById("TtTrong").value = "";
+    document.getElementById("NgayTrong").value = "";
+    document.querySelectorAll(".error").forEach(el => el.textContent = ""); // Reset lỗi
+}
+
+document.getElementById("NhanPhongTrong").addEventListener("click", function () {
+    if (validateForm()) {
+        alert("Nhận phòng thành công!");
+        resetForm(); // Đặt lại các trường input
+    }
+});
+
+document.getElementById("DatPhongTrong").addEventListener("click", function () {
+    if (validateForm()) {
+        alert("Đặt phòng thành công!");
+        resetForm(); // Đặt lại các trường input
+    }
+});
+
+  
+</script>
+<!-- Bắt lỗi NHận Phòng -->
+<script>
+    document.getElementById("NhanPhong").addEventListener("click", function () {
+        let isValid = true;
+
+        // Lấy giá trị từ các input fields
+        const name = document.getElementById("TenDatDat").value.trim();
+        const phone = document.getElementById("SdtDatDat").value.trim();
+        const gender = document.getElementById("gioiTinhDatDat").value;
+        const cccd = document.getElementById("CccdDatDat").value.trim();
+        const checkInDate = document.getElementById("NgayNhanDaDat").value.trim();
+        const checkOutDate = document.getElementById("NgayTraDaDat").value.trim();
+        const email = document.getElementById("EmailDatDat").value.trim();
+        const roomClass = document.getElementById("HPDaDat").value;
+        const roomName = document.getElementById("TPDatDat").value;
+        const request = document.getElementById("YeuCauDaDat").value.trim();
+        const payment = document.getElementById("TtDaDat").value.trim();
+
+        // Reset lỗi
+        document.getElementById("nameError").textContent = "";
+        document.getElementById("phoneError").textContent = "";
+        document.getElementById("genderError").textContent = "";
+        document.getElementById("cccdError").textContent = "";
+        document.getElementById("checkInDateError").textContent = "";
+        document.getElementById("checkOutDateError").textContent = "";
+        document.getElementById("emailError").textContent = "";
+        document.getElementById("roomClassError").textContent = "";
+        document.getElementById("roomNameError").textContent = "";
+        document.getElementById("requestError").textContent = "";
+        document.getElementById("paymentError").textContent = "";
+
+        // Kiểm tra tên
+        if (name === "") {
+            document.getElementById("nameError").textContent = "Vui lòng nhập họ tên";
+            isValid = false;
+        }
+
+        // Kiểm tra số điện thoại
+        if (phone === "" || !/^\d{10,11}$/.test(phone)) {
+            document.getElementById("phoneError").textContent = "Vui lòng nhập số điện thoại hợp lệ";
+            isValid = false;
+        }
+
+        // Kiểm tra giới tính
+        if (gender === "") {
+            document.getElementById("genderError").textContent = "Vui lòng chọn giới tính";
+            isValid = false;
+        }
+
+        // Kiểm tra CCCD
+        if (cccd === "" || !/^\d{9,12}$/.test(cccd)) {
+            document.getElementById("cccdError").textContent = "Vui lòng nhập CCCD hợp lệ";
+            isValid = false;
+        }
+
+        // Kiểm tra ngày nhận và ngày trả
+        if (checkInDate === "") {
+            document.getElementById("checkInDateError").textContent = "Vui lòng chọn ngày nhận";
+            isValid = false;
+        }
+        if (checkOutDate === "") {
+            document.getElementById("checkOutDateError").textContent = "Vui lòng chọn ngày trả";
+            isValid = false;
+        }
+
+        // Kiểm tra email
+        if (email === "" || !/\S+@@\S+\.\S+/.test(email)) {
+            document.getElementById("emailError").textContent = "Vui lòng nhập email hợp lệ";
+            isValid = false;
+        }
+
+        // Kiểm tra hạng phòng
+        if (roomClass === "") {
+            document.getElementById("roomClassError").textContent = "Vui lòng chọn hạng phòng";
+            isValid = false;
+        }
+
+        // Kiểm tra tên phòng
+        if (roomName === "") {
+            document.getElementById("roomNameError").textContent = "Vui lòng chọn tên phòng";
+            isValid = false;
+        }
+
+        // Kiểm tra yêu cầu
+        if (request === "") {
+            document.getElementById("requestError").textContent = "Vui lòng nhập yêu cầu";
+            isValid = false;
+        }
+
+        // Kiểm tra thanh toán
+        if (payment === "") {
+            document.getElementById("paymentError").textContent = "Vui lòng nhập số tiền thanh toán";
+            isValid = false;
+        }
+
+        // Nếu có lỗi, không cho phép submit
+        if (!isValid) {
+            return;
+        }
+
+        // Xử lý khi tất cả đều hợp lệ
+        alert("Nhận phòng thành công!");
+    });
+
+</script>
