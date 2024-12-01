@@ -1,0 +1,233 @@
+﻿@{
+    Layout = null;
+}
+@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+}
+<html lang="en">
+<head>
+    <!-- css -->
+    <!-- css file -->
+    <link rel="stylesheet" href="~/css/styleKH.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- BootStrap 5 CND -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+    <!-- Google font -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&amp;display=swap" rel="stylesheet">
+    <!-- font awsome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css" integrity="sha512-Kc323vGBEqzTmouAECnVceyQqyqdsSiqLQISBL29aUW4U/M7pSPA/gEUZQqv1cwx4OnYxTxve5UMg5GT6L4JJg==" crossorigin="anonymous" referrerpolicy="no-referrer">
+    <!-- BootStrap icon -->
+    <link href="
+  https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" rel="stylesheet">
+
+    <!-- OWN carousel -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/assets/owl.carousel.min.css" integrity="sha512-tS3S5qG0BlhnQROyJXvNjeEM4UpMXHrQfTGmbQ1gKmelCxlSEBUaxhRBj/EFTzpbP4RVSrpEikbmdJobCvhE3g==" crossorigin="anonymous" referrerpolicy="no-referrer">
+    <title>Thanh Toán</title>
+</head>
+
+<body style="background-color: #E5E5E5">
+    <!-- ==== Header ==== -->
+    <header class="myheader sticky-top">
+        <div class="container-fluid" style="background: white;">
+            <div class="container">
+                <div class="d-flex">
+                    <div class="col-md-4 align-items-center d-flex">
+                        <div>
+                            <div class="d-flex">
+                                <div class="mx-2">
+                                    <i class="fa-solid fa-phone phone"></i>
+                                    <span class="fs-6 fw-bold">19001289</span>
+                                </div>
+                                <div class="mx-2"><i class="fa-brands fa-facebook facebook"></i></div>
+                                <div class="mx-2"><i class="fa-brands fa-twitter bird"></i></div>
+                                <div class="mx-2"><i class="fa-brands fa-youtube youtube "></i></div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4 d-flex justify-content-center">
+                        <div>
+                            <a href="index.html"><img src="images/logo_1650360911.svg" class="w-110 h-53 py-2" alt=""></a>
+                        </div>
+                    </div>
+                    <div class="col-md-4 d-flex justify-content-end align-items-center">
+                        <div>
+                            <img src="https://tienichhay.net/uploads/flags/shiny/64x64/vn.png">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+    <!-- body -->
+
+
+    <div class="container pb-5">
+        <div class="text-center p-3 m-2">
+            <span style="font-weight: bold; font-size:x-large; color: darkblue;">THÔNG TIN ĐẶT PHÒNG</span>
+        </div>
+        <form>
+            <div class="d-grid d-flex justify-content-between">
+                <div class="p-3 rounded" style="width: 775px; background-color: white;">
+                    <div>
+                        <h5 class="pt-2 textTitleRoom">Thông tin người đặt phòng</h5>
+                        <hr class="m-2">
+                            <div class="row mt-3">
+                                <div class="col">
+                                    <label for="fullName" class="form-label">Họ Và Tên</label>
+                                    <input type="text" id="fullNameThanhToan" class="form-control" placeholder="Full name" aria-label="Full name" required="">
+                                    <div id="fullNameErrorTT" class="text-danger"></div>
+                                </div>
+                                <div class="col mb-3">
+                                    <label for="Country" class="form-label">Giới Tính</label>
+                                    <select class="form-select" id="sexThanhToan" aria-label="Default select example">
+                                        <option value="Nam">Nam</option>
+                                        <option value="Nữ">Nữ</option>
+                                        <option value="Khác">Khác</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col">
+                                    <label for="cccd" class="form-label">Số Căn Cước Công Dân</label>
+                                    <input type="text" class="form-control" id="cccdThanhToan" maxlength="12" aria-describedby="cccdHelp" placeholder="Nhập số CCCD" pattern="[0-9]{12}" title="Số CCCD gồm 12 chữ số" required="">
+                                    <div id="cccdErrorTT" class="text-danger"></div>
+                                </div>
+
+                                <div class="col mb-3">
+                                    <label for="PhoneNumber" class="form-label">Số Điện Thoại</label>
+                                    <input type="tel" class="form-control" id="PhoneNumberThanhToan" maxlength="10" aria-describedby="phoneNumber" placeholder="Phone Number" pattern="[0-9]{10}" title="Số điện thoại gồm 10 chữ số" required="">
+                                    <div id="phoneNumberErrorTT" class="text-danger"></div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col mb-3">
+                                    <label for="phoneNumber1" class="form-label">Nhập Lại Số Điện Thoại</label>
+                                    <input type="tel" class="form-control" id="PhoneNumberThanhToan2" maxlength="10" aria-describedby="phoneNumber1" placeholder="Phone Number" pattern="[0-9]{10}" title="Số điện thoại gồm 10 chữ số" required="">
+                                    <div id="phoneNumber2ErrorTT" class="text-danger"></div>
+                                </div>
+                                <div class="col mb-3">
+                                    <label for="EmailAddress" class="form-label">Địa Chỉ Email</label>
+                                    <input type="email" class="form-control" id="EmailAddressThanhToan" aria-describedby="emailHelp" placeholder="...@@gmail.com" required="">
+                                    <div id="emailErrorTT" class="text-danger"></div>
+                                </div>
+                            </div>
+                            <div class="box box-content">
+                                <label for="b_content" class="form-label">Yêu cầu thêm</label>
+                                <textarea class="form-control" name="b_content" id="b_content" rows="4" placeholder="Ví dụ: Sở thích về Giường, địa điểm đón hoặc trả khách"></textarea>
+                            </div>
+                        </div>
+                    <div>
+                        <h5 class="pt-3 textTitleRoom">Phương Thức Thanh Toán</h5>
+                        <div class="col">
+                            <div class="pt-1">
+                                <select class="form-select p-3 w-50" id="Country" aria-label="Default select example">
+                                    <option value="1">Ngân Hàng VCB Bank</option>
+                                    <option value="2">Ngân Hàng MB Bank</option>
+                                    <option value="3">Ví MOMO</option>
+                                </select>
+                            </div>
+                            <div class="mb-3 form-check pt-3">
+                                <input type="checkbox" class="form-check-input" id="checkDieuKhoanThanhToan">
+                                <label class="form-check-label" for="checkDieuKhoanThanhToan">
+                                    Vui lòng đọc kỹ và đồng ý với điều
+                                    khoản đặt phòng bằng cách đánh dấu vào ô bên cạnh.
+                                </label>
+                                <div id="checkboxErrorTT" class="text-danger"></div>
+                            </div>
+                            <button type="button" id="btnThanhToan" class="btn bg-color text-light text-center" onclick="CheckDataFormThanhToan()"><b>Thanh Toán</b></button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Thong tin dat phong -->
+                <div class="col-4 rounded" style="width: 500px; height: 692px; margin-left: 20px; background: white;">
+                    <div class="container p-3">
+                        <div class="textTitleRoom">
+                            <h5>Thông tin đặt phòng</h5>
+                            <hr>
+                        </div>
+                        <div class="pt-1 mb-2">
+                            <div class="textTitleRoom text-center"><b>Khách Sạn 3TL</b></div>
+                        </div>
+                        <div>
+                            <h6> Thông tin phòng</h6>
+                            <hr>
+                            <div class="scroll-content" id="bookingList">
+                            </div>
+
+                        </div>
+                        <hr>
+                        <div>
+                            <div class="d-flex mt-5">
+                                <div class="col-6">
+                                    <div>
+                                        <h5>Tổng cộng: </h5>
+                                    </div>
+                                </div>
+                                <div class="col-6 d-flex justify-content-end">
+                                    <div>
+                                        <h5 class="text-color" id="TTTongCong">
+                                        </h5>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="mt-2 text-center pt-2">
+                                <span style="font-weight: bold;">Lưu ý: </span><span style="color: red;">
+                                    Để đặt
+                                    phòng bạn cần phải thanh toán 100% số tiền và có thể hủy đặt phòng thông qua
+                                    lịch sử đặt phòng
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+    <footer class="text-white pb-3" style="background-color: #0F172B ;">
+        <div class="container-fluid">
+            <div class="row text-center d-flex p-5">
+                <div class="col-md-4 ">
+                    <h5 class="font-weight-bold">Giới thiệu</h5>
+                    <p>
+                        Chúng tôi cung cấp dịch vụ lưu trú tốt nhất tại thành phố với các phòng hiện đại và tiện nghi.
+                    </p>
+                </div>
+                <div class="col-md-4">
+                    <h5 class="font-weight-bold">Liên hệ</h5>
+                    <ul class="list-unstyled">
+                        <li><i class="fas fa-home"></i> Địa chỉ: 123 Đường XYZ, Thành phố ABC</li>
+                        <li><i class="fas fa-phone"></i> Điện thoại: (012) 345-6789</li>
+                        <li><i class="fas fa-envelope"></i> Email: <a href="mailto:3TL@example.com" class="text-white">3TL@example.com</a></li>
+                    </ul>
+                </div>
+                <div class="col-md-4">
+                    <h5 class="font-weight-bold">Kết nối với chúng tôi</h5>
+                    <ul class="list-unstyled mb-0">
+                        <li class="mr-3"><a href="https://www.facebook.com/hoangnhan0512/?locale=vi_VN" class="text-white" target="_blank"><i class="fab fa-facebook-f fa-2x"></i></a></li>
+                        <li class="mr-3"><a href="https://www.instagram.com/hoangnhan0512" class="text-white" target="_blank"><i class="fab fa-instagram fa-2x"></i></a></li>
+                        <li class="mr-3"><a href="https://twitter.com/hoangnhan0512" class="text-white" target="_blank"><i class="fab fa-twitter fa-2x"></i></a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <hr class="m-0">
+        <div class="text-center py-3" style="background-color: #0F172B ;">
+            <p class="mb-0 text-light font-weight-bold">© Copyright 2024. 3TL. All rights reserved.</p>
+        </div>
+    </footer>
+    <!-- Boottrap js -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.0.1/js/bootstrap.min.js" integrity="sha512-EKWWs1ZcA2ZY9lbLISPz8aGR2+L7JVYqBAYTq5AXgBkSjRSuQEGqWx8R1zAX16KdXPaCjOCaKE8MCpU0wcHlHA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <!-- Jquery-->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js" integrity="sha512-v2CJ7UaYy4JwqLDIrZUI/4hqeoQieOmAZNXBeQyjo21dadnwR+8ZaIJVT8EE2iyI61OV8e6M8PP2/4hpQINQ/g==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <!-- own Caroul js -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/owl.carousel.min.js" integrity="sha512-bPs7Ae6pVvhOSiIcyUClR7/q2OAsRiovw4vAkX+zJbw3ShAeeqezq50RIIcIURq7Oa20rW2n2q+fyXBNcU9lrw==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <!-- Code injected-->
+    <script src="~/js/ThanhToan.js"></script>
+</body><!-- footer -->
+</html>

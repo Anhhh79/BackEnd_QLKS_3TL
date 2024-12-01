@@ -45,7 +45,7 @@ namespace QLKS_3TL.Areas.LeTan.Controllers
                     b.MaKhachHangNavigation.Cccd,
                     b.MaHangPhongNavigation.TenHangPhong,
                     Phongs = b.MaHangPhongNavigation.Phongs
-                        .Where(p => !p.ThongTinDatPhongs.Any(tdp => tdp.TrangThaiPhong == "1"))
+                        .Where(p => !p.ThongTinDatPhongs.Any(tdp => tdp.TrangThaiPhong == "Đã đặt"))
                         .Select(p => p.MaPhong)
                         .ToList() // Chuyển về dạng danh sách
                 })
@@ -80,7 +80,7 @@ namespace QLKS_3TL.Areas.LeTan.Controllers
                         return NotFound(new { message = "Không tìm thấy thông tin đặt phòng cần cập nhật!" });
 
                     // Cập nhật thông tin phòng đã đặt
-                    thongTinDatPhong.TrangThaiXacNhan = "Đã Xác Nhận";
+                    thongTinDatPhong.TrangThaiXacNhan = "2";
                     thongTinDatPhong.TrangThaiPhong = "Đã đặt";
                     thongTinDatPhong.TongThanhToan = model.TongThanhToan;
                     thongTinDatPhong.ThoiGianDatPhong = DateTime.Now;
