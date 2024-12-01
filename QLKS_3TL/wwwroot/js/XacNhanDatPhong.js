@@ -74,79 +74,157 @@ function loadBookingDetails(button) {
     });
 }
 
-    document.getElementById("btnHoanTat").addEventListener("click", function () {
-        // Lấy số lượng phòng từ span trong modal
-        const soLuongPhong = parseInt(document.getElementById("SoLuongPhong").innerText);
-        const danhSachPhong = [];
-        const selectedRooms = document.querySelectorAll(".room-checkbox:checked");
+function DatPhong() {
+    // Lấy số lượng phòng từ span trong modal
+    const soLuongPhong = parseInt(document.getElementById("SoLuongPhong").innerText);
+    const danhSachPhong = [];
+    const selectedRooms = document.querySelectorAll(".room-checkbox:checked");
 
-        // Kiểm tra nếu không có phòng nào được chọn
-        if (selectedRooms.length === 0) {
-            alert("Vui lòng chọn ít nhất một phòng.");
-            return;
-        }
+    // Kiểm tra nếu không có phòng nào được chọn
+    if (selectedRooms.length === 0) {
+        alert("Vui lòng chọn ít nhất một phòng.");
+        return;
+    }
 
-        // Lấy danh sách các phòng đã chọn và thêm vào mảng danhSachPhong
-        selectedRooms.forEach(function (room) {
-            danhSachPhong.push(room.value);
-        });
-
-        // Kiểm tra số lượng phòng đã chọn
-        if (soLuongPhong === 1 && danhSachPhong.length !== 1) {
-            alert("Vui lòng chọn 1 phòng.");
-            return;
-        } else if (soLuongPhong > 1 && danhSachPhong.length !== soLuongPhong) {
-            alert("Vui lòng chọn đúng số lượng phòng.");
-            return;
-        }
-
-        // Lấy các thông tin từ các thẻ span trong modal (ngày nhận, ngày trả, tổng thanh toán,...)
-        const maDatPhong = document.getElementById("maDatPhong").value;  // Lấy từ input hidden
-        const maKhachHang = document.getElementById("maKhachHang").value;  // Lấy từ input hidden
-        const maHangPhong = document.getElementById("maHangPhong").value; // Mã hạng phòng
-        const ngayNhan = document.getElementById("NgayNhan").innerText;
-        const ngayTra = document.getElementById("NgayTra").innerText;
-        const yeuCauThem = document.getElementById("YeuCauThem").innerText;
-        const tongThanhToan = parseFloat(document.getElementById("TongThanhToan").innerText);
-
-        console.log(maKhachHang);
-        console.log(maHangPhong);
-        console.log(maDatPhong);
-        console.log(danhSachPhong);
-        // Gửi dữ liệu thông qua AJAX
-        $.ajax({
-            url: '/LeTan/XacNhanDatPhong/XuLyThongTinDatPhong',  // Địa chỉ API xử lý
-            type: 'POST',
-            contentType: 'application/json',
-            data: JSON.stringify({
-                MaDatPhong: maDatPhong,
-                MaKhachHang: maKhachHang,
-                MaHangPhong: maHangPhong,
-                SoLuongPhong: soLuongPhong,
-                DanhSachPhong: danhSachPhong,
-                NgayNhan: ngayNhan, // Đảm bảo định dạng ngày đúng, ví dụ "2024-12-01"
-                NgayTra: ngayTra,   // Đảm bảo định dạng ngày đúng
-                YeuCauThem: yeuCauThem,
-                TongThanhToan: tongThanhToan
-            }),
-            success: function (response) {
-                console.log(response);  // Đoạn này giúp debug kết quả trả về từ server
-                if (response.success) {
-                    alert('Cập nhật thành công!');
-                    $('#XacNhan1').modal('hide');  // Đóng modal khi cập nhật thành công
-
-                    location.reload();
-                } else {
-                    alert('Cập nhật thành công!');
-                    $('#XacNhan1').modal('hide');  // Đóng modal khi cập nhật thành công
-
-                    location.reload();
-                }
-            },
-            error: function (xhr, status, error) {
-                console.error("Error:", error);
-                console.error("Response Text:", xhr.responseText);
-                alert('Đã có lỗi xảy ra! Vui lòng kiểm tra kết nối hoặc thử lại sau.');
-            }
-        });
+    // Lấy danh sách các phòng đã chọn và thêm vào mảng danhSachPhong
+    selectedRooms.forEach(function (room) {
+        danhSachPhong.push(room.value);
     });
+
+    // Kiểm tra số lượng phòng đã chọn
+    if (soLuongPhong === 1 && danhSachPhong.length !== 1) {
+        alert("Vui lòng chọn 1 phòng.");
+        return;
+    } else if (soLuongPhong > 1 && danhSachPhong.length !== soLuongPhong) {
+        alert("Vui lòng chọn đúng số lượng phòng.");
+        return;
+    }
+
+    // Lấy các thông tin từ các thẻ span trong modal (ngày nhận, ngày trả, tổng thanh toán,...)
+    const maDatPhong = document.getElementById("maDatPhong").value;  // Lấy từ input hidden
+    const maKhachHang = document.getElementById("maKhachHang").value;  // Lấy từ input hidden
+    const maHangPhong = document.getElementById("maHangPhong").value; // Mã hạng phòng
+    const ngayNhan = document.getElementById("NgayNhan").innerText;
+    const ngayTra = document.getElementById("NgayTra").innerText;
+    const yeuCauThem = document.getElementById("YeuCauThem").innerText;
+    const tongThanhToan = parseFloat(document.getElementById("TongThanhToan").innerText);
+
+    console.log(maKhachHang);
+    console.log(maHangPhong);
+    console.log(maDatPhong);
+    console.log(danhSachPhong);
+    // Gửi dữ liệu thông qua AJAX
+    $.ajax({
+        url: '/LeTan/XacNhanDatPhong/XuLyThongTinDatPhong',  // Địa chỉ API xử lý
+        type: 'POST',
+        contentType: 'application/json',
+        data: JSON.stringify({
+            MaDatPhong: maDatPhong,
+            MaKhachHang: maKhachHang,
+            MaHangPhong: maHangPhong,
+            SoLuongPhong: soLuongPhong,
+            DanhSachPhong: danhSachPhong,
+            NgayNhan: ngayNhan, // Đảm bảo định dạng ngày đúng, ví dụ "2024-12-01"
+            NgayTra: ngayTra,   // Đảm bảo định dạng ngày đúng
+            YeuCauThem: yeuCauThem,
+            TongThanhToan: tongThanhToan
+        }),
+        success: function (response) {
+            console.log(response);  // Đoạn này giúp debug kết quả trả về từ server
+            if (response.success) {
+                alert('Cập nhật thành công!');
+                $('#XacNhan1').modal('hide');  // Đóng modal khi cập nhật thành công
+
+                location.reload();
+            } else {
+                alert('Cập nhật thành công!');
+                $('#XacNhan1').modal('hide');  // Đóng modal khi cập nhật thành công
+
+                location.reload();
+            }
+        },
+        error: function (xhr, status, error) {
+            console.error("Error:", error);
+            console.error("Response Text:", xhr.responseText);
+            alert('Đã có lỗi xảy ra! Vui lòng kiểm tra kết nối hoặc thử lại sau.');
+        }
+    });
+
+}
+
+    //document.getElementById("btnHoanTat").addEventListener("click", function () {
+    //    // Lấy số lượng phòng từ span trong modal
+    //    const soLuongPhong = parseInt(document.getElementById("SoLuongPhong").innerText);
+    //    const danhSachPhong = [];
+    //    const selectedRooms = document.querySelectorAll(".room-checkbox:checked");
+
+    //    // Kiểm tra nếu không có phòng nào được chọn
+    //    if (selectedRooms.length === 0) {
+    //        alert("Vui lòng chọn ít nhất một phòng.");
+    //        return;
+    //    }
+
+    //    // Lấy danh sách các phòng đã chọn và thêm vào mảng danhSachPhong
+    //    selectedRooms.forEach(function (room) {
+    //        danhSachPhong.push(room.value);
+    //    });
+
+    //    // Kiểm tra số lượng phòng đã chọn
+    //    if (soLuongPhong === 1 && danhSachPhong.length !== 1) {
+    //        alert("Vui lòng chọn 1 phòng.");
+    //        return;
+    //    } else if (soLuongPhong > 1 && danhSachPhong.length !== soLuongPhong) {
+    //        alert("Vui lòng chọn đúng số lượng phòng.");
+    //        return;
+    //    }
+
+    //    // Lấy các thông tin từ các thẻ span trong modal (ngày nhận, ngày trả, tổng thanh toán,...)
+    //    const maDatPhong = document.getElementById("maDatPhong").value;  // Lấy từ input hidden
+    //    const maKhachHang = document.getElementById("maKhachHang").value;  // Lấy từ input hidden
+    //    const maHangPhong = document.getElementById("maHangPhong").value; // Mã hạng phòng
+    //    const ngayNhan = document.getElementById("NgayNhan").innerText;
+    //    const ngayTra = document.getElementById("NgayTra").innerText;
+    //    const yeuCauThem = document.getElementById("YeuCauThem").innerText;
+    //    const tongThanhToan = parseFloat(document.getElementById("TongThanhToan").innerText);
+
+    //    console.log(maKhachHang);
+    //    console.log(maHangPhong);
+    //    console.log(maDatPhong);
+    //    console.log(danhSachPhong);
+    //    // Gửi dữ liệu thông qua AJAX
+    //    $.ajax({
+    //        url: '/LeTan/XacNhanDatPhong/XuLyThongTinDatPhong',  // Địa chỉ API xử lý
+    //        type: 'POST',
+    //        contentType: 'application/json',
+    //        data: JSON.stringify({
+    //            MaDatPhong: maDatPhong,
+    //            MaKhachHang: maKhachHang,
+    //            MaHangPhong: maHangPhong,
+    //            SoLuongPhong: soLuongPhong,
+    //            DanhSachPhong: danhSachPhong,
+    //            NgayNhan: ngayNhan, // Đảm bảo định dạng ngày đúng, ví dụ "2024-12-01"
+    //            NgayTra: ngayTra,   // Đảm bảo định dạng ngày đúng
+    //            YeuCauThem: yeuCauThem,
+    //            TongThanhToan: tongThanhToan
+    //        }),
+    //        success: function (response) {
+    //            console.log(response);  // Đoạn này giúp debug kết quả trả về từ server
+    //            if (response.success) {
+    //                alert('Cập nhật thành công!');
+    //                $('#XacNhan1').modal('hide');  // Đóng modal khi cập nhật thành công
+
+    //                location.reload();
+    //            } else {
+    //                alert('Cập nhật thành công!');
+    //                $('#XacNhan1').modal('hide');  // Đóng modal khi cập nhật thành công
+
+    //                location.reload();
+    //            }
+    //        },
+    //        error: function (xhr, status, error) {
+    //            console.error("Error:", error);
+    //            console.error("Response Text:", xhr.responseText);
+    //            alert('Đã có lỗi xảy ra! Vui lòng kiểm tra kết nối hoặc thử lại sau.');
+    //        }
+    //    });
+    //});
