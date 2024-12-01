@@ -16,7 +16,7 @@ namespace QLKS_3TL.Areas.LeTan.Controllers
 
         public QuanLyDatPhongController(Qlks3tlContext context) => db = context;
 
-        //Hàm hiển thị danh sách hóa đơn thu
+        //Hàm hiển thị danh sách phòng
         public async Task<IActionResult> Index()
         {
             try
@@ -238,7 +238,7 @@ namespace QLKS_3TL.Areas.LeTan.Controllers
             }
         }
 
-
-
+        //Hiển thị dữ liệu lên form chọn phòng
+        
     }
 }

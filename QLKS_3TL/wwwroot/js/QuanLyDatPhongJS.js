@@ -56,7 +56,7 @@ function LoadThongTinPhong() {
                         object += `
                         <td class="text-secondary">Trống</td>
                         <td>
-                            <button type="button" class="btn btn-secondary btn-sm" data-bs-toggle="modal" data-bs-target="#roomModal">
+                            <button type="button" class="btn btn-secondary btn-sm"  data-bs-toggle="modal" data-bs-target="#roomModal">
                                 Chọn phòng
                             </button>
                         </td>`;
@@ -348,6 +348,113 @@ function XuLyNhanPhong(maDatPhong) {
     });
 }
 
+//bắt lỗi đặt phòng 
+function validateForm() {
+    let isValid = true;
+
+    // Lấy giá trị từ các input fields
+    const name = document.getElementById("TenTrong").value.trim();
+    const phone = document.getElementById("SdtTrong").value.trim();
+    const gender = document.getElementById("GioiTingTrong").value;
+    const cccd = document.getElementById("CccdTRong").value.trim();
+    const checkInDate = document.getElementById("NgayNhanTrong").value;
+    const checkOutDate = document.getElementById("NgayTraTrong").value;
+    const email = document.getElementById("EmailTrong").value.trim();
+
+    function setError(elementId, message) {
+        const errorElement = document.getElementById(elementId);
+        if (errorElement) {
+            errorElement.textContent = message;
+            errorElement.style.color = "red";
+        }
+        isValid = false;
+    }
+
+    document.querySelectorAll(".error").forEach(el => el.textContent = "");
+
+    if (name === "") setError("NameError", "Vui lòng nhập họ tên");
+    if (phone === "" || !/^\d{10,11}$/.test(phone)) setError("PhoneError", "Số điện thoại không hợp lệ (10-11 số)");
+    if (gender === "") setError("GenderError", "Vui lòng chọn giới tính");
+    if (cccd === "" || !/^\d{9,12}$/.test(cccd)) setError("CccdError", "Vui lòng nhập CCCD hợp lệ (9-12 số)");
+
+    // Kiểm tra ngày nhận và ngày trả không được để trống
+    if (checkInDate === "") {
+        setError("CheckInDateError", "Vui lòng chọn ngày nhận");
+       
+    }
+    if (checkOutDate === "") {
+        setError("CheckOutDateError", "Vui lòng chọn ngày trả");
+    }
+
+    // Chuyển định dạng ngày sang chuẩn ISO (YYYY-MM-DD)
+    const [ngayNhanFormatted, ngayTraFormatted] = [checkInDate, checkOutDate].map(dateStr => {
+        const [day, month, year] = dateStr.split("/"); // Tách theo dấu "-"
+        return `${year}-${month}-${day}`; // Chuyển thành YYYY-MM-DD
+    });
+
+    // Chuyển thành đối tượng Date để so sánh
+    const checkNgayNhan = new Date(ngayNhanFormatted);
+    const checkNgayTra = new Date(ngayTraFormatted);
+    const today = new Date();
+    today.setHours(0, 0, 0, 0); // Chỉ so sánh ngày, bỏ qua giờ
+
+    // Kiểm tra ngày nhận không được trước ngày hiện tại
+    if (checkNgayNhan < today) {
+        setError("CheckInDateError", "Ngày nhận phải lớn hơn ngày hiện tại");
+       
+    }
+
+    // Kiểm tra ngày trả phải sau ngày nhận ít nhất 1 ngày
+    if (checkNgayTra <= checkNgayNhan) {
+        setError("CheckOutDateError", "Ngày trả phải lớn hơn ngày nhận");
+       
+    }
+
+    if (email === "" || !/^\S+@\S+\.\S+$/.test(email)) {
+        setError("EmailError", "Vui lòng nhập email hợp lệ");
+    }
+
+    console.log("Ngay Nhan: " + checkNgayNhan);
+    console.log("Ngay Tra: " + checkNgayTra);
+    console.log("Ngay Hien Tai: " + today);
+
+    return isValid;
+}
+
+
+
+    function resetForm() {
+        // Đặt lại giá trị của các trường input
+        document.getElementById("TenTrong").value = "";
+    document.getElementById("SdtTrong").value = "";
+    document.getElementById("GioiTingTrong").selectedIndex = 0; // Reset select
+    document.getElementById("CccdTRong").value = "";
+    document.getElementById("NgayNhanTrong").value = "";
+    document.getElementById("NgayTraTrong").value = "";
+    document.getElementById("EmailTrong").value = "";
+    document.getElementById("HPTrong").selectedIndex = 0; // Reset select
+    document.getElementById("TPTrong").selectedIndex = 0; // Reset select
+    document.getElementById("YeuCauTrong").value = "";
+    document.getElementById("TtTrong").value = "";
+    document.getElementById("NgayTrong").value = "";
+    document.querySelectorAll(".error").forEach(el => el.textContent = ""); // Reset lỗi
+}
+
+// document.getElementById("NhanPhongTrong").addEventListener("click", function () {
+//     if (validateForm()) {
+//         alert("Nhận phòng thành công!");
+//         resetForm(); Đặt lại các trường input
+//     }
+// });
+
+// document.getElementById("DatPhongTrong").addEventListener("click", function () {
+//     if (validateForm()) {
+//         alert("Đặt phòng thành công!");
+//         resetForm(); Đặt lại các trường input
+//     }
+// });
+
+    
 
 
 
