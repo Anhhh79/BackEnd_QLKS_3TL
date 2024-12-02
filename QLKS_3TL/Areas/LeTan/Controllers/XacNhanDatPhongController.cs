@@ -59,7 +59,6 @@ namespace QLKS_3TL.Areas.LeTan.Controllers
             return Json(bookingDetails);
         }
 
-
         [HttpPost]
         public async Task<IActionResult> XuLyThongTinDatPhong([FromBody] ThongTinDatPhongViewModel model)
         {

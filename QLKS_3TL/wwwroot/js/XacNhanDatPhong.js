@@ -137,7 +137,7 @@ function DatPhong() {
 
                 location.reload();
             } else {
-                alert('Cập nhật thành công!');
+                alert('Cập nhật thành công 22!');
                 $('#XacNhan1').modal('hide');  // Đóng modal khi cập nhật thành công
 
                 location.reload();

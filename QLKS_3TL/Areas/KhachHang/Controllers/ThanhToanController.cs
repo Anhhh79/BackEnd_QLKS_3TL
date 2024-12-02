@@ -17,6 +17,17 @@ namespace QLKS_3TL.Areas.KhachHang.Controllers
             return View();
         }
 
+        public static async Task<string> GenerateUniqueCodeAsync(string prefix, string entityType)
+        {
+            // Tạo GUID và lấy 8 ký tự đầu tiên
+            string randomString = Guid.NewGuid().ToString("N").Substring(0, 8).ToUpper();
+
+            // Ghép mã theo định dạng yêu cầu
+            string generatedCode = $"{prefix}-{randomString}";
+            return generatedCode;
+        }
+
+
         [HttpPost]
         public async Task<IActionResult> DatPhongOnline([FromBody] List<DatPhongViewModel> models)
         {
@@ -29,11 +40,11 @@ namespace QLKS_3TL.Areas.KhachHang.Controllers
             {
                 foreach (var model in models)
                 {
-                    // Tạo mã khách hàng nếu cần (chỉ thực hiện nếu chưa có trong danh sách)
-                    string maKhachHang = $"KH-{Guid.NewGuid().ToString().Substring(0, 8)}"; // Hoặc logic tạo mã khác
+                    // Tạo mã khách hàng tự động
+                    string maKhachHang = await GenerateUniqueCodeAsync("KH", "KhachHang");
 
-                    // Tạo mã đặt phòng
-                    string maDatPhong = $"DP-{Guid.NewGuid().ToString().Substring(0, 8)}";
+                    // Tạo mã đặt phòng tự động
+                    string maDatPhong = await GenerateUniqueCodeAsync("MDP", "DatPhong");
 
                     // Lưu thông tin khách hàng
                     var khachHang = new QLKS_3TL.Data.KhachHang
@@ -79,7 +90,7 @@ namespace QLKS_3TL.Areas.KhachHang.Controllers
 
                 await _dbContext.SaveChangesAsync();
 
-                return Json(new { success = true });
+                return Json(new { success = true, redirectUrl = "/KhachHang/Home/Index" });
             }
             catch (Exception ex)
             {
