@@ -61,8 +61,8 @@
                                 {
                                     <tr>
                                         <th scope="row">@soThuTu</th>
-                                        <td class="me-2">@i.MaPhong</td>
-                                        <td>@i.TenHangPhong</td>
+                                        <td class="me-2" id="maPhongTrongLT">@i.MaPhong</td>
+                                        <td id="maHangPhongTrongLT">@i.TenHangPhong</td>
                                         <td></td>
 
                                         <td>@i.GiaPhong / h</td>
@@ -71,7 +71,7 @@
                                         {
                                             <td class="text-secondary">Trống</td>
                                             <td>
-                                                <button type="button" class="btn btn-secondary btn-sm" data-bs-toggle="modal"
+                                                <button type="button" class="btn btn-secondary btn-sm" onclick="layThongTinPhong('@i.MaPhong'), HienThi()" data-bs-toggle="modal"
                                                         data-bs-target="#roomModal">
                                                     Chọn phòng
                                                 </button>

@@ -148,7 +148,7 @@ namespace QLKS_3TL.Areas.QuanLy.Controllers
             return Json(new { success = true, data = nhanVien });
         }
 
-        // Hàm thêm nhân tài khoản
+        // Hàm thêm tài khoản
         [HttpPost]
         public async Task<JsonResult> Insert([FromBody] TaiKhoan model)
         {

@@ -68,6 +68,21 @@
                                         <input type="text" class="form-control" id="NgayTrong" value="0" readonly>
                                     </div>
                                     <div class="col-4">
+                                        <h6><span style="font-weight: 600;">Giá Phòng:</span></h6>
+                                        <input type="text" class="form-control" id="giaHangPhongLT">
+                                    </div>
+                                </div>
+                                <div class="row mt-2">
+                                    <div class="col-4">
+                                        <h6><span style="font-weight: 600;">Mã phòng:</span></h6>
+                                        <input type="email" class="form-control" id="MaPhongTrongLT" readonly>
+                                    </div>
+                                    <div class="col-4">
+                                        <h6><span style="font-weight: 600;">Mã Hạng Phòng: </span></h6>
+                                        <input type="text" class="form-control" id="MaHangPhongTrongLT" readonly>
+                                    </div>
+                                   
+                                    <div class="col-4">
                                         <h6><span style="font-weight: 600;">Thanh toán:</span></h6>
                                         <input type="text" class="form-control" id="TtTrong" value="0 VND" readonly>
                                         <span class="error text-danger" id="PaymentError"></span>
@@ -84,8 +99,8 @@
                 </div>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-success" id="NhanPhongTrong" onclick="validateForm()">Nhận phòng</button>
-                <button type="button" class="btn btn-warning" id="DatPhongTrong" onclick="validateForm()">Đặt phòng</button>
+                <button type="button" class="btn btn-success" id="NhanPhongTrong" onclick="">Nhận phòng</button>
+                <button type="button" class="btn btn-warning" id="DatPhongTrong" onclick="NutDatPhongTrong()">Đặt phòng</button>
             </div>
         </div>
     </div>
