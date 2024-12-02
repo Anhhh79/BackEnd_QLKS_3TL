@@ -1,5 +1,18 @@
 ﻿$(document).ready(function () {
-    LoadThongTinPhong()
+    LoadThongTinPhong();
+    //tìm kiếm
+    $('#timKiemThongTinPhongLT').on('input', function () {
+        var query = $(this).val().toLowerCase(); // Lấy giá trị tìm kiếm và chuyển thành chữ thường
+        $('#tblBodyThongTinPhongLT tr').each(function () {
+            var rowText = $(this).text().toLowerCase(); // Lấy toàn bộ văn bản của một dòng
+            if (rowText.includes(query)) {  // Nếu dòng chứa chuỗi tìm kiếm
+                $(this).show();  // Hiển thị dòng
+            } else {
+                $(this).hide();  // Ẩn dòng
+            }
+        });
+    });
+
 });
 //load thông tin
 function LoadThongTinPhong() {
@@ -23,7 +36,7 @@ function LoadThongTinPhong() {
                         <td class="me-2">${item.maPhong}</td>
                         <td>${item.tenHangPhong}</td>
                         <td></td>
-                        <td>${item.giaPhong} / h</td>
+                        <td>${item.giaPhong.toLocaleString() } VND</td>
                         <td></td>`;
 
                     // Xử lý trạng thái phòng
@@ -31,7 +44,7 @@ function LoadThongTinPhong() {
                         object += `
                         <td class="text-secondary">Trống</td>
                         <td>
-                            <button type="button" class="btn btn-secondary btn-sm" data-bs-toggle="modal" data-bs-target="#roomModal">
+                            <button type="button" class="btn btn-secondary btn-sm" onclick="layThongTinPhong('${item.maPhong}'), HienThi()" data-bs-toggle="modal" data-bs-target="#roomModal">
                                 Chọn phòng
                             </button>
                         </td>`;
@@ -39,7 +52,7 @@ function LoadThongTinPhong() {
                         object += `
                         <td class="text-warning">${item.trangThai}</td>
                         <td>
-                            <button type="button" class="btn btn-warning btn-sm" onclick="ThongTinNhanPhong('${item.maDatPhong}')">
+                            <button type="button" class="btn btn-warning btn-sm text-light" onclick="ThongTinNhanPhong('${item.maDatPhong}')">
                                 Nhận phòng
                             </button>
                         </td>`;
@@ -56,7 +69,7 @@ function LoadThongTinPhong() {
                         object += `
                         <td class="text-secondary">Trống</td>
                         <td>
-                            <button type="button" class="btn btn-secondary btn-sm" data-bs-toggle="modal" data-bs-target="#roomModal">
+                            <button type="button" class="btn btn-secondary btn-sm" onclick="layThongTinPhong('${item.maPhong}'), HienThi()"  data-bs-toggle="modal" data-bs-target="#roomModal">
                                 Chọn phòng
                             </button>
                         </td>`;
@@ -88,6 +101,7 @@ function ThongTinNhanPhong(maDatPhong2) {
         dataType: 'json',
         success: function (response) {
             if (response.success) {
+                console.log(response);
                 const item = response.data;
                 let object = `
                     <div class="modal-header d-flex justify-content-center">
@@ -104,11 +118,11 @@ function ThongTinNhanPhong(maDatPhong2) {
                                 <div class="row mt-2">
                                     <div class="col-4">
                                         <h6><span style="font-weight: 600;">Họ tên:</span></h6>
-                                        <input type="text" class="form-control" id="TenDatDat" value="${item.khachHang.hoTen}" readonly>
+                                        <input type="text" class="form-control" id="TenDatDat" value="${item.khachHang.hoTen}" disabled>
                                     </div>
                                     <div class="col-4">
                                         <h6><span style="font-weight: 600;">Số điện thoại:</span></h6>
-                                        <input type="text" class="form-control" id="SdtDatDat" value="${item.khachHang.soDienThoai}" readonly>
+                                        <input type="text" class="form-control" id="SdtDatDat" value="${item.khachHang.soDienThoai}" disabled>
                                     </div>
                                     <div class="col-4">
                                         <h6><span style="font-weight: 600;">Giới tính:</span></h6>
@@ -122,43 +136,43 @@ function ThongTinNhanPhong(maDatPhong2) {
                                 <div class="row mt-2">
                                     <div class="col-4">
                                         <h6><span style="font-weight: 600;">CCCD:</span></h6>
-                                        <input type="text" class="form-control" id="CccdDatDat" value="${item.khachHang.cccd}" readonly>
+                                        <input type="text" class="form-control" id="CccdDatDat" value="${item.khachHang.cccd}" disabled>
                                     </div>
                                     <div class="col-4">
                                         <h6><span style="font-weight: 600;">Ngày nhận:</span></h6>
-                                        <input type="text" class="form-control datepicker" id="NgayNhanDaDat" value="${item.ngayNhan}" readonly>
+                                        <input type="text" class="form-control datepicker" id="NgayNhanDaDat" value="${item.ngayNhan}" disabled>
                                     </div>
                                     <div class="col-4">
                                         <h6><span style="font-weight: 600;">Ngày trả:</span></h6>
-                                        <input type="text" class="form-control datepicker" id="NgayTraDaDat" value="${item.ngayTra}" readonly>
+                                        <input type="text" class="form-control datepicker" id="NgayTraDaDat" value="${item.ngayTra}" disabled>
                                     </div>
                                 </div>
                                 <div class="row mt-2">
                                     <div class="col-4">
                                         <h6><span style="font-weight: 600;">Email:</span></h6>
-                                        <input type="email" class="form-control" id="EmailDatDat" value="${item.khachHang.email}" readonly>
+                                        <input type="email" class="form-control" id="EmailDatDat" value="${item.khachHang.email}" disabled>
                                     </div>
                                     <div class="col-4">
                                         <h6><span style="font-weight: 600;">Hạng phòng:</span></h6>
-                                        <input type="text" class="form-control" id="HPDaDat" value="${item.hangPhong.tenHangPhong}" readonly>
+                                        <input type="text" class="form-control" id="HPDaDat" value="${item.hangPhong.tenHangPhong}" disabled>
                                     </div>
                                     <div class="col-4">
                                         <h6><span style="font-weight: 600;">Tên phòng:</span></h6>
-                                        <input type="text" class="form-control" id="TPDatDat" value="${item.phong.maPhong}" readonly>
+                                        <input type="text" class="form-control" id="TPDatDat" value="${item.phong.maPhong}" disabled>
                                     </div>
                                 </div>
                                 <div class="row mt-2">
                                     <div class="col-4">
                                         <h6><span style="font-weight: 600;">Tổng số ngày:</span></h6>
-                                        <input type="text" class="form-control" value="${item.tongSoNgay}" readonly>
+                                        <input type="text" class="form-control" value="${item.tongSoNgay}" disabled>
                                     </div>
                                     <div class="col-4">
                                         <h6><span style="font-weight: 600;">Yêu cầu:</span></h6>
-                                        <input type="text" class="form-control" id="YeuCauDaDat" value="${item.yeuCauThem || 'Không'}" readonly>
+                                        <input type="text" class="form-control" id="YeuCauDaDat" value="${item.yeuCau} " disabled>
                                     </div>
                                     <div class="col-4">
                                         <h6><span style="font-weight: 600;">Thanh toán:</span></h6>
-                                        <input type="text" class="form-control" id="TtDaDat" value="${item.tongThanhToan.toLocaleString()} VND" readonly>
+                                        <input type="text" class="form-control" id="TtDaDat" value="${item.tongThanhToan.toLocaleString()} VND" disabled>
                                     </div>
                                 </div>
                             </div>
@@ -347,6 +361,302 @@ function XuLyNhanPhong(maDatPhong) {
         }
     });
 }
+
+//Lay thong tin phong
+function layThongTinPhong(maPhong) {
+    $.ajax({
+        url: `/LeTan/QuanLyDatPhong/GetMaPhong/${maPhong}`,
+        type: "GET",
+        success: function (response) {
+            if (response.success) {
+                const giaPhong = response.data.giaHangPhong;
+                const maHangPhong = response.data.maHangPhong;
+                console.log(response.data);
+
+                // Sử dụng .val() để gán giá trị cho input
+                $("#MaHangPhongTrongLT").val(maHangPhong);
+                $("#MaPhongTrongLT").val(maPhong);
+                $("#giaHangPhongLT").val(giaPhong.toLocaleString());
+            } else {
+                alert(response.message);
+            }
+        },
+        error: function (xhr, status, error) {
+            console.error("Lỗi:", error);
+            alert("Lỗi khi lấy thông tin phòng.");
+        }
+    });
+}
+
+
+
+
+function resetForm() {
+    // Đặt lại giá trị của các trường input
+    document.getElementById("TenTrong").value = "";
+    document.getElementById("SdtTrong").value = "";
+    document.getElementById("GioiTingTrong").selectedIndex = 0; // Reset select
+    document.getElementById("CccdTRong").value = "";
+    document.getElementById("NgayNhanTrong").value = "";
+    document.getElementById("NgayTraTrong").value = "";
+    document.getElementById("EmailTrong").value = "";
+    document.getElementById("YeuCauTrong").value = "";
+    document.getElementById("TtTrong").value = 0 + " VND";
+    document.getElementById("NgayTrong").value = 0;
+    document.querySelectorAll(".error").forEach(el => el.textContent = ""); // Reset lỗi
+}
+
+//Xử lý nút Đặt phòng 
+function xuLyDatPhong() {
+    // Lấy dữ liệu từ các input
+    const name = document.getElementById("TenTrong").value.trim();
+    const phone = document.getElementById("SdtTrong").value.trim();
+    const gender = document.getElementById("GioiTingTrong").value;
+    const cccd = document.getElementById("CccdTRong").value.trim();
+    const checkInDate = document.getElementById("NgayNhanTrong").value;
+    const checkOutDate = document.getElementById("NgayTraTrong").value;
+    const email = document.getElementById("EmailTrong").value.trim();
+    const yeuCau = document.getElementById("YeuCauTrong").value.trim();
+    const TongThanhToan = document.getElementById("TtTrong").value.trim();
+    const maPhong = document.getElementById("MaPhongTrongLT").value.trim();
+    const maHangPhong = document.getElementById("MaHangPhongTrongLT").value.trim();
+
+    // Kiểm tra input cơ bản
+    if (!name || !phone || !checkInDate || !checkOutDate || !TongThanhToan) {
+        alert("Vui lòng nhập đầy đủ thông tin.");
+        return;
+    }
+
+    // Tạo đối tượng JSON gửi lên server
+    const bookings = {
+        FullName: name,
+        Sex: gender,
+        CCCD: cccd,
+        PhoneNumber: phone,
+        EmailAddress: email,
+        AdditionalRequest: yeuCau,
+        MaPhong: maPhong,
+        MaHangPhong: maHangPhong,
+        NgayNhan: checkInDate,
+        NgayTra: checkOutDate,
+        TongThanhToan: parseFloat(TongThanhToan)
+    };
+
+    console.log('Dữ liệu gửi:', bookings);
+
+    // Gửi AJAX request
+    $.ajax({
+        url: '/LeTan/QuanLyDatPhong/DatPhongTrong', // Thay bằng đường dẫn controller/action
+        method: 'POST',
+        contentType: 'application/json',
+        data: JSON.stringify(bookings),
+        success: function (response) {
+            if (response.success) {
+                alert(response.message);
+                resetForm(); // Hàm reset các ô input
+                $('#roomModal').modal('hide'); // Ẩn modal (nếu dùng bootstrap)
+                LoadThongTinPhong(); // Tải lại danh sách phòng
+            } else {
+                alert('Có lỗi xảy ra: ' + response.message);
+            }
+        },
+        error: function (xhr, status, error) {
+            console.error('Lỗi AJAX:', status, error);
+            alert('Không thể thực hiện đặt phòng. Vui lòng thử lại.');
+        }
+    });
+}
+
+//Xử lý nút Nhận phòng 
+function xuLyNhanPhong() {
+    // Lấy dữ liệu từ các input
+    const name = document.getElementById("TenTrong").value.trim();
+    const phone = document.getElementById("SdtTrong").value.trim();
+    const gender = document.getElementById("GioiTingTrong").value;
+    const cccd = document.getElementById("CccdTRong").value.trim();
+    const checkInDate = document.getElementById("NgayNhanTrong").value;
+    const checkOutDate = document.getElementById("NgayTraTrong").value;
+    const email = document.getElementById("EmailTrong").value.trim();
+    const yeuCau = document.getElementById("YeuCauTrong").value.trim();
+    const TongThanhToan = document.getElementById("TtTrong").value.trim();
+    const maPhong = document.getElementById("MaPhongTrongLT").value.trim();
+    const maHangPhong = document.getElementById("MaHangPhongTrongLT").value.trim();
+
+    // Kiểm tra input cơ bản
+    if (!name || !phone || !checkInDate || !checkOutDate || !TongThanhToan) {
+        alert("Vui lòng nhập đầy đủ thông tin.");
+        return;
+    }
+
+    // Tạo đối tượng JSON gửi lên server
+    const bookings = {
+        FullName: name,
+        Sex: gender,
+        CCCD: cccd,
+        PhoneNumber: phone,
+        EmailAddress: email,
+        AdditionalRequest: yeuCau,
+        MaPhong: maPhong,
+        MaHangPhong: maHangPhong,
+        NgayNhan: checkInDate,
+        NgayTra: checkOutDate,
+        TongThanhToan: parseFloat(TongThanhToan)
+    };
+
+    console.log('Dữ liệu gửi:', bookings);
+
+    // Gửi AJAX request
+    $.ajax({
+        url: '/LeTan/QuanLyDatPhong/NhanPhongTrong', // Thay bằng đường dẫn controller/action
+        method: 'POST',
+        contentType: 'application/json',
+        data: JSON.stringify(bookings),
+        success: function (response) {
+            if (response.success) {
+                alert(response.message);
+                resetForm(); // Hàm reset các ô input
+                $('#roomModal').modal('hide'); // Ẩn modal (nếu dùng bootstrap)
+                LoadThongTinPhong(); // Tải lại danh sách phòng
+            } else {
+                alert('Có lỗi xảy ra: ' + response.message);
+            }
+        },
+        error: function (xhr, status, error) {
+            console.error('Lỗi AJAX:', status, error);
+            alert('Không thể thực hiện đặt phòng. Vui lòng thử lại.');
+        }
+    });
+}
+
+//bắt lỗi đặt phòng 
+function validateForm() {
+    let isValid = true;
+
+    // Lấy giá trị từ các input fields
+    const name = document.getElementById("TenTrong").value.trim();
+    const phone = document.getElementById("SdtTrong").value.trim();
+    const gender = document.getElementById("GioiTingTrong").value;
+    const cccd = document.getElementById("CccdTRong").value.trim();
+    const checkInDate = document.getElementById("NgayNhanTrong").value;
+    const checkOutDate = document.getElementById("NgayTraTrong").value;
+    const email = document.getElementById("EmailTrong").value.trim();
+
+    function setError(elementId, message) {
+        const errorElement = document.getElementById(elementId);
+        if (errorElement) {
+            errorElement.textContent = message;
+            errorElement.style.color = "red";
+        }
+        isValid = false;
+    }
+
+    document.querySelectorAll(".error").forEach(el => el.textContent = "");
+
+    if (name === "") setError("NameError", "Vui lòng nhập họ tên");
+    if (phone === "" || !/^\d{10,11}$/.test(phone)) setError("PhoneError", "Số điện thoại không hợp lệ (10-11 số)");
+    if (gender === "") setError("GenderError", "Vui lòng chọn giới tính");
+    if (cccd === "" || !/^\d{9,12}$/.test(cccd)) setError("CccdError", "Vui lòng nhập CCCD hợp lệ (9-12 số)");
+
+    // Kiểm tra ngày nhận và ngày trả không được để trống
+    if (checkInDate === "") {
+        setError("CheckInDateError", "Vui lòng chọn ngày nhận");
+
+    }
+    if (checkOutDate === "") {
+        setError("CheckOutDateError", "Vui lòng chọn ngày trả");
+    }
+
+    // Chuyển định dạng ngày sang chuẩn ISO (YYYY-MM-DD)
+    const [ngayNhanFormatted, ngayTraFormatted] = [checkInDate, checkOutDate].map(dateStr => {
+        const [day, month, year] = dateStr.split("/"); // Tách theo dấu "-"
+        return `${year}-${month}-${day}`; // Chuyển thành YYYY-MM-DD
+    });
+
+    // Chuyển thành đối tượng Date để so sánh
+    const checkNgayNhan = new Date(ngayNhanFormatted);
+    const checkNgayTra = new Date(ngayTraFormatted);
+    const today = new Date();
+    today.setHours(0, 0, 0, 0); // Chỉ so sánh ngày, bỏ qua giờ
+
+    // Kiểm tra ngày nhận không được trước ngày hiện tại
+    if (checkNgayNhan < today) {
+        setError("CheckInDateError", "Ngày nhận phải lớn hơn ngày hiện tại");
+
+    }
+
+    // Kiểm tra ngày trả phải sau ngày nhận ít nhất 1 ngày
+    if (checkNgayTra <= checkNgayNhan) {
+        setError("CheckOutDateError", "Ngày trả phải lớn hơn ngày nhận");
+
+    }
+
+    if (email === "" || !/^\S+@\S+\.\S+$/.test(email)) {
+        setError("EmailError", "Vui lòng nhập email hợp lệ");
+    }
+
+    return isValid;
+}
+
+
+//Thực hiện hành động đặt phòng
+function NutNhanPhongTrong() {
+    if (validateForm()) {
+        if (!confirm("Bạn có chắc chắn muốn nhận phòng này?")) {
+            return;
+        }
+        xuLyNhanPhong();
+    } else {
+        console.log('Có lỗi trong dữ liệu nhập vào.');
+    }
+}
+
+//Thực hiện hành động đặt phòng
+function NutDatPhongTrong() {
+    if (validateForm()) {
+        if (!confirm("Bạn có chắc chắn muốn đặt phòng này?")) {
+            return;
+        }
+        xuLyDatPhong();
+    } else {
+        console.log('Có lỗi trong dữ liệu nhập vào.');
+    }
+}
+function HienThi() {
+    $('#NgayNhanTrong, #NgayTraTrong').on('change', function () {
+        // Lấy giá trị Ngày nhận và Ngày trả
+        var ngayNhan = $('#NgayNhanTrong').val();
+        var ngayTra = $('#NgayTraTrong').val();
+        var giaHangPhong = $('#giaHangPhongLT').val();
+        var giaHangPhongSo = parseFloat(giaHangPhong.replace(/[.,]/g, ''));
+
+        // Kiểm tra nếu cả hai trường đều có giá trị
+        if (ngayNhan && ngayTra) {
+            // Tách chuỗi ngày tháng thành các phần (dd/MM/yyyy)
+            var ngayNhanParts = ngayNhan.split('/');
+            var ngayTraParts = ngayTra.split('/');
+
+            // Tạo đối tượng Date từ chuỗi ngày tháng (chú ý tháng bắt đầu từ 0)
+            var dateNhan = new Date(ngayNhanParts[2], ngayNhanParts[1] - 1, ngayNhanParts[0]);
+            var dateTra = new Date(ngayTraParts[2], ngayTraParts[1] - 1, ngayTraParts[0]);
+
+            // Tính số ngày (Ngày trả - Ngày nhận)
+            var tongSoNgay = (dateTra - dateNhan) / (1000 * 60 * 60 * 24); // Kết quả tính theo ngày
+            var tongThanhToan = tongSoNgay * giaHangPhongSo;
+            // Kiểm tra tổng số ngày hợp lệ
+            if (tongSoNgay > 0) {
+                // Cập nhật giá trị vào trường Tổng số ngày
+                $('#NgayTrong').val(tongSoNgay);
+                $('#TtTrong').val(tongThanhToan.toLocaleString() + " VND");
+            }
+        } else {
+            // Nếu thiếu một trong hai ngày, đặt giá trị về 0
+            $('#NgayTrong').val(0);
+        }
+    });
+}
+
+
+
 
 
 

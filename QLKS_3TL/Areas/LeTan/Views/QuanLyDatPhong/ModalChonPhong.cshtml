@@ -68,37 +68,30 @@
                                         <input type="text" class="form-control" id="NgayTrong" value="0" readonly>
                                     </div>
                                     <div class="col-4">
-                                        <h6><span style="font-weight: 600;">Hạng phòng:</span></h6>
-                                        <select class="form-select" aria-label="Default select example" id="HPTrong">
-                                            <option selected="" value="">Chọn hạng phòng</option>
-                                            <option value="0">Dexu King</option>
-                                            <option value="1">Dexu King 1</option>
-                                            <option value="2">Dexu King 2</option>
-                                        </select>
-                                        <span class="error text-danger" id="RoomClassError"></span>
+                                        <h6><span style="font-weight: 600;">Giá Phòng:</span></h6>
+                                        <input type="text" class="form-control" id="giaHangPhongLT">
                                     </div>
                                 </div>
                                 <div class="row mt-2">
                                     <div class="col-4">
-                                        <h6><span style="font-weight: 600;">Tên phòng:</span></h6>
-                                        <select class="form-select" aria-label="Default select example" id="TPTrong">
-                                            <option selected="" value="">Chọn tên phòng</option>
-                                            <option value="0">Dexu King</option>
-                                            <option value="1">Dexu King 1</option>
-                                            <option value="2">Dexu King 2</option>
-                                        </select>
-                                        <span class="error text-danger" id="RoomNameError"></span>
+                                        <h6><span style="font-weight: 600;">Mã phòng:</span></h6>
+                                        <input type="email" class="form-control" id="MaPhongTrongLT" readonly>
                                     </div>
                                     <div class="col-4">
-                                        <h6><span style="font-weight: 600;">Yêu cầu:</span></h6>
-                                        <input type="text" class="form-control" id="YeuCauTrong" placeholder="Yêu cầu thêm (nếu có)">
-                                        <span class="error text-danger" id="RequestError"></span>
+                                        <h6><span style="font-weight: 600;">Mã Hạng Phòng: </span></h6>
+                                        <input type="text" class="form-control" id="MaHangPhongTrongLT" readonly>
                                     </div>
+                                   
                                     <div class="col-4">
                                         <h6><span style="font-weight: 600;">Thanh toán:</span></h6>
                                         <input type="text" class="form-control" id="TtTrong" value="0 VND" readonly>
                                         <span class="error text-danger" id="PaymentError"></span>
                                     </div>
+                                </div>
+                                <div class="row mt-2">
+                                        <h6><span style="font-weight: 600;">Yêu cầu:</span></h6>
+                                        <input type="text" class="form-control" id="YeuCauTrong" placeholder="Yêu cầu thêm (nếu có)">
+                                        <span class="error text-danger" id="RequestError"></span>
                                 </div>
                             </div>
                         </div>
@@ -106,8 +99,8 @@
                 </div>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-success" id="NhanPhongTrong">Nhận phòng</button>
-                <button type="button" class="btn btn-warning" id="DatPhongTrong">Đặt phòng</button>
+                <button type="button" class="btn btn-success" id="NhanPhongTrong" onclick="NutNhanPhongTrong()">Nhận phòng</button>
+                <button type="button" class="btn btn-warning text-light" id="DatPhongTrong" onclick="NutDatPhongTrong()">Đặt phòng</button>
             </div>
         </div>
     </div>

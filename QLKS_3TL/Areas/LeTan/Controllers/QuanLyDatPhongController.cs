@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using QLKS_3TL.Areas.KhachHang.Models;
 using QLKS_3TL.Areas.LeTan.Models;
 using QLKS_3TL.Areas.QuanLy.Models;
 using QLKS_3TL.Data;
@@ -16,7 +17,7 @@ namespace QLKS_3TL.Areas.LeTan.Controllers
 
         public QuanLyDatPhongController(Qlks3tlContext context) => db = context;
 
-        //Hàm hiển thị danh sách hóa đơn thu
+        //Hàm hiển thị danh sách phòng
         public async Task<IActionResult> Index()
         {
             try
@@ -238,7 +239,247 @@ namespace QLKS_3TL.Areas.LeTan.Controllers
             }
         }
 
+        //Xử lý nút đặt phòng khi phòng trống
+        [HttpPost]
+        public async Task<IActionResult> DatPhongTrong([FromBody] thongTinDatPhongTrong models)
+        {
+            // Kiểm tra model có hợp lệ không
+            if (models == null || !ModelState.IsValid)
+            {
+                var errors = ModelState.Values.SelectMany(v => v.Errors).Select(e => e.ErrorMessage).ToList();
+                return BadRequest(new { success = false, message = "Dữ liệu không hợp lệ.", errors });
+            }
+
+            try
+            {
+                // Kiểm tra và parse ngày nhận, ngày trả
+                if (!DateOnly.TryParseExact(models.NgayNhan, "dd/MM/yyyy", null, System.Globalization.DateTimeStyles.None, out var ngayNhan))
+                {
+                    return BadRequest(new { success = false, message = "Ngày nhận không đúng định dạng." });
+                }
+
+                if (!DateOnly.TryParseExact(models.NgayTra, "dd/MM/yyyy", null, System.Globalization.DateTimeStyles.None, out var ngayTra))
+                {
+                    return BadRequest(new { success = false, message = "Ngày trả không đúng định dạng." });
+                }
+
+                // Tính tổng số ngày
+                var tongSoNgay = (ngayTra.ToDateTime(TimeOnly.MinValue) - ngayNhan.ToDateTime(TimeOnly.MinValue)).Days;
+                if (tongSoNgay <= 0)
+                {
+                    return BadRequest(new { success = false, message = "Ngày trả phải lớn hơn ngày nhận." });
+                }
+
+                // Lấy giá hạng phòng
+                var hangPhong = await db.HangPhongs.FirstOrDefaultAsync(hp => hp.MaHangPhong == models.MaHangPhong);
+                if (hangPhong == null)
+                {
+                    return BadRequest(new { success = false, message = "Hạng phòng không tồn tại." });
+                }
+
+                // Tính tổng thanh toán
+                var tongThanhToan = tongSoNgay * hangPhong.GiaHangPhong;
+
+                // Tạo mã khách hàng
+                string maKhachHang;
+                do
+                {
+                    maKhachHang = $"KH{Guid.NewGuid().ToString().Substring(0, 5)}";
+                } while (db.KhachHangs.Any(kh => kh.MaKhachHang == maKhachHang));
+
+                // Tạo mã đặt phòng
+                string maDatPhong;
+                do
+                {
+                    maDatPhong = $"DP{Guid.NewGuid().ToString().Substring(0, 5)}";
+                } while (db.ThongTinDatPhongs.Any(dp => dp.MaDatPhong == maDatPhong));
+
+                // Lưu thông tin khách hàng
+                var khachHang = new QLKS_3TL.Data.KhachHang
+                {
+                    MaKhachHang = maKhachHang,
+                    HoTen = models.FullName,
+                    GioiTinh = models.Sex,
+                    Cccd = models.CCCD,
+                    SoDienThoai = models.PhoneNumber,
+                    Email = models.EmailAddress
+                };
+
+                // Lưu thông tin đặt phòng
+                var thongTinDatPhong = new ThongTinDatPhong
+                {
+                    MaDatPhong = maDatPhong,
+                    NgayNhan = ngayNhan,
+                    NgayTra = ngayTra,
+                    MaKhachHang = maKhachHang,
+                    MaHangPhong = models.MaHangPhong,
+                    SoLuongPhong = 1,
+                    TongThanhToan = tongThanhToan,
+                    TongSoNgay = tongSoNgay,
+                    YeuCauThem = string.IsNullOrWhiteSpace(models.AdditionalRequest) ? "Không" : models.AdditionalRequest,
+                    ThoiGianDatPhong = DateTime.Now,
+                    TrangThaiXacNhan = "2",
+                    MaPhong = models.MaPhong, // Nếu có mã phòng từ client
+                    TrangThaiPhong = "Đã đặt"
+                };
+
+                // Lưu vào cơ sở dữ liệu trong giao dịch
+                using (var transaction = await db.Database.BeginTransactionAsync())
+                {
+                    try
+                    {
+                        db.KhachHangs.Add(khachHang);
+                        db.ThongTinDatPhongs.Add(thongTinDatPhong);
+                        await db.SaveChangesAsync();
+                        await transaction.CommitAsync();
+                    }
+                    catch (Exception ex)
+                    {
+                        await transaction.RollbackAsync();
+                        return StatusCode(500, new { success = false, message = "Lỗi lưu dữ liệu: " + ex.Message });
+                    }
+                }
+
+                return Ok(new { success = true, message = "Đặt phòng thành công.", tongThanhToan });
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, new { success = false, message = "Đã xảy ra lỗi không xác định: " + ex.Message });
+            }
+        }
+
+        //Hiển thị thông tin lên modal đặt phòng 
+        [HttpGet]
+        [Route("/LeTan/QuanLyDatPhong/GetMaPhong/{maPhong}")]
+        public async Task<JsonResult> GetMaPhong(string maPhong)
+        {
+            try
+            {
+                var ThongTin = await db.Phongs
+                    .Where(p => p.MaPhong == maPhong)
+                    .Select(p => new { MaHangPhong = p.MaHangPhong, MaPhong = p.MaPhong, GiaHangPhong = p.HangPhong.GiaHangPhong }).FirstOrDefaultAsync();
 
 
+                if (ThongTin == null)
+                {
+                    return Json(new { success = false, message = $"Thông tin không hợp lệ" });
+                }
+
+                return Json(new { success = true, data = ThongTin });
+            }
+            catch (Exception ex)
+            {
+                return Json(new { success = false, message = $"Lỗi: {ex.Message}" });
+            }
+        }
+
+        //Xử lý nút Nhận phòng khi phòng trống
+        [HttpPost]
+        public async Task<IActionResult> NhanPhongTrong([FromBody] thongTinDatPhongTrong models)
+        {
+            // Kiểm tra model có hợp lệ không
+            if (models == null || !ModelState.IsValid)
+            {
+                var errors = ModelState.Values.SelectMany(v => v.Errors).Select(e => e.ErrorMessage).ToList();
+                return BadRequest(new { success = false, message = "Dữ liệu không hợp lệ.", errors });
+            }
+
+            try
+            {
+                // Kiểm tra và parse ngày nhận, ngày trả
+                if (!DateOnly.TryParseExact(models.NgayNhan, "dd/MM/yyyy", null, System.Globalization.DateTimeStyles.None, out var ngayNhan))
+                {
+                    return BadRequest(new { success = false, message = "Ngày nhận không đúng định dạng." });
+                }
+
+                if (!DateOnly.TryParseExact(models.NgayTra, "dd/MM/yyyy", null, System.Globalization.DateTimeStyles.None, out var ngayTra))
+                {
+                    return BadRequest(new { success = false, message = "Ngày trả không đúng định dạng." });
+                }
+
+                // Tính tổng số ngày
+                var tongSoNgay = (ngayTra.ToDateTime(TimeOnly.MinValue) - ngayNhan.ToDateTime(TimeOnly.MinValue)).Days;
+                if (tongSoNgay <= 0)
+                {
+                    return BadRequest(new { success = false, message = "Ngày trả phải lớn hơn ngày nhận." });
+                }
+
+                // Lấy giá hạng phòng
+                var hangPhong = await db.HangPhongs.FirstOrDefaultAsync(hp => hp.MaHangPhong == models.MaHangPhong);
+                if (hangPhong == null)
+                {
+                    return BadRequest(new { success = false, message = "Hạng phòng không tồn tại." });
+                }
+
+                // Tính tổng thanh toán
+                var tongThanhToan = tongSoNgay * hangPhong.GiaHangPhong;
+
+                // Tạo mã khách hàng
+                string maKhachHang;
+                do
+                {
+                    maKhachHang = $"KH{Guid.NewGuid().ToString().Substring(0, 5)}";
+                } while (db.KhachHangs.Any(kh => kh.MaKhachHang == maKhachHang));
+
+                // Tạo mã đặt phòng
+                string maDatPhong;
+                do
+                {
+                    maDatPhong = $"DP{Guid.NewGuid().ToString().Substring(0, 5)}";
+                } while (db.ThongTinDatPhongs.Any(dp => dp.MaDatPhong == maDatPhong));
+
+                // Lưu thông tin khách hàng
+                var khachHang = new QLKS_3TL.Data.KhachHang
+                {
+                    MaKhachHang = maKhachHang,
+                    HoTen = models.FullName,
+                    GioiTinh = models.Sex,
+                    Cccd = models.CCCD,
+                    SoDienThoai = models.PhoneNumber,
+                    Email = models.EmailAddress
+                };
+
+                // Lưu thông tin đặt phòng
+                var thongTinDatPhong = new ThongTinDatPhong
+                {
+                    MaDatPhong = maDatPhong,
+                    NgayNhan = ngayNhan,
+                    NgayTra = ngayTra,
+                    MaKhachHang = maKhachHang,
+                    MaHangPhong = models.MaHangPhong,
+                    SoLuongPhong = 1,
+                    TongThanhToan = tongThanhToan,
+                    TongSoNgay = tongSoNgay,
+                    YeuCauThem = string.IsNullOrWhiteSpace(models.AdditionalRequest) ? "Không" : models.AdditionalRequest,
+                    ThoiGianDatPhong = DateTime.Now,
+                    TrangThaiXacNhan = "2",
+                    MaPhong = models.MaPhong, // Nếu có mã phòng từ client
+                    TrangThaiPhong = "Đang hoạt động"
+                };
+
+                // Lưu vào cơ sở dữ liệu trong giao dịch
+                using (var transaction = await db.Database.BeginTransactionAsync())
+                {
+                    try
+                    {
+                        db.KhachHangs.Add(khachHang);
+                        db.ThongTinDatPhongs.Add(thongTinDatPhong);
+                        await db.SaveChangesAsync();
+                        await transaction.CommitAsync();
+                    }
+                    catch (Exception ex)
+                    {
+                        await transaction.RollbackAsync();
+                        return StatusCode(500, new { success = false, message = "Lỗi lưu dữ liệu: " + ex.Message });
+                    }
+                }
+
+                return Ok(new { success = true, message = "Nhận phòng thành công.", tongThanhToan });
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, new { success = false, message = "Đã xảy ra lỗi không xác định: " + ex.Message });
+            }
+        }
     }
 }
