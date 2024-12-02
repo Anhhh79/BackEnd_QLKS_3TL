@@ -1,5 +1,5 @@
 ﻿$(document).ready(function () {
-    //tìm kiếm tài khoản 
+    //tìm kiếm  
     $('#timKiemKhachHang').on('input', function () {
         var query = $(this).val().toLowerCase(); // Lấy giá trị tìm kiếm và chuyển thành chữ thường
         $('#bodyThongTinKhachHang tr').each(function () {
@@ -71,16 +71,15 @@ function ChiTietKhachHang(maKhachHang) {
                             </div>
                         </div>
                         <div class="row mt-2">
-                           
                             <div class="col-4">
                                 <h6><span style="font-weight: 600;">Tên phòng: </span>${datPhong?.tenPhong || 'N/A'}</h6>
                             </div>
                             <div class="col-4">
                                 <h6><span style="font-weight: 600;">Thanh toán: </span>${datPhong?.thanhToan?.toLocaleString() || '0'} VND</h6>
                             </div>
-                        </div>
-                        <div class="row mt-2">
-                            <h6><span style="font-weight: 600;">Yêu cầu: </span>${datPhong?.yeuCau || 'N/A'}</h6>
+                             <div class="col-4">
+                                <h6><span style="font-weight: 600;">Yêu cầu: </span>${datPhong?.yeuCau || 'Không'}</h6>
+                            </div>
                         </div>
                     </div>
                 `;

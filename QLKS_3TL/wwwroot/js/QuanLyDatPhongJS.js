@@ -1,6 +1,17 @@
 ﻿$(document).ready(function () {
     LoadThongTinPhong();
-    
+    //tìm kiếm
+    $('#timKiemThongTinPhongLT').on('input', function () {
+        var query = $(this).val().toLowerCase(); // Lấy giá trị tìm kiếm và chuyển thành chữ thường
+        $('#tblBodyThongTinPhongLT tr').each(function () {
+            var rowText = $(this).text().toLowerCase(); // Lấy toàn bộ văn bản của một dòng
+            if (rowText.includes(query)) {  // Nếu dòng chứa chuỗi tìm kiếm
+                $(this).show();  // Hiển thị dòng
+            } else {
+                $(this).hide();  // Ẩn dòng
+            }
+        });
+    });
 
 });
 //load thông tin
@@ -25,7 +36,7 @@ function LoadThongTinPhong() {
                         <td class="me-2">${item.maPhong}</td>
                         <td>${item.tenHangPhong}</td>
                         <td></td>
-                        <td>${item.giaPhong} / h</td>
+                        <td>${item.giaPhong.toLocaleString() } VND</td>
                         <td></td>`;
 
                     // Xử lý trạng thái phòng
@@ -41,7 +52,7 @@ function LoadThongTinPhong() {
                         object += `
                         <td class="text-warning">${item.trangThai}</td>
                         <td>
-                            <button type="button" class="btn btn-warning btn-sm" onclick="ThongTinNhanPhong('${item.maDatPhong}')">
+                            <button type="button" class="btn btn-warning btn-sm text-light" onclick="ThongTinNhanPhong('${item.maDatPhong}')">
                                 Nhận phòng
                             </button>
                         </td>`;
@@ -107,11 +118,11 @@ function ThongTinNhanPhong(maDatPhong2) {
                                 <div class="row mt-2">
                                     <div class="col-4">
                                         <h6><span style="font-weight: 600;">Họ tên:</span></h6>
-                                        <input type="text" class="form-control" id="TenDatDat" value="${item.khachHang.hoTen}" readonly>
+                                        <input type="text" class="form-control" id="TenDatDat" value="${item.khachHang.hoTen}" disabled>
                                     </div>
                                     <div class="col-4">
                                         <h6><span style="font-weight: 600;">Số điện thoại:</span></h6>
-                                        <input type="text" class="form-control" id="SdtDatDat" value="${item.khachHang.soDienThoai}" readonly>
+                                        <input type="text" class="form-control" id="SdtDatDat" value="${item.khachHang.soDienThoai}" disabled>
                                     </div>
                                     <div class="col-4">
                                         <h6><span style="font-weight: 600;">Giới tính:</span></h6>
@@ -125,43 +136,43 @@ function ThongTinNhanPhong(maDatPhong2) {
                                 <div class="row mt-2">
                                     <div class="col-4">
                                         <h6><span style="font-weight: 600;">CCCD:</span></h6>
-                                        <input type="text" class="form-control" id="CccdDatDat" value="${item.khachHang.cccd}" readonly>
+                                        <input type="text" class="form-control" id="CccdDatDat" value="${item.khachHang.cccd}" disabled>
                                     </div>
                                     <div class="col-4">
                                         <h6><span style="font-weight: 600;">Ngày nhận:</span></h6>
-                                        <input type="text" class="form-control datepicker" id="NgayNhanDaDat" value="${item.ngayNhan}" readonly>
+                                        <input type="text" class="form-control datepicker" id="NgayNhanDaDat" value="${item.ngayNhan}" disabled>
                                     </div>
                                     <div class="col-4">
                                         <h6><span style="font-weight: 600;">Ngày trả:</span></h6>
-                                        <input type="text" class="form-control datepicker" id="NgayTraDaDat" value="${item.ngayTra}" readonly>
+                                        <input type="text" class="form-control datepicker" id="NgayTraDaDat" value="${item.ngayTra}" disabled>
                                     </div>
                                 </div>
                                 <div class="row mt-2">
                                     <div class="col-4">
                                         <h6><span style="font-weight: 600;">Email:</span></h6>
-                                        <input type="email" class="form-control" id="EmailDatDat" value="${item.khachHang.email}" readonly>
+                                        <input type="email" class="form-control" id="EmailDatDat" value="${item.khachHang.email}" disabled>
                                     </div>
                                     <div class="col-4">
                                         <h6><span style="font-weight: 600;">Hạng phòng:</span></h6>
-                                        <input type="text" class="form-control" id="HPDaDat" value="${item.hangPhong.tenHangPhong}" readonly>
+                                        <input type="text" class="form-control" id="HPDaDat" value="${item.hangPhong.tenHangPhong}" disabled>
                                     </div>
                                     <div class="col-4">
                                         <h6><span style="font-weight: 600;">Tên phòng:</span></h6>
-                                        <input type="text" class="form-control" id="TPDatDat" value="${item.phong.maPhong}" readonly>
+                                        <input type="text" class="form-control" id="TPDatDat" value="${item.phong.maPhong}" disabled>
                                     </div>
                                 </div>
                                 <div class="row mt-2">
                                     <div class="col-4">
                                         <h6><span style="font-weight: 600;">Tổng số ngày:</span></h6>
-                                        <input type="text" class="form-control" value="${item.tongSoNgay}" readonly>
+                                        <input type="text" class="form-control" value="${item.tongSoNgay}" disabled>
                                     </div>
                                     <div class="col-4">
                                         <h6><span style="font-weight: 600;">Yêu cầu:</span></h6>
-                                        <input type="text" class="form-control" id="YeuCauDaDat" value="${item.yeuCau} " readonly>
+                                        <input type="text" class="form-control" id="YeuCauDaDat" value="${item.yeuCau} " disabled>
                                     </div>
                                     <div class="col-4">
                                         <h6><span style="font-weight: 600;">Thanh toán:</span></h6>
-                                        <input type="text" class="form-control" id="TtDaDat" value="${item.tongThanhToan.toLocaleString()} VND" readonly>
+                                        <input type="text" class="form-control" id="TtDaDat" value="${item.tongThanhToan.toLocaleString()} VND" disabled>
                                     </div>
                                 </div>
                             </div>
@@ -456,6 +467,67 @@ function xuLyDatPhong() {
     });
 }
 
+//Xử lý nút Nhận phòng 
+function xuLyNhanPhong() {
+    // Lấy dữ liệu từ các input
+    const name = document.getElementById("TenTrong").value.trim();
+    const phone = document.getElementById("SdtTrong").value.trim();
+    const gender = document.getElementById("GioiTingTrong").value;
+    const cccd = document.getElementById("CccdTRong").value.trim();
+    const checkInDate = document.getElementById("NgayNhanTrong").value;
+    const checkOutDate = document.getElementById("NgayTraTrong").value;
+    const email = document.getElementById("EmailTrong").value.trim();
+    const yeuCau = document.getElementById("YeuCauTrong").value.trim();
+    const TongThanhToan = document.getElementById("TtTrong").value.trim();
+    const maPhong = document.getElementById("MaPhongTrongLT").value.trim();
+    const maHangPhong = document.getElementById("MaHangPhongTrongLT").value.trim();
+
+    // Kiểm tra input cơ bản
+    if (!name || !phone || !checkInDate || !checkOutDate || !TongThanhToan) {
+        alert("Vui lòng nhập đầy đủ thông tin.");
+        return;
+    }
+
+    // Tạo đối tượng JSON gửi lên server
+    const bookings = {
+        FullName: name,
+        Sex: gender,
+        CCCD: cccd,
+        PhoneNumber: phone,
+        EmailAddress: email,
+        AdditionalRequest: yeuCau,
+        MaPhong: maPhong,
+        MaHangPhong: maHangPhong,
+        NgayNhan: checkInDate,
+        NgayTra: checkOutDate,
+        TongThanhToan: parseFloat(TongThanhToan)
+    };
+
+    console.log('Dữ liệu gửi:', bookings);
+
+    // Gửi AJAX request
+    $.ajax({
+        url: '/LeTan/QuanLyDatPhong/NhanPhongTrong', // Thay bằng đường dẫn controller/action
+        method: 'POST',
+        contentType: 'application/json',
+        data: JSON.stringify(bookings),
+        success: function (response) {
+            if (response.success) {
+                alert(response.message);
+                resetForm(); // Hàm reset các ô input
+                $('#roomModal').modal('hide'); // Ẩn modal (nếu dùng bootstrap)
+                LoadThongTinPhong(); // Tải lại danh sách phòng
+            } else {
+                alert('Có lỗi xảy ra: ' + response.message);
+            }
+        },
+        error: function (xhr, status, error) {
+            console.error('Lỗi AJAX:', status, error);
+            alert('Không thể thực hiện đặt phòng. Vui lòng thử lại.');
+        }
+    });
+}
+
 //bắt lỗi đặt phòng 
 function validateForm() {
     let isValid = true;
@@ -522,28 +594,40 @@ function validateForm() {
         setError("EmailError", "Vui lòng nhập email hợp lệ");
     }
 
-    if (isValid) {
-        //Thực hiện các hành động tiếp theo, ví dụ như gửi form hoặc gọi API
-        xuLyDatPhong();
+    return isValid;
+}
+
+
+//Thực hiện hành động đặt phòng
+function NutNhanPhongTrong() {
+    if (validateForm()) {
+        if (!confirm("Bạn có chắc chắn muốn nhận phòng này?")) {
+            return;
+        }
+        xuLyNhanPhong();
     } else {
         console.log('Có lỗi trong dữ liệu nhập vào.');
     }
-
-    return isValid;
 }
 
 //Thực hiện hành động đặt phòng
 function NutDatPhongTrong() {
-    validateForm();
+    if (validateForm()) {
+        if (!confirm("Bạn có chắc chắn muốn đặt phòng này?")) {
+            return;
+        }
+        xuLyDatPhong();
+    } else {
+        console.log('Có lỗi trong dữ liệu nhập vào.');
+    }
 }
-
 function HienThi() {
     $('#NgayNhanTrong, #NgayTraTrong').on('change', function () {
         // Lấy giá trị Ngày nhận và Ngày trả
         var ngayNhan = $('#NgayNhanTrong').val();
         var ngayTra = $('#NgayTraTrong').val();
         var giaHangPhong = $('#giaHangPhongLT').val();
-        var giaHangPhongSo = parseFloat(giaHangPhong.replace(/,/g, ''));
+        var giaHangPhongSo = parseFloat(giaHangPhong.replace(/[.,]/g, ''));
 
         // Kiểm tra nếu cả hai trường đều có giá trị
         if (ngayNhan && ngayTra) {
