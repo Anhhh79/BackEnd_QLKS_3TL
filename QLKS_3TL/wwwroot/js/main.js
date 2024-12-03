@@ -18,11 +18,6 @@ function clearOtpInputs() {
         input.value = '';
     });
 }
-// <!-- xoa sdt sao khi tra cuu -->
-function clearPhoneNumber() {
-    const NumberInput = document.getElementById('SoDienThoaiTraCuu');
-    NumberInput.value = '';
-}
 
 // <!-- danh gia -->
 // <!-- xoa du lieu -->
@@ -38,64 +33,6 @@ function clearStarAssess() {
     Array.from(radioOptions).forEach((radio) => {
         radio.checked = false;
     });
-}
-//Kiem tra so dien thoai trong chuc nang tra cuu
-function validatePhoneNumber() {
-    // Lấy giá trị từ ô nhập liệu
-    const phoneNumber = document.getElementById("SoDienThoaiTraCuu").value;
-
-    // Kiểm tra nếu số điện thoại chưa được nhập
-    if (!phoneNumber) {
-        alert("Bạn chưa nhập số điện thoại!");
-        return false;
-    }
-
-    // Biểu thức chính quy để kiểm tra định dạng số điện thoại
-    const phoneRegex = /^0\d{9,10}$/;
-
-    // Kiểm tra nếu số điện thoại không hợp lệ
-    if (!phoneRegex.test(phoneNumber)) {
-        alert("Số điện thoại không hợp lệ! Vui lòng nhập số điện thoại bắt đầu bằng 0 và có 10-11 chữ số.");
-        return false;
-    }
-    else {
-        const myModal = new bootstrap.Modal(document.getElementById('OTPTraCuu'));
-        myModal.show();
-    }
-    return true;
-}
-//Kiem tra nhap otp trong chuc nang tra cuu
-function checkOTPTraCuu() {
-    const otpInputs = document.querySelectorAll('.otp-input');
-    let biendem = 0;
-    const otpError = document.getElementById('otpError'); // Phần tử thông báo lỗi cho OTP
-
-    // Reset thông báo lỗi trước khi kiểm tra
-    otpError.textContent = '';
-
-    otpInputs.forEach(input => {
-        if (input.value.trim()) { // Kiểm tra nếu ô nhập không trống
-            biendem++;
-        }
-    });
-
-    if (biendem != 6) {
-        otpError.textContent = "Bạn cần nhập đầy đủ OTP gồm 6 số"; // Hiển thị thông báo lỗi
-        otpInputs[0].focus(); // Đặt focus vào ô nhập đầu tiên
-        return false;
-    } else {
-        // Đóng modal hiện tại 
-        const currentModal = bootstrap.Modal.getInstance(document.getElementById('OTPTraCuu'));
-        if (currentModal) {
-            currentModal.hide(); // Ẩn modal hiện tại
-        }
-
-        // Hiển thị modal Lich Su
-        const ModalLichSu = new bootstrap.Modal(document.getElementById('LichSuDatPhong'));
-        ModalLichSu.show();
-    }
-
-    return true;
 }
 
 
@@ -167,21 +104,21 @@ function validateAssessmentForm() {
 }
 
 
-// Thêm sự kiện focus để ẩn thông báo lỗi khi nhấp vào ô nhập
-document.getElementById('fullNameAssess').addEventListener('focus', function () {
-    document.getElementById('fullNameError').textContent = '';
-});
+//// Thêm sự kiện focus để ẩn thông báo lỗi khi nhấp vào ô nhập
+//document.getElementById('fullNameAssess').addEventListener('focus', function () {
+//    document.getElementById('fullNameError').textContent = '';
+//});
 
-document.getElementById('PhoneNumberAssess').addEventListener('focus', function () {
-    document.getElementById('phoneNumberError').textContent = '';
-});
+//document.getElementById('PhoneNumberAssess').addEventListener('focus', function () {
+//    document.getElementById('phoneNumberError').textContent = '';
+//});
 
-const starInputs = document.querySelectorAll('input[name="rating"]');
-starInputs.forEach(function (input) {
-    input.addEventListener('change', function () {
-        document.getElementById('starRatingError').textContent = '';
-    });
-});
+//const starInputs = document.querySelectorAll('input[name="rating"]');
+//starInputs.forEach(function (input) {
+//    input.addEventListener('change', function () {
+//        document.getElementById('starRatingError').textContent = '';
+//    });
+//});
 
 
 

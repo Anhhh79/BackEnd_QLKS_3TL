@@ -81,7 +81,7 @@ namespace QLKS_3TL.Areas.LeTan.Controllers
         [Route("/LeTan/QuanLyDatPhong/GetThongTinNhanPhong/{maDatPhong2}")]
         public async Task<JsonResult> GetThongTinNhanPhong(string maDatPhong2)
         {
-            
+
             try
             {
                 var ThongTin = await db.ThongTinDatPhongs
@@ -123,7 +123,7 @@ namespace QLKS_3TL.Areas.LeTan.Controllers
                         }
                     })
                     .FirstOrDefaultAsync();
-                 
+
 
                 if (ThongTin == null)
                 {
@@ -207,6 +207,33 @@ namespace QLKS_3TL.Areas.LeTan.Controllers
                     return Json(new { success = false, message = "Không tìm thấy thông tin đặt phòng." });
 
                 datPhong.TrangThaiPhong = "Đã thanh toán"; // Cập nhật trạng thái phòng
+
+                var lastHoaDon = await db.HoaDonThus
+            .OrderByDescending(hd => hd.MaHoaDonThu)
+            .FirstOrDefaultAsync();
+                string newMaHoaDon;
+                if (lastHoaDon != null)
+                {
+                    // Tăng mã hóa đơn lên 1
+                    int lastNumber = int.Parse(lastHoaDon.MaHoaDonThu.Replace("HDT", ""));
+                    newMaHoaDon = "HDT" + (lastNumber + 1).ToString("D5"); // D5: 5 chữ số, ví dụ: HD00001
+                }
+                else
+                {
+                    // Trường hợp chưa có hóa đơn nào, bắt đầu từ HD00001
+                    newMaHoaDon = "HDT00001";
+                }
+                var maNhanVien = HttpContext.Session.GetString("MaNhanVien");
+                var hoaDonThus = new HoaDonThu
+                {
+                    TongGia = datPhong.TongThanhToan,
+                    ThoiGian = DateTime.Now,
+                    MaHoaDonThu = newMaHoaDon,
+                    MaDatPhong = maDatPhong,
+                    MaNhanVien = maNhanVien
+                };
+                // Lưu hóa đơn vào cơ sở dữ liệu
+                db.HoaDonThus.Add(hoaDonThus);
                 await db.SaveChangesAsync(); // Lưu thay đổi vào cơ sở dữ liệu
 
                 return Json(new { success = true, message = "Trả phòng thành công!" });

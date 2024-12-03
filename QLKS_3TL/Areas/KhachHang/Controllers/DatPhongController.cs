@@ -12,7 +12,7 @@ namespace QLKS_3TL.Areas.KhachHang.Controllers
         {
             _dbContext = dbContext;
         }
-
+    
         public async Task<IActionResult> GetRooms()
         {
             var rooms = await _dbContext.HangPhongs.ToListAsync();
