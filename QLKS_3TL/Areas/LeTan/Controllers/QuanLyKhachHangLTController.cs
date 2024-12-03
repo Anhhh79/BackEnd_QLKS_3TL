@@ -1,28 +1,27 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using QLKS_3TL.Areas.QuanLy.Models;
+using QLKS_3TL.Areas.LeTan.Models;
 using QLKS_3TL.Data;
 using QLKS_3TL.Models;
 
-namespace QLKS_3TL.Areas.QuanLy.Controllers
+namespace QLKS_3TL.Areas.LeTan.Controllers
 {
-    public class QuanLyKhachHangController : Controller
+    public class QuanLyKhachHangLTController : Controller
     {
-        // nhúng cơ sở dữ liệu
-        private readonly Qlks3tlContext db;
+        private readonly Qlks3tlContext dbContext;
 
-        public QuanLyKhachHangController(Qlks3tlContext context) => db = context;
-
-        //Hàm hiển thị danh sách khách hàng
+        public QuanLyKhachHangLTController(Qlks3tlContext dbContext)
+        {
+            this.dbContext = dbContext;
+        }
         public async Task<IActionResult> Index()
         {
-            //ViewData["Layout"] = "~/Areas/LeTan/Views/Shared/_LayoutLeTan.cshtml"; // Layout của Lễ Tân
             try
             {
                 // Lấy dữ liệu từ bảng KhachHang và liên kết với ThongTinDatPhong thông qua khóa ngoại MaKhachHang
-                var khachHangs = await db.KhachHangs
+                var khachHangs = await dbContext.KhachHangs
                     .Include(kh => kh.ThongTinDatPhongs) // Include để lấy dữ liệu từ ThongTinDatPhong
-                    .Select(kh => new ThongTinKhachHang
+                    .Select(kh => new Areas.LeTan.Models.TTKHcs
                     {
                         // Thuộc tính từ bảng KhachHang
                         MaKhachHang = kh.MaKhachHang,
@@ -47,10 +46,10 @@ namespace QLKS_3TL.Areas.QuanLy.Controllers
 
         //Lấy thông tin chi tiết
         [HttpGet]
-        public async Task<JsonResult> ChiTietKhachHang(string id)
+        public async Task<JsonResult> CTKhachHang(string id)
         {
             // Tìm khách hàng và bao gồm thông tin đặt phòng
-            var khachHang = await db.KhachHangs
+            var khachHang = await dbContext.KhachHangs
                 .Include(kh => kh.ThongTinDatPhongs) // Include để lấy dữ liệu từ bảng ThongTinDatPhongs
                 .Where(kh => kh.MaKhachHang == id) // Tìm khách hàng theo id
                 .Select(kh => new
@@ -87,6 +86,5 @@ namespace QLKS_3TL.Areas.QuanLy.Controllers
             // Trả về thông tin khách hàng và danh sách đặt phòng
             return Json(new { success = true, data = khachHang });
         }
-
     }
 }

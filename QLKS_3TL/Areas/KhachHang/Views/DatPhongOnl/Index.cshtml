@@ -78,7 +78,7 @@
                             <label class="mx-4 mb-2" style="font-size: 18px;font-weight: 600;line-height: 19px;">Ngày nhận: </label>
                             <div class="input-group flex-nowrap mx-4 border rounded text-center" style="width: 215px; background: #EEEEEE;">
                                 <i class="fa fa-calendar-alt" style="margin-top:13px; margin-left:20px"></i>
-                                <input class="py-2 mx-2 rounded" id="ngayNhan" class="ps-2 myID" style="width: 140px;border: 0;background: #EEEEEE;" placeholder="Ngày Nhận">
+                                <input type="date" class="py-2 mx-2 rounded flatpickr-input myID" id="ngayNhan" class="ps-2  " style="width: 140px;border: 0;background: #EEEEEE;" placeholder="Ngày Nhận">
                             </div>
                         </div>
 
@@ -86,7 +86,7 @@
                             <label class="mx-4 mb-2" style="font-size: 18px;font-weight: 600;line-height: 19px;">Ngày trả: </label>
                             <div class="input-group flex-nowrap mx-4 border rounded text-center" style="width: 215px; background: #EEEEEE;">
                                 <i class="fa fa-calendar-alt" style="margin-top:13px; margin-left:20px"></i>
-                                <input class="py-2 mx-2 rounded" id="ngayTra" class="ps-2 myID" style="width: 140px;border: 0;background: #EEEEEE;" placeholder="Ngày trả">
+                                <input type="date" class="py-2 mx-2 rounded flatpickr-input myID" id="ngayTra" class="ps-2  " style="width: 140px;border: 0;background: #EEEEEE;" placeholder="Ngày trả">
                             </div>
                         </div>
 
@@ -519,36 +519,92 @@
     </script>
     <script src="~/js/DatPhongOnl.js"></script>
     <script>
-        document.querySelector('#btnTimKiem').addEventListener('click', function () {
-            console.log("bạn đã bấm vào nút tìm kiếm")
-            // Thu thập dữ liệu từ form
-            const data = {
-                NgayNhan: document.querySelector('#ngayNhan').value,
-                NgayTra: document.querySelector('#ngayTra').value,
-                MucGia: document.querySelector('#mucGia').value,
-                SoGiuong: document.querySelector('#soGiuong').value
-            };
+       $(document).ready(function () {
+    // Xử lý sự kiện khi người dùng nhấn nút "Tìm Kiếm"
+    $('#btnTimKiem').click(function () {
+        // Lấy giá trị từ các input trong form
+        let ngayNhan = $('#ngayNhan').val();  // Ngày nhận
+        let ngayTra = $('#ngayTra').val();    // Ngày trả
+        const mucGia = $('#mucGia').val();    // Mức giá
+        const soGiuong = $('#soGiuong').val(); // Số giường
 
-            // Gửi dữ liệu tới API Controller
-            fetch('/KhachHang/DatPhongOnl/KiemTraThongTin', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify(data)
-            })
-                .then(response => response.json())
-                .then(result => {
-                    // Hiển thị kết quả
-                    if (result.success) {
-                        alert('Tìm kiếm thành công!');
-                        console.log(result.data);
-                    } else {
-                        alert('Không tìm thấy kết quả phù hợp!');
-                    }
-                })
-                .catch(error => console.error('Error:', error));
+        console.log("Ngày nhận (raw): ", ngayNhan);
+        console.log("Ngày trả (raw): ", ngayTra);
+        console.log("Mức giá: ", mucGia);
+        console.log("Số giường: ", soGiuong);
+
+        // Hàm chuyển đổi từ định dạng "DD-MM-YYYY" sang "YYYY-MM-DD"
+        function convertDateFormat(dateString) {
+            const dateParts = dateString.split('-'); // Tách chuỗi theo dấu "-"
+            const day = dateParts[0];   // Lấy phần ngày
+            const month = dateParts[1]; // Lấy phần tháng
+            const year = dateParts[2];  // Lấy phần năm
+            return `${year}-${month}-${day}`; // Trả về định dạng "YYYY-MM-DD"
+        }
+
+        // Chuyển đổi ngày nhận và ngày trả nếu có dữ liệu
+        if (ngayNhan) {
+            ngayNhan = convertDateFormat(ngayNhan);
+        }
+        if (ngayTra) {
+            ngayTra = convertDateFormat(ngayTra);
+        }
+
+        console.log("Ngày nhận (converted): ", ngayNhan);
+        console.log("Ngày trả (converted): ", ngayTra);
+
+        // Xử lý giá phòng: chuyển đổi giá theo các lựa chọn
+        let minPrice = null;
+        let maxPrice = null;
+        if (mucGia === '500000') {
+            minPrice = 500000;
+        } else if (mucGia === '500000-1000000') {
+            minPrice = 500000;
+            maxPrice = 1000000;
+        } else if (mucGia === '1000000-2000000') {
+            minPrice = 1000000;
+            maxPrice = 2000000;
+        } else if (mucGia === '2000000-4000000') {
+            minPrice = 2000000;
+            maxPrice = 4000000;
+        } else if (mucGia === '5000000') {
+            minPrice = 5000000;
+        }
+
+        console.log("Mức giá sau khi xử lý:", minPrice, maxPrice);
+
+        // Gửi yêu cầu tới API để tìm kiếm các phòng trống
+        $.ajax({
+            url: '/KhachHang/DatPhongOnl/GetAvailableRooms',  // Đường dẫn tới API
+            method: 'GET',
+            data: {
+                ngayNhan: ngayNhan,  // Ngày nhận đã chuyển đổi
+                ngayTra: ngayTra,    // Ngày trả đã chuyển đổi
+                minPrice: minPrice,  // Mức giá tối thiểu
+                maxPrice: maxPrice,  // Mức giá tối đa
+                minBeds: soGiuong,   // Số giường (tương đương minBeds vì chỉ chọn 1 giá trị)
+                maxBeds: soGiuong    // Số giường
+            },
+            success: function (response) {
+                if (response.length === 0) {
+                    console.log("Không có phòng");
+                    // Thêm code xử lý không có phòng, có thể thông báo cho người dùng
+                } else {
+                    console.log("Dữ liệu phòng:", response);
+                    // Thêm code để hiển thị danh sách phòng trống lên giao diện người dùng
+                }
+            },
+            error: function (xhr, status, error) {
+    console.error('Lỗi từ server:', xhr.responseText);
+    console.error('Mã lỗi HTTP:', xhr.status); // Thêm để kiểm tra mã lỗi HTTP
+    alert('Lỗi: Không thể lấy thông tin phòng.');
+}
+
         });
+    });
+});
+
+
     </script>
 
 </body>

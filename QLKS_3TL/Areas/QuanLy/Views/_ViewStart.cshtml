@@ -1,12 +1,4 @@
 ﻿@{
-    var currentArea = ViewContext.RouteData.Values["area"]?.ToString();
-    if (currentArea == "LeTan")
-    {
-        Layout = "~/Areas/LeTan/Views/Shared/_LayoutLeTan.cshtml"; // Layout của Lễ Tân
-    }
-    else
-    {
-        Layout = "~/Areas/QuanLy/Views/Shared/_LayoutQuanLy.cshtml"; // Layout mặc định của Quản Lý
-    }
+        Layout = "~/Areas/QuanLy/Views/Shared/_LayoutQuanLy.cshtml";
 }
 

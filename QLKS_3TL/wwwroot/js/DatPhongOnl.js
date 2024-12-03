@@ -61,6 +61,9 @@ document.getElementById("ChonDP").addEventListener("click", function () {
         alert("Ngày nhận không thể trước ngày hiện tại!");
         return;
     }
+    console.log(today)
+    console.log(checkNgayNhan)
+    console.log(checkNgayTra)
 
     // Kiểm tra ngày trả phải sau ngày nhận ít nhất 1 ngày
     if (checkNgayTra <= checkNgayNhan) {

@@ -28,7 +28,7 @@
                     </div>
                     <div class="d-flex align-items-center mt-1">
                         <div class="col-6">
-                            <h6 class="me-2 mb-0">Giá:</h6>
+                            <h6 class="me-2 mb-0" style="display: inline;">Giá:</h6>
                             <span class="text-color textTitleRoom">${formattedPrice}</span>
                         </div>
                     </div>
@@ -162,6 +162,11 @@ function CheckDataFormThanhToan() {
 
 $(document).ready(function () {
     $('#btnThanhToan').click(function () {
+
+        if (!CheckDataFormThanhToan()) {
+            // Nếu dữ liệu không hợp lệ, dừng lại
+            return;
+        }
         // Lấy dữ liệu từ form
         const fullName = $('#fullNameThanhToan').val().trim();
         const sex = $('#sexThanhToan').val();
@@ -215,7 +220,7 @@ $(document).ready(function () {
                 if (response.success) {
                     alert('Đặt phòng thành công!');
                     sessionStorage.removeItem('allBookings'); // Xóa SessionStorage
-                    window.location.href = '/success'; // Điều hướng
+                    window.location.href = response.redirectUrl; // Điều hướng đến URL trả về từ server
                 } else {
                     alert('Có lỗi xảy ra: ' + response.message);
                 }

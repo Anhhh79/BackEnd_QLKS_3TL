@@ -34,44 +34,51 @@ namespace QLKS_3TL.Areas.KhachHang.Controllers
                 GiaHangPhong = HangPhong.GiaHangPhong,
             });
         }
-
-        [HttpPost]
-        public IActionResult TimKiemThongTin([FromBody] TimKiemThongTinViewModel model)
+        [HttpGet]
+        public async Task<IActionResult> GetAvailableRooms(DateOnly ngayNhan, DateOnly ngayTra, decimal? minPrice, decimal? maxPrice, int? minBeds, int? maxBeds)
         {
-            // Query database với Entity Framework
-            var query = dbContext.ThongTinDatPhongs.AsQueryable();
+            Console.WriteLine($"ngayNhan: {ngayNhan}, ngayTra: {ngayTra}, minPrice: {minPrice}, maxPrice: {maxPrice}, minBeds: {minBeds}, maxBeds: {maxBeds}");
 
-            if (model.NgayNhan.HasValue)
+            // Kiểm tra nếu bảng ThongTinDatPhongs trống
+            bool isThongTinDatPhongsEmpty = !dbContext.ThongTinDatPhongs.Any();
+
+            var availableRooms = await dbContext.HangPhongs
+                .Where(hp => dbContext.Phongs
+                    .Where(p => p.MaHangPhong == hp.MaHangPhong)
+                    .All(p => isThongTinDatPhongsEmpty || // Nếu không có dữ liệu, tất cả phòng được coi là trống
+                        !dbContext.ThongTinDatPhongs
+                            .Any(tdp => tdp.MaPhong == p.MaPhong
+                                && tdp.TrangThaiPhong != "Trống"
+                                && tdp.NgayNhan < ngayTra
+                                && tdp.NgayTra > ngayNhan)))
+                .Where(hp => (!minPrice.HasValue || hp.GiaHangPhong >= minPrice)
+                             && (!maxPrice.HasValue || hp.GiaHangPhong <= maxPrice)
+                             && (!minBeds.HasValue || hp.SoGiuong >= minBeds)
+                             && (!maxBeds.HasValue || hp.SoGiuong <= maxBeds))
+                .GroupBy(hp => new
+                {
+                    hp.MaHangPhong,
+                    hp.TenHangPhong,
+                    hp.GiaHangPhong,
+                    hp.SoGiuong
+                })
+                .Select(group => new
+                {
+                    group.Key.MaHangPhong,
+                    group.Key.TenHangPhong,
+                    group.Key.GiaHangPhong,
+                    group.Key.SoGiuong
+                })
+                .ToListAsync();
+
+            Console.WriteLine($"Dữ liệu phòng: {availableRooms.Count}");
+
+            if (availableRooms.Count == 0)
             {
-                query = query.Where(x => x.NgayNhan >= model.NgayNhan);
+                return NotFound(new { message = "Không có phòng trống phù hợp với tiêu chí tìm kiếm." });
             }
 
-            if (model.NgayTra.HasValue)
-            {
-                query = query.Where(x => x.NgayTra <= model.NgayTra);
-            }
-
-            if (model.MucGiaMin.HasValue && model.MucGiaMax.HasValue)
-            {
-                query = query.Where(x => x.TongThanhToan >= model.MucGiaMin && x.TongThanhToan <= model.MucGiaMax);
-            }
-
-            if (model.SoGiuong.HasValue)
-            {
-                query = query.Where(x => x.SoLuongPhong == model.SoGiuong);
-            }
-
-            var result = query.Select(x => new
-            {
-                x.MaDatPhong,
-                x.NgayNhan,
-                x.NgayTra,
-                x.TongThanhToan,
-                x.SoLuongPhong
-            }).ToList();
-
-            return Json(result);
+            return Ok(availableRooms);
         }
-
     }
 }
