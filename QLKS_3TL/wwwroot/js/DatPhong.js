@@ -4,6 +4,7 @@
         url: '/KhachHang/DatPhong/GetRooms', // Đường dẫn tới controller action
         type: 'GET',
         success: function (data) {
+            console.log(data);
             // Duyệt qua các phòng và thêm vào HTML
             data.forEach(function (room) {
                 const cardHtml = `

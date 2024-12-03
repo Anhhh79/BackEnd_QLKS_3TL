@@ -42,10 +42,11 @@ namespace QLKS_3TL.Areas.KhachHang.Controllers
             // Kiểm tra nếu bảng ThongTinDatPhongs trống
             bool isThongTinDatPhongsEmpty = !dbContext.ThongTinDatPhongs.Any();
 
+            // Truy vấn phòng có sẵn
             var availableRooms = await dbContext.HangPhongs
                 .Where(hp => dbContext.Phongs
                     .Where(p => p.MaHangPhong == hp.MaHangPhong)
-                    .All(p => isThongTinDatPhongsEmpty || // Nếu không có dữ liệu, tất cả phòng được coi là trống
+                    .All(p => isThongTinDatPhongsEmpty || // Nếu bảng ThongTinDatPhongs trống, coi tất cả phòng là trống
                         !dbContext.ThongTinDatPhongs
                             .Any(tdp => tdp.MaPhong == p.MaPhong
                                 && tdp.TrangThaiPhong != "Trống"
@@ -60,24 +61,31 @@ namespace QLKS_3TL.Areas.KhachHang.Controllers
                     hp.MaHangPhong,
                     hp.TenHangPhong,
                     hp.GiaHangPhong,
-                    hp.SoGiuong
+                    hp.SoGiuong,
+                    hp.DienTich,
+                    hp.AnhHangPhong
                 })
                 .Select(group => new
                 {
                     group.Key.MaHangPhong,
                     group.Key.TenHangPhong,
                     group.Key.GiaHangPhong,
-                    group.Key.SoGiuong
+                    group.Key.DienTich,
+                    group.Key.SoGiuong,
+                    group.Key.AnhHangPhong
                 })
                 .ToListAsync();
 
+            // Debug output to check available rooms
             Console.WriteLine($"Dữ liệu phòng: {availableRooms.Count}");
 
+            // Kiểm tra nếu không có phòng nào phù hợp
             if (availableRooms.Count == 0)
             {
                 return NotFound(new { message = "Không có phòng trống phù hợp với tiêu chí tìm kiếm." });
             }
 
+            // Trả về kết quả
             return Ok(availableRooms);
         }
     }
