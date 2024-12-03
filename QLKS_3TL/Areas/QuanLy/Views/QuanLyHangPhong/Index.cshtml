@@ -81,61 +81,62 @@
         </div>
     </main>
     <div id="modalPlaceholder"></div>
-   <div id="modalPlaceholderEdit"></div>
+    <div id="modalPlaceholderEdit"></div>
     <div id="loadModal"></div>
-<!-- Modal chi tiết -->
-<div class="modal fade" id="chitiet" tabindex="-1" aria-labelledby="chitiet" aria-hidden="true">
-    <div class="modal-dialog modal-lg">
-        <div class="modal-content" style="border-radius: 20px;">
-            <div class="modal-header d-flex justify-content-center">
-                <h5 class="modal-title" id="modalRoomTitle" style="font-weight: bolder;">Thông tin hạng phòng</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <div class="modal-body">
-                <div class="container">
-                    <div class="row">
-                        <div class="col-5">
-                            <img id="modalRoomImage" src="" alt="Room Image" class="img-fluid">
-                            <h5 class="text-center mt-2 ms-2" style="font-weight: 600;" id="modalRoomName"></h5>
-                        </div>
-                        <div class="col-7 px-0">
-                            <div class="container">
-                                <div class="row">
-                                    <h4 style="font-weight: 600;" id="modalRoomName"></h4>
-                                </div>
-                                <div class="row mt-2">
-                                    <div class="col-6">
+    <!-- Modal chi tiết -->
+    <div class="modal fade" id="chitiet" tabindex="-1" aria-labelledby="chitiet" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content" style="border-radius: 20px;">
+                <div class="modal-header d-flex justify-content-center">
+                    <h5 class="modal-title" id="modalRoomTitle" style="font-weight: bolder;">Thông tin hạng phòng</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="container">
+                        <div class="row">
+                            <div class="col-5">
+                                <img id="modalRoomImage" src="" alt="Room Image" class="img-fluid">
+                                <h5 class="text-center mt-2 ms-2" style="font-weight: 600;" id="modalRoomName"></h5>
+                            </div>
+                            <div class="col-7 px-0">
+                                <div class="container">
+                                    <div class="row">
+                                        <h4 style="font-weight: 600;" id="modalRoomName"></h4>
+                                    </div>
+                                    <div class="row mt-2">
+                                        <div class="col-6">
+                                            <h6>
+                                                <span style="font-weight: 600;">Mã hạng phòng:</span>
+                                                <span id="modalRoomCode"></span>
+                                            </h6>
+                                        </div>
+                                        <div class="col-6">
+                                            <h6>
+                                                <span style="font-weight: 600;">Số giường:</span>
+                                                <span id="modalRoomBeds"></span>
+                                            </h6>
+                                        </div>
+                                    </div>
+                                    <div class="row mt-2">
+                                        <div class="col-6">
+                                            <h6>
+                                                <span style="font-weight: 600;">Diện tích:</span>
+                                                <span id="modalRoomArea"></span>
+                                            </h6>
+                                        </div>
+                                        <div class="col-6">
+                                            <h6>
+                                                <span style="font-weight: 600;">Giá:</span>
+                                                <span id="modalRoomPrice"></span>
+                                            </h6>
+                                        </div>
+                                    </div>
+                                    <div class="row mt-2">
                                         <h6>
-                                            <span style="font-weight: 600;">Mã hạng phòng:</span>
-                                            <span id="modalRoomCode"></span>
+                                            <span style="font-weight: 600;">Mô tả:</span>
+                                            <span id="modalRoomDescription"></span>
                                         </h6>
                                     </div>
-                                    <div class="col-6">
-                                        <h6>
-                                            <span style="font-weight: 600;">Số giường:</span>
-                                            <span id="modalRoomBeds"></span>
-                                        </h6>
-                                    </div>
-                                </div>
-                                <div class="row mt-2">
-                                    <div class="col-6">
-                                        <h6>
-                                            <span style="font-weight: 600;">Diện tích:</span>
-                                            <span id="modalRoomArea"></span>
-                                        </h6>
-                                    </div>
-                                    <div class="col-6">
-                                        <h6>
-                                            <span style="font-weight: 600;">Giá:</span>
-                                            <span id="modalRoomPrice"></span>
-                                        </h6>
-                                    </div>
-                                </div>
-                                <div class="row mt-2">
-                                    <h6>
-                                        <span style="font-weight: 600;">Mô tả:</span>
-                                        <span id="modalRoomDescription"></span>
-                                    </h6>
                                 </div>
                             </div>
                         </div>

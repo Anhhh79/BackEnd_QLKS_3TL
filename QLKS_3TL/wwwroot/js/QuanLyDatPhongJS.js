@@ -311,7 +311,6 @@ function XuLyTraPhong(maDatPhong) {
     if (!confirm("Bạn có chắc chắn muốn trả phòng này?")) {
         return;
     }
-
     const url = `/LeTan/QuanLyDatPhong/XuLyTraPhong?maDatPhong=${maDatPhong}`;
 
     $.ajax({
