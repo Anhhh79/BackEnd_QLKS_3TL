@@ -1,0 +1,165 @@
+﻿@using QLKS_3TL.Areas.LeTan.Models
+@model IEnumerable<TTKHcs>
+@{
+    ViewData["Title"] = "Quản lý khách hàng";
+}
+
+<div class="main" id="content">
+    <nav class="navbar navbar-expand px-4 py-3">
+        <div class="navbar-collapse collapse">
+            <ul class="navbar-nav justify-content-between" style="width: 1380px;">
+                <li>
+                    <h2 style="font-weight: bolder;">Thông tin khách hàng</h2>
+                </li>
+                @await Html.PartialAsync("~/Areas/Admin/Views/DoiMatKhau/Index.cshtml")
+            </ul>
+        </div>
+    </nav>
+    <main class="content px-3 py-3">
+        <div class="container-fluid">
+            <div>
+                <div class="row justify-content-between mx-1 mb-4">
+                    <div class="input-group d-flex align-items-center border border-dark rounded"
+                         style="width: 300px;padding: 0;">
+                        <i class="fa-solid fa-magnifying-glass fa-1x ms-2 "></i>
+                        <input type="text" class="form-control input-border" id="timKiemKhachHang" placeholder="Thông tin khách hàng"
+                               aria-label="Username" aria-describedby="basic-addon1" style="border: 0;">
+                    </div>
+                </div>
+                <div class="row mt-2">
+                    <div class="col-12">
+                        <table class="table">
+                            <thead style="background: #0e2238;">
+                                <tr>
+                                    <th scope="col">STT</th>
+                                    <th scope="col">Thời gian đặt phòng</th>
+                                    <th scope="col">Họ và tên</th>
+                                    <th scope="col">Giới tính</th>
+                                    <th scope="col">Số Căn Cước</th>
+                                    <th scope="col">Số điện thoại</th>
+                                    <th scope="col">Email</th>
+                                    <th scope="col"></th>
+
+                                </tr>
+                            </thead>
+                            <tbody id="bodyThongTinKhachHang">
+                                @{
+                                    int soThuTu = 1;
+                                }
+                                @foreach (var i in Model)
+                                {
+                                    <tr>
+                                        <th scope="row">@soThuTu</th>
+                                        <td>@i.ThoiGianDatPhong</td>
+                                        <td>@i.HoTen</td>
+                                        <td>@i.GioiTinh</td>
+                                        <td>@i.Cccd</td>
+                                        <td>@i.SoDienThoai</td>
+                                        <td>@i.Email</td>
+                                        <td>
+                                            <a class="cusor me-2 mt-1 d-flex justify-content-end" onclick="CTKhachHang('@i.MaKhachHang')"
+                                               style="color: darkblue; font-style: italic; text-decoration: underline;">
+                                                Chi
+                                                tiết
+                                            </a>
+                                        </td>
+                                    </tr>
+                                    soThuTu++;
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+    <!-- modal chi tiết -->
+    @await Html.PartialAsync("ModalKH");
+</div>
+<script>
+        function CTKhachHang(maKhachHang) {
+
+            console.log("Ban da bam vao");
+        // Xác thực mã khách hàng
+        if (!maKhachHang) {
+            alert('Mã khách hàng không hợp lệ.');
+            return;
+        }
+
+        // Đường dẫn đến phương thức trong controller để lấy thông tin
+        const baseUrl = '/LeTan/QuanLyKhachHangLT/CTKhachHang/';
+
+        $.ajax({
+            url: baseUrl + maKhachHang, // Tạo URL
+            type: 'GET',
+            dataType: 'json',
+            success: function (response) {
+                if (response.success) {
+                    const khachHang = response.data;
+                    const datPhong = khachHang.datPhongs; // Lấy thông tin đặt phòng (object)
+
+                    // Tạo HTML hiển thị thông tin khách hàng
+                    const object = `
+                        <div class="container">
+                            <div class="row mt-2">
+                                <div class="col-4">
+                                    <h6><span style="font-weight: 600;">Họ tên: </span>${khachHang.hoTen || 'N/A'}</h6>
+                                </div>
+                                <div class="col-4">
+                                    <h6><span style="font-weight: 600;">Số điện thoại: </span>${khachHang.soDienThoai || 'N/A'}</h6>
+                                </div>
+                                <div class="col-4">
+
+                                    <h6><span style="font-weight: 600;">Email: </span>${khachHang.email || 'N/A'}</h6>
+                                </div>
+                            </div>
+                            <div class="row mt-2">
+                                <div class="col-4">
+                                    <h6><span style="font-weight: 600;">CCCD: </span>${khachHang.cccd || 'N/A'}</h6>
+                                </div>
+                                <div class="col-4">
+                                    <h6><span style="font-weight: 600;">Giới tính: </span>${khachHang.gioiTinh || 'N/A'}</h6>
+                                </div>
+                                 <div class="col-4">
+                                    <h6><span style="font-weight: 600;">Hạng phòng: </span>${datPhong?.hangPhong1 || 'N/A'}</h6>
+                                </div>
+                            </div>
+                            <div class="row mt-2">
+                                <div class="col-4">
+                                    <h6><span style="font-weight: 600;">Ngày nhận: </span>${datPhong?.ngayNhan || 'N/A'}</h6>
+                                </div>
+                                <div class="col-4">
+                                    <h6><span style="font-weight: 600;">Ngày trả: </span>${datPhong?.ngayTra || 'N/A'}</h6>
+                                </div>
+                                <div class="col-4">
+                                    <h6><span style="font-weight: 600;">Tổng số ngày: </span>${datPhong?.tongSoNgay || 'N/A'}</h6>
+                                </div>
+                            </div>
+                            <div class="row mt-2">
+                                <div class="col-4">
+                                    <h6><span style="font-weight: 600;">Tên phòng: </span>${datPhong?.tenPhong || 'N/A'}</h6>
+                                </div>
+                                <div class="col-4">
+                                    <h6><span style="font-weight: 600;">Thanh toán: </span>${datPhong?.thanhToan?.toLocaleString() || '0'} VND</h6>
+                                </div>
+                                 <div class="col-4">
+                                    <h6><span style="font-weight: 600;">Yêu cầu: </span>${datPhong?.yeuCau || 'Không'}</h6>
+                                </div>
+                            </div>
+                        </div>
+                    `;
+
+                    $('#TTKhachHangChiTiet').html(object);
+                    $('#TTKhachHang').modal('show'); // Hiển thị modal
+                } else {
+                    // Hiển thị thông báo cho lỗi từ server
+                    alert(response.message || 'Đã xảy ra lỗi khi lấy thông tin khách hàng.');
+                }
+            },
+            error: function (jqXHR, textStatus, errorThrown) {
+                console.error('Lỗi khi lấy thông tin khách hàng:', textStatus, errorThrown);
+                alert('Không thể lấy thông tin khách hàng. Vui lòng kiểm tra lại.');
+            }
+        });
+    }
+</script>
