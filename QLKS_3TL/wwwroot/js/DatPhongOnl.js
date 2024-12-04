@@ -98,85 +98,152 @@ document.getElementById("ChonDP").addEventListener("click", function () {
     // Hiển thị thông báo thành công và đóng modal
     alert("Chọn phòng thành công!");
     $('#Datphong').modal('hide');
-    location.reload();
+
+    //location.reload();
 });
 
+
+//document.addEventListener("DOMContentLoaded", function () {
+//    // Lấy dữ liệu booking từ sessionStorage
+//    let allBookings = JSON.parse(sessionStorage.getItem("allBookings")) || [];
+
+//    // Kiểm tra nếu có dữ liệu
+//    if (allBookings.length > 0) {
+//        // Lặp qua tất cả bookings và tạo nội dung HTML tương ứng
+//        allBookings.forEach(function (booking, index) {
+//            // Chuyển giá từ chuỗi (ví dụ: "1,800,000 VND") thành số
+//            let price = parseInt(booking.giaHangPhong.replace(/[^0-9]/g, "")); // Xóa tất cả ký tự không phải số
+
+//            // Định dạng giá theo kiểu VND với dấu phân cách hàng nghìn
+//            let formattedPrice = price.toLocaleString('vi-VN') + " VND";  // Định dạng với tiền tệ VND
+
+//            // Tạo phần tử div cho mỗi booking
+//            let bookingHTML = `
+//                <div class="mt-3 mx-2 Datphong-hover" data-index="${index}">
+//                    <div class="d-flex align-items-center">
+//                        <h6 class="d-flex me-2 mb-0">Hạng phòng:</h6><span>${booking.tenHangPhong}</span>
+//                    </div>
+//                    <div class="d-flex mt-2">
+//                        <div class="d-flex">
+//                            <h6 class="mb-0 mt-1">Ngày nhận: </h6>
+//                            <div class="ms-1">${booking.ngayNhan}</div>
+//                        </div>
+//                        <div class="d-flex" style="margin-left: 50px;">
+//                            <h6 class="mb-0 mt-1">Ngày trả: </h6>
+//                            <div class="ms-1">${booking.ngayTra}</div>
+//                        </div>
+//                    </div>
+//                    <div class="d-flex align-items-center mt-1">
+//                        <h6 class="d-flex me-2 mb-0">Số lượng:</h6><span>${booking.soLuong}</span>
+//                    </div>
+//                    <div class="d-flex align-items-center mt-1">
+//                        <div class="col-6">
+//                            <h6 class="me-2 mb-0" style="display: inline;">Giá:</h6>
+//                            <span class="text-color textTitleRoom">${formattedPrice}</span>
+//                        </div>
+//                        <div class="d-flex mt-1 justify-content-end col-6">
+//                            <button type="button" class="btn btn-danger btn-huy" style="font-size: smaller;">
+//                                Hủy
+//                            </button>
+//                        </div>
+//                    </div>
+//                    <hr>
+//                </div>
+//            `;
+//            // Thêm nội dung vào phần tử chứa thông tin booking
+//            document.getElementById('bookingList').innerHTML += bookingHTML;
+//        });
+//    } else {
+//        // Nếu không có dữ liệu, có thể hiển thị thông báo hoặc để trống
+//        document.getElementById('bookingList').innerHTML = "<p>Không có thông tin đặt phòng.</p>";
+//    }
+
+//    // Thêm event listener cho tất cả các nút "Hủy"
+//    document.querySelectorAll('.btn-huy').forEach(function (button) {
+//        button.addEventListener('click', function () {
+//            // Lấy chỉ mục của booking cần xóa từ thuộc tính data-index
+//            let bookingIndex = this.closest('.Datphong-hover').getAttribute('data-index');
+//            // Xóa booking tương ứng khỏi sessionStorage
+//            allBookings.splice(bookingIndex, 1); // Loại bỏ booking theo chỉ mục
+
+//            // Cập nhật lại sessionStorage
+//            sessionStorage.setItem("allBookings", JSON.stringify(allBookings));
+
+//            // Xóa phần tử HTML tương ứng
+//            this.closest('.Datphong-hover').remove();
+
+//            // Hiển thị thông báo
+//            alert("Đã hủy chọn phòng!");
+//        });
+//    });
+//});
 
 document.addEventListener("DOMContentLoaded", function () {
-    // Lấy dữ liệu booking từ sessionStorage
+    // Lấy dữ liệu từ sessionStorage
     let allBookings = JSON.parse(sessionStorage.getItem("allBookings")) || [];
 
-    // Kiểm tra nếu có dữ liệu
-    if (allBookings.length > 0) {
-        // Lặp qua tất cả bookings và tạo nội dung HTML tương ứng
-        allBookings.forEach(function (booking, index) {
-            // Chuyển giá từ chuỗi (ví dụ: "1,800,000 VND") thành số
-            let price = parseInt(booking.giaHangPhong.replace(/[^0-9]/g, "")); // Xóa tất cả ký tự không phải số
+    // Hàm hiển thị booking từ sessionStorage lên giao diện
+    function renderBookings() {
+        const bookingList = document.getElementById('bookingList');
+        bookingList.innerHTML = ""; // Xóa nội dung cũ
+        if (allBookings.length > 0) {
+            allBookings.forEach(function (booking, index) {
+                let price = parseInt(booking.giaHangPhong.replace(/[^0-9]/g, ""));
+                let formattedPrice = price.toLocaleString('vi-VN') + " VND";
 
-            // Định dạng giá theo kiểu VND với dấu phân cách hàng nghìn
-            let formattedPrice = price.toLocaleString('vi-VN') + " VND";  // Định dạng với tiền tệ VND
+                let bookingHTML = `
+                    <div class="mt-3 mx-2 Datphong-hover" data-index="${index}">
+                        <div class="d-flex align-items-center">
+                            <h6 class="d-flex me-2 mb-0">Hạng phòng:</h6><span>${booking.tenHangPhong}</span>
+                        </div>
+                        <div class="d-flex mt-2">
+                            <div class="d-flex">
+                                <h6 class="mb-0 mt-1">Ngày nhận: </h6>
+                                <div class="ms-1">${booking.ngayNhan}</div>
+                            </div>
+                            <div class="d-flex" style="margin-left: 50px;">
+                                <h6 class="mb-0 mt-1">Ngày trả: </h6>
+                                <div class="ms-1">${booking.ngayTra}</div>
+                            </div>
+                        </div>
+                        <div class="d-flex align-items-center mt-1">
+                            <h6 class="d-flex me-2 mb-0">Số lượng:</h6><span>${booking.soLuong}</span>
+                        </div>
+                        <div class="d-flex align-items-center mt-1">
+                            <div class="col-6">
+                                <h6 class="me-2 mb-0" style="display: inline;">Giá:</h6>
+                                <span class="text-color textTitleRoom">${formattedPrice}</span>
+                            </div>
+                            <div class="d-flex mt-1 justify-content-end col-6">
+                                <button type="button" class="btn btn-danger btn-huy" style="font-size: smaller;">
+                                    Hủy
+                                </button>
+                            </div>
+                        </div>
+                        <hr>
+                    </div>
+                `;
+                bookingList.innerHTML += bookingHTML;
+            });
+        } else {
+            bookingList.innerHTML = "<p>Không có thông tin đặt phòng.</p>";
+        }
 
-            // Tạo phần tử div cho mỗi booking
-            let bookingHTML = `
-                <div class="mt-3 mx-2 Datphong-hover" data-index="${index}">
-                    <div class="d-flex align-items-center">
-                        <h6 class="d-flex me-2 mb-0">Hạng phòng:</h6><span>${booking.tenHangPhong}</span>
-                    </div>
-                    <div class="d-flex mt-2">
-                        <div class="d-flex">
-                            <h6 class="mb-0 mt-1">Ngày nhận: </h6>
-                            <div class="ms-1">${booking.ngayNhan}</div>
-                        </div>
-                        <div class="d-flex" style="margin-left: 50px;">
-                            <h6 class="mb-0 mt-1">Ngày trả: </h6>
-                            <div class="ms-1">${booking.ngayTra}</div>
-                        </div>
-                    </div>
-                    <div class="d-flex align-items-center mt-1">
-                        <h6 class="d-flex me-2 mb-0">Số lượng:</h6><span>${booking.soLuong}</span>
-                    </div>
-                    <div class="d-flex align-items-center mt-1">
-                        <div class="col-6">
-                            <h6 class="me-2 mb-0" style="display: inline;">Giá:</h6>
-                            <span class="text-color textTitleRoom">${formattedPrice}</span>
-                        </div>
-                        <div class="d-flex mt-1 justify-content-end col-6">
-                            <button type="button" class="btn btn-danger btn-huy" style="font-size: smaller;">
-                                Hủy
-                            </button>
-                        </div>
-                    </div>
-                    <hr>
-                </div>
-            `;
-            // Thêm nội dung vào phần tử chứa thông tin booking
-            document.getElementById('bookingList').innerHTML += bookingHTML;
+        // Gắn sự kiện cho các nút "Hủy"
+        document.querySelectorAll('.btn-huy').forEach(function (button) {
+            button.addEventListener('click', function () {
+                let bookingIndex = this.closest('.Datphong-hover').getAttribute('data-index');
+                allBookings.splice(bookingIndex, 1);
+                sessionStorage.setItem("allBookings", JSON.stringify(allBookings));
+                renderBookings(); // Cập nhật lại giao diện
+                alert("Đã hủy chọn phòng!");
+            });
         });
-    } else {
-        // Nếu không có dữ liệu, có thể hiển thị thông báo hoặc để trống
-        document.getElementById('bookingList').innerHTML = "<p>Không có thông tin đặt phòng.</p>";
     }
 
-    // Thêm event listener cho tất cả các nút "Hủy"
-    document.querySelectorAll('.btn-huy').forEach(function (button) {
-        button.addEventListener('click', function () {
-            // Lấy chỉ mục của booking cần xóa từ thuộc tính data-index
-            let bookingIndex = this.closest('.Datphong-hover').getAttribute('data-index');
-            // Xóa booking tương ứng khỏi sessionStorage
-            allBookings.splice(bookingIndex, 1); // Loại bỏ booking theo chỉ mục
-
-            // Cập nhật lại sessionStorage
-            sessionStorage.setItem("allBookings", JSON.stringify(allBookings));
-
-            // Xóa phần tử HTML tương ứng
-            this.closest('.Datphong-hover').remove();
-
-            // Hiển thị thông báo
-            alert("Đã hủy chọn phòng!");
-        });
-    });
+    // Gọi hàm hiển thị khi tải trang
+    renderBookings();
 });
-
 
 function calculateTotalFromSessionStorage() {
     // Lấy dữ liệu từ sessionStorage
