@@ -4,29 +4,34 @@
         url: '/QuanLy/QuanLyHoaDonChi/GetHoaDonList',
         type: 'GET',
         success: function (data) {
+            document.getElementById("tblHoaDonChi").replaceChildren();
             let htmlContent = '';
             let stt = 1;
             data.forEach(function (item) {
-                const formattedDate = item.thoiGian
-                    ? new Date(item.thoiGian).toLocaleString('vi-VN', {
-                        day: '2-digit',
-                        month: '2-digit',
-                        year: 'numeric',
-                        hour: '2-digit',
-                        minute: '2-digit',
-                        hour12: true,
-                    })
-                    : 'N/A';
+                const formatDate = (dateString) => {
+                    if (!dateString) return 'N/A';
+                    const date = new Date(dateString);
+
+                    const day = date.getDate().toString().padStart(2, '0');
+                    const month = (date.getMonth() + 1).toString().padStart(2, '0');
+                    const year = date.getFullYear();
+                    const hours = date.getHours();
+                    const minutes = date.getMinutes().toString().padStart(2, '0');
+                    const suffix = hours < 12 ? 'SA' : 'CH';
+
+                    const formattedHours = (hours % 12 || 12).toString().padStart(2, '0');
+
+                    return `${day}/${month}/${year} - ${formattedHours}:${minutes} ${suffix}`;
+                };
                 htmlContent += `
                     <tr>
                         <th scope="row">${stt}</th>
-                        <td>${item.maHoaDonChi}</td>
                         <td>${item.maNhanVien}</td>
                         <td>${item.tenMatHang}</td>
                         <td>${item.soLuong}</td>
-                        <td>${item.giaMatHang}</td>
-                        <td>${item.tongGia} VND</td>
-                        <td class="text-center">${formattedDate}</td>
+                        <td>${item.giaMatHang.toLocaleString('en-US')} VND</td>
+                        <td>${item.tongGia.toLocaleString('en-US')} VND</td>     
+                        <td class="text-center">${formatDate(item.thoiGian)}</td>
                     </tr>
                 `;
                 stt++;
