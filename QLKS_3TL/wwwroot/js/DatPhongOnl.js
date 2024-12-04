@@ -283,82 +283,82 @@ calculateTotalFromSessionStorage();
 
 
 
-$(document).ready(function () {
-    // Xử lý sự kiện khi người dùng nhấn nút "Tìm Kiếm"
-    $('#btnTimKiem').click(function () {
-        // Lấy giá trị từ các input trong form
-        let ngayNhan = $('#ngayNhan').val();  // Ngày nhận
-        let ngayTra = $('#ngayTra').val();    // Ngày trả
-        const mucGia = $('#mucGia').val();    // Mức giá
-        const soGiuong = $('#soGiuong').val(); // Số giường
 
-        console.log("Ngày nhận (raw): ", ngayNhan);
-        console.log("Ngày trả (raw): ", ngayTra);
-        console.log("Mức giá: ", mucGia);
-        console.log("Số giường: ", soGiuong);
+// Xử lý sự kiện khi người dùng nhấn nút "Tìm Kiếm"
+function timKiemHangPhongTrong() {
+    // Lấy giá trị từ các input trong form
+    let ngayNhan = $('#ngayNhan').val();  // Ngày nhận
+    let ngayTra = $('#ngayTra').val();    // Ngày trả
+    const mucGia = $('#mucGia').val();    // Mức giá
+    const soGiuong = $('#soGiuong').val(); // Số giường
 
-        // Hàm chuyển đổi từ định dạng "DD-MM-YYYY" sang "YYYY-MM-DD"
-        function convertDateFormat(dateString) {
-            const dateParts = dateString.split('-'); // Tách chuỗi theo dấu "-"
-            const day = dateParts[0];   // Lấy phần ngày
-            const month = dateParts[1]; // Lấy phần tháng
-            const year = dateParts[2];  // Lấy phần năm
-            return `${year}-${month}-${day}`; // Trả về định dạng "YYYY-MM-DD"
-        }
+    console.log("Ngày nhận (raw): ", ngayNhan);
+    console.log("Ngày trả (raw): ", ngayTra);
+    console.log("Mức giá: ", mucGia);
+    console.log("Số giường: ", soGiuong);
 
-        // Chuyển đổi ngày nhận và ngày trả nếu có dữ liệu
-        if (ngayNhan) {
-            ngayNhan = convertDateFormat(ngayNhan);
-        }
-        if (ngayTra) {
-            ngayTra = convertDateFormat(ngayTra);
-        }
+    // Hàm chuyển đổi từ định dạng "DD-MM-YYYY" sang "YYYY-MM-DD"
+    function convertDateFormat(dateString) {
+        const dateParts = dateString.split('-'); // Tách chuỗi theo dấu "-"
+        const day = dateParts[0];   // Lấy phần ngày
+        const month = dateParts[1]; // Lấy phần tháng
+        const year = dateParts[2];  // Lấy phần năm
+        return `${year}-${month}-${day}`; // Trả về định dạng "YYYY-MM-DD"
+    }
 
-        console.log("Ngày nhận (converted): ", ngayNhan);
-        console.log("Ngày trả (converted): ", ngayTra);
+    // Chuyển đổi ngày nhận và ngày trả nếu có dữ liệu
+    if (ngayNhan) {
+        ngayNhan = convertDateFormat(ngayNhan);
+    }
+    if (ngayTra) {
+        ngayTra = convertDateFormat(ngayTra);
+    }
 
-        // Xử lý giá phòng: chuyển đổi giá theo các lựa chọn
-        let minPrice = null;
-        let maxPrice = null;
-        if (mucGia === '500000') {
-            minPrice = 500000;
-        } else if (mucGia === '500000-1000000') {
-            minPrice = 500000;
-            maxPrice = 1000000;
-        } else if (mucGia === '1000000-2000000') {
-            minPrice = 1000000;
-            maxPrice = 2000000;
-        } else if (mucGia === '2000000-4000000') {
-            minPrice = 2000000;
-            maxPrice = 4000000;
-        } else if (mucGia === '5000000') {
-            minPrice = 5000000;
-        }
+    console.log("Ngày nhận (converted): ", ngayNhan);
+    console.log("Ngày trả (converted): ", ngayTra);
 
-        console.log("Mức giá sau khi xử lý:", minPrice, maxPrice);
+    // Xử lý giá phòng: chuyển đổi giá theo các lựa chọn
+    let minPrice = null;
+    let maxPrice = null;
+    if (mucGia === '500000') {
+        minPrice = 500000;
+    } else if (mucGia === '500000-1000000') {
+        minPrice = 500000;
+        maxPrice = 1000000;
+    } else if (mucGia === '1000000-2000000') {
+        minPrice = 1000000;
+        maxPrice = 2000000;
+    } else if (mucGia === '2000000-4000000') {
+        minPrice = 2000000;
+        maxPrice = 4000000;
+    } else if (mucGia === '5000000') {
+        minPrice = 5000000;
+    }
 
-        // Gửi yêu cầu tới API để tìm kiếm các phòng trống
-        $.ajax({
-            url: '/KhachHang/DatPhongOnl/GetAvailableRooms',  // Đường dẫn tới API
-            method: 'GET',
-            data: {
-                ngayNhan: ngayNhan,  // Ngày nhận đã chuyển đổi
-                ngayTra: ngayTra,    // Ngày trả đã chuyển đổi
-                minPrice: minPrice,  // Mức giá tối thiểu
-                maxPrice: maxPrice,  // Mức giá tối đa
-                minBeds: soGiuong,   // Số giường (tương đương minBeds vì chỉ chọn 1 giá trị)
-                maxBeds: soGiuong    // Số giường
-            },
-            success: function (response) {
-                if (response.length === 0) {
-                    console.log("Không có phòng");
-                    // Thêm code xử lý không có phòng, có thể thông báo cho người dùng
-                } else {
-                    var so = 0;
-                    console.log("Dữ liệu phòng:", response);
-                    document.getElementById("DatPhongOnline").replaceChildren();
-                    response.forEach(function (room) {
-                        const cardHtml = `
+    console.log("Mức giá sau khi xử lý:", minPrice, maxPrice);
+
+    // Gửi yêu cầu tới API để tìm kiếm các phòng trống
+    $.ajax({
+        url: '/KhachHang/DatPhongOnl/GetAvailableRooms',  // Đường dẫn tới API
+        method: 'GET',
+        data: {
+            ngayNhan: ngayNhan,  // Ngày nhận đã chuyển đổi
+            ngayTra: ngayTra,    // Ngày trả đã chuyển đổi
+            minPrice: minPrice,  // Mức giá tối thiểu
+            maxPrice: maxPrice,  // Mức giá tối đa
+            minBeds: soGiuong,   // Số giường (tương đương minBeds vì chỉ chọn 1 giá trị)
+            maxBeds: soGiuong    // Số giường
+        },
+        success: function (response) {
+            if (response.length === 0) {
+                console.log("Không có phòng");
+                // Thêm code xử lý không có phòng, có thể thông báo cho người dùng
+            } else {
+                var so = 0;
+                console.log("Dữ liệu phòng:", response);
+                document.getElementById("DatPhongOnline").replaceChildren();
+                response.forEach(function (room) {
+                    const cardHtml = `
                                 <div class="container rounded d-flex p-3 shadow-item mt-${so}" style="background: white;">
                             <div class="col-5">
                                 <div class="item rounded image-container">
@@ -429,16 +429,23 @@ $(document).ready(function () {
                             </div>
                         </div>
                         `;
-                        // Thêm phòng vào trong phần tử rooms-container
-                        $('#DatPhongOnline').append(cardHtml);
-                        so = 3;
-                    });
-                }
-            },
-            error: function (xhr, status, error) {
-                alert('Không có phòng.');
+                    // Thêm phòng vào trong phần tử rooms-container
+                    $('#DatPhongOnline').append(cardHtml);
+                    so = 3;
+                });
             }
+        },
+        error: function (xhr, status, error) {
+            alert('Không có phòng.');
+        }
 
-        });
     });
-});
+};
+
+
+function reset() {
+    document.getElementById("ngayNhan").value = "";
+    document.getElementById("ngayTra").value = "";
+    document.getElementById("mucGia").selectedIndex = "";
+    document.getElementById("soGiuong").selectedIndex = "";
+}

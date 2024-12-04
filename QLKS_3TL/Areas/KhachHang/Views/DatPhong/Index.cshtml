@@ -12,29 +12,29 @@
                     <span class="input-group-text" id="addon-wrapping">
                         <i class="fa fa-calendar-alt"></i>
                     </span>
-                    <input id="myID" class="border p-2 flatpickr-input" style="width: 150px;" placeholder="Ngày Nhận" type="text" readonly="readonly">
+                    <input id="NgayNhanHome" class="border p-2 flatpickr-input" style="width: 150px;" placeholder="Ngày Nhận" type="text" readonly="readonly">
                 </div>
 
                 <div class="input-group flex-nowrap searchRoom" style="width: 220px;" title="Ngày Trả Phòng">
                     <span class="input-group-text" id="addon-wrapping"><i class="fa fa-calendar-alt"></i></span>
-                    <input id="myID" class="border p-2 flatpickr-input" style="width: 150px;" placeholder="Ngày Trả" type="text" readonly="readonly">
+                    <input id="NgayTraHome" class="border p-2 flatpickr-input" style="width: 150px;" placeholder="Ngày Trả" type="text" readonly="readonly">
                 </div>
-                <select class="form-select p-2 searchRoom" style="margin-right: 20px; width: 220px;" title="Mức Giá Phòng / Đêm" aria-label="Default select example">
-                    <option selected="">Mức Giá Phòng / Đêm </option>
-                    <option value="1">&gt; 5 trăm VND</option>
-                    <option value="2">5 trăm - 1 triệu VND</option>
-                    <option value="3">1 triệu - 2 triệu VND</option>
-                    <option value="4">2 triệu - 4 triệu VND</option>
-                    <option value="5">&lt; 5 triệu VND</option>
+                <select class="form-select p-2 searchRoom" id="MucGiaHome" style="margin-right: 20px; width: 220px;" title="Mức Giá Phòng / Đêm" aria-label="Default select example">
+                    <option selected value="">Chọn mức giá</option>
+                    <option value="500000">&gt; 5 trăm VND</option>
+                    <option value="500000-1000000">5 trăm - 1 triệu VND</option>
+                    <option value="1000000-2000000">1 triệu - 2 triệu VND</option>
+                    <option value="2000000-4000000">2 triệu - 4 triệu VND</option>
+                    <option value="5000000">&lt; 5 triệu VND</option>
                 </select>
-                <select class="form-select p-2 searchRoom" style="margin-left: 10px; margin-right: 30px; width: 180px;" title="Số Giường" aria-label="Default select example">
-                    <option selected="">Số Giường</option>
-                    <option value="1">1 Giường</option>
-                    <option value="2">2 Giường</option>
-                    <option value="3">3 Giường</option>
+                <select class="form-select p-2 searchRoom" id="SoGiuongHome"  style="margin-left: 10px; margin-right: 30px; width: 180px;" title="Số Giường" aria-label="Default select example">
+                    <option value="" selected>Chọn số giường</option>
+                    <option value="1">1 giường</option>
+                    <option value="2">2 giường</option>
+                    <option value="3">3 giường</option>
                 </select>
                 <div class="d-grid gap-2 d-md-flex justify-content-md-end">
-                    <a class="btn bg-color" style="width: 150px; color: azure;" href="Datphong.html">
+                    <a class="btn bg-color" style="width: 150px; color: azure;" asp-controller="DatPhongOnl" asp-action="Index">
                         <i class="fa-solid fa-magnifying-glass"></i> Tìm Kiếm
                     </a>
                 </div>

@@ -6,6 +6,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Đặt phòng 3TL</title>
     <!-- css file -->
     <link rel="stylesheet" href="~/css/styleKH.css">
     <!-- BootStrap 5 CND -->
@@ -78,7 +79,7 @@
                             <label class="mx-4 mb-2" style="font-size: 18px;font-weight: 600;line-height: 19px;">Ngày nhận: </label>
                             <div class="input-group flex-nowrap mx-4 border rounded text-center" style="width: 215px; background: #EEEEEE;">
                                 <i class="fa fa-calendar-alt" style="margin-top:13px; margin-left:20px"></i>
-                                <input type="date" class="py-2 mx-2 rounded flatpickr-input myID" id="ngayNhan" class="ps-2  " style="width: 140px;border: 0;background: #EEEEEE;" placeholder="Ngày Nhận">
+                                <input type="date" class="py-2 mx-2 rounded flatpickr-input myID" id="ngayNhan" style="width: 140px;border: 0;background: #EEEEEE;" placeholder="Ngày Nhận">
                             </div>
                         </div>
 
@@ -86,14 +87,14 @@
                             <label class="mx-4 mb-2" style="font-size: 18px;font-weight: 600;line-height: 19px;">Ngày trả: </label>
                             <div class="input-group flex-nowrap mx-4 border rounded text-center" style="width: 215px; background: #EEEEEE;">
                                 <i class="fa fa-calendar-alt" style="margin-top:13px; margin-left:20px"></i>
-                                <input type="date" class="py-2 mx-2 rounded flatpickr-input myID" id="ngayTra" class="ps-2  " style="width: 140px;border: 0;background: #EEEEEE;" placeholder="Ngày trả">
+                                <input type="date" class="py-2 mx-2 rounded flatpickr-input myID" id="ngayTra" style="width: 140px;border: 0;background: #EEEEEE;" placeholder="Ngày trả">
                             </div>
                         </div>
 
                         <div>
                             <label class="mx-4 mb-2" style="font-size: 18px;font-weight: 600;line-height: 19px;">Mức Giá Phòng / Đêm: </label>
                             <select id="mucGia" class="form-select mx-4 " style="width: 220px; background: #EEEEEE ;" aria-label="Default select example">
-                                <option selected value="0">&lt; 0 VND</option>
+                                <option selected value="">Chọn mức giá</option>
                                 <option value="500000">&gt; 5 trăm VND</option>
                                 <option value="500000-1000000">5 trăm - 1 triệu VND</option>
                                 <option value="1000000-2000000">1 triệu - 2 triệu VND</option>
@@ -106,15 +107,19 @@
                             <label class="mx-4 mb-2" style="font-size: 18px;font-weight: 600;line-height: 19px;">Số Giường: </label>
                             <select id="soGiuong" class="form-select mx-4 me-5 " style="width: 220px; background: #EEEEEE ;"
                                     aria-label="Default select example">
-                                <option value="1" selected>1 giường</option>
+                                <option value="" selected>Chọn số giường</option>
+                                <option value="1">1 giường</option>
                                 <option value="2">2 giường</option>
                                 <option value="3">3 giường</option>
                             </select>
 
                         </div>
                         <div class="d-flex justify-content-md-end me-4">
-                            <button class="btn bg-color" id="btnTimKiem" type="button" style="width: 150px; color: azure; height: 38px; margin-top: 25px;">
+                            <button class="btn bg-color" id="btnTimKiem" onclick="timKiemHangPhongTrong()" type="button" style="width: 120px; color: azure; height: 38px; margin-top: 25px;">
                                 <i class="fa-solid fa-magnifying-glass"></i> Tìm Kiếm
+                            </button>
+                            <button class="btn bg-color bg-secondary" id="btnReset" type="button" onclick="reset(), timKiemHangPhongTrong()" style="width: 70px; color: azure; height: 38px; margin-top: 25px; margin-left: 10px;">
+                                Reset
                             </button>
                         </div>
                     </div>

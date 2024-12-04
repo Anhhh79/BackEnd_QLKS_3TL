@@ -54,7 +54,7 @@
                                         <td>@i.TenNhanVien</td>
                                         <td>@i.TenKhachHang</td>
                                         <td>@i.ThoiGian</td>
-                                        <td>@i.TongGia VND</td>
+                                        <td>@String.Format("{0:N0}", i.TongGia) VND</td>
                                         <td class="d-flex  justify-content-end">
                                             <a class="cusor me-2 mt-1" onclick="loadHoaDonThu('@i.MaHoaDonThu')" 
                                                style="color: darkblue; font-style: italic; text-decoration: underline;">

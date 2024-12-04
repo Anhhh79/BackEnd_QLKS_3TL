@@ -59,7 +59,7 @@ namespace QLKS_3TL.Areas.Admin.Controllers
                             }
                             else if (taiKhoan.QuyenTruyCap == "2")
                             {
-                                return RedirectToAction("Index", "XacNhanDatPhong", new { area = "LeTan" });
+                                return RedirectToAction("Index", "QuanLyDatPhong", new { area = "LeTan" });
                                 // dẫn đường link đến lễ tân
                             }
                             else
