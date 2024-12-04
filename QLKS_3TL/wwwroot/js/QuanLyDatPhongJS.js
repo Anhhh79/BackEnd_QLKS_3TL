@@ -101,7 +101,6 @@ function ThongTinNhanPhong(maDatPhong2) {
         dataType: 'json',
         success: function (response) {
             if (response.success) {
-                console.log(response);
                 const item = response.data;
                 let object = `
                     <div class="modal-header d-flex justify-content-center">
@@ -370,8 +369,6 @@ function layThongTinPhong(maPhong) {
             if (response.success) {
                 const giaPhong = response.data.giaHangPhong;
                 const maHangPhong = response.data.maHangPhong;
-                console.log(response.data);
-
                 // Sử dụng .val() để gán giá trị cho input
                 $("#MaHangPhongTrongLT").val(maHangPhong);
                 $("#MaPhongTrongLT").val(maPhong);
@@ -441,8 +438,6 @@ function xuLyDatPhong() {
         TongThanhToan: parseFloat(TongThanhToan)
     };
 
-    console.log('Dữ liệu gửi:', bookings);
-
     // Gửi AJAX request
     $.ajax({
         url: '/LeTan/QuanLyDatPhong/DatPhongTrong', // Thay bằng đường dẫn controller/action
@@ -501,8 +496,6 @@ function xuLyNhanPhong() {
         NgayTra: checkOutDate,
         TongThanhToan: parseFloat(TongThanhToan)
     };
-
-    console.log('Dữ liệu gửi:', bookings);
 
     // Gửi AJAX request
     $.ajax({
