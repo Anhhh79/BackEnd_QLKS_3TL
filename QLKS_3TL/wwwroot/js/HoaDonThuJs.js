@@ -58,7 +58,7 @@ function loadHoaDonThu(maHoaDon) {
                             <h6><span style="font-weight: 600;">Ngày trả:</span> ${formatDate(hoaDon.ngayTra)}</h6>
                         </div>
                         <div class="col-4">
-                            <h6><span style="font-weight: 600;">Tổng giá trị:</span> ${(hoaDon.tongGia).toLocaleString()} VND</h6>
+                            <h6><span style="font-weight: 600;">Tổng giá trị:</span> ${hoaDon.tongGia.toLocaleString('en-US')} VND</h6>
                         </div>
                     </div>
                 </div>
