@@ -37,7 +37,6 @@
                             <thead style="background: #0e2238;">
                                 <tr>
                                     <th scope="col">#</th>
-                                    <th scope="col">Mã hóa đơn</th>
                                     <th scope="col">Người xuất hóa đơn</th>
                                     <th scope="col">Tên mặt hàng</th>
                                     <th scope="col">Số lượng</th>
@@ -54,13 +53,20 @@
                                 {
                                     <tr>
                                         <th scope="row">@stt</th>
-                                        <td>@item.MaHoaDonChi</td>
                                         <td>@item.MaNhanVien</td>
                                         <td>@item.TenMatHang</td>
                                         <td>@item.SoLuong</td>
-                                        <td>@item.GiaMatHang</td>
-                                        <td>@item.TongGia VND</td> <!-- Định dạng tiền tệ -->
-                                        <td class="text-center">@item.ThoiGian?.ToString("dd/MM/yyyy - hh:mm tt"+" VND")</td>
+                                        <td>
+                                            @String.Format("{0:N0}", item.GiaMatHang)
+                                            VND
+                                        </td>
+                                        <td>
+                                            @String.Format("{0:N0}", item.TongGia)
+                                            VND
+                                        </td>
+                                        <td class="text-center">
+                                            @item.ThoiGian?.ToString("dd/MM/yyyy - hh:mm tt", System.Globalization.CultureInfo.GetCultureInfo("vi-VN"))
+                                        </td>
                                     </tr>
                                     stt = stt + 1;
                                 }

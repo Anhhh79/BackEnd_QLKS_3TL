@@ -1,7 +1,120 @@
-﻿
+﻿@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
 @{
-    ViewData["Title"] = "Thống kế doanh thu";
 }
+@model dynamic
+<div class="main" id="content">
+    <nav class="navbar navbar-expand px-4 py-3">
+        <div class="navbar-collapse collapse">
+            <ul class="navbar-nav justify-content-between" style="width: 1380px;">
+                <li>
+                    <h2 style="font-weight: bolder;">Thống kê</h2>
+                </li>
+                @await Html.PartialAsync("~/Areas/Admin/Views/DoiMatKhau/Index.cshtml")
+            </ul>
+        </div>
+    </nav>
+    <main class="content px-3 py-3">
+        <div class="row g-3 pb-4">
+            <!-- Rooms -->
+            <div class="col-sm-4 wow fadeIn">
+                <div class="border rounded p-1">
+                    <div class="border rounded text-center p-4">
+                        <i class="fa fa-hotel fa-2x text-color mb-2"></i>
 
-<h1>THONGKE</h1>
+                        <h2 class="mb-1" id="ThongKePhong" data-toggle="counter-up"></h2>
+                        <p class="mb-0">Phòng</p>
+                    </div>
+                </div>
+            </div>
+            <!-- employee -->
+            <div class="col-sm-4 wow fadeIn">
+                <div class="border rounded p-1">
+                    <div class="border rounded text-center p-4">
+                        <i class="fa fa-users-cog fa-2x text-color mb-2"></i>
 
+                        <h2 class="mb-1" id="ThongKeNhanVien" data-toggle="counter-up"></h2>
+                        <p class="mb-0">Nhân Viên</p>
+                    </div>
+                </div>
+            </div>
+            <!-- customer -->
+            <div class="col-sm-4 wow fadeIn">
+                <div class="border rounded p-1">
+                    <div class="border rounded text-center p-4">
+                        <i class="fa fa-users fa-2x text-color mb-2"></i>
+
+                        <h2 class="mb-1" id="ThongKeKhachHang" data-toggle="counter-up"></h2>
+                        <p class="mb-0">Người Dùng</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="chart-container" style="margin-left:30px;">
+            <canvas id="combinedChart"></canvas>
+        </div>
+
+        <script>
+         var hoaDonThuData = @Html.Raw(Newtonsoft.Json.JsonConvert.SerializeObject(Model.HoaDonThu));
+var hoaDonChiData = @Html.Raw(Newtonsoft.Json.JsonConvert.SerializeObject(Model.HoaDonChi));
+
+var months = ['Tháng 1', 'Tháng 2', 'Tháng 3', 'Tháng 4', 'Tháng 5', 'Tháng 6', 'Tháng 7', 'Tháng 8', 'Tháng 9', 'Tháng 10', 'Tháng 11', 'Tháng 12'];
+
+var hoaDonThu = [];
+var hoaDonChi = [];
+
+// Lấy dữ liệu Hóa đơn Thu
+hoaDonThuData.forEach(function(item) {
+    hoaDonThu[item.Month - 1] = item.TotalAmount;
+});
+
+// Lấy dữ liệu Hóa đơn Chi
+hoaDonChiData.forEach(function(item) {
+    hoaDonChi[item.Month - 1] = item.TotalAmount;
+});
+
+var ctx = document.getElementById('combinedChart').getContext('2d');
+var combinedChart = new Chart(ctx, {
+    type: 'bar',
+    data: {
+        labels: months,
+        datasets: [
+            {
+                label: 'Hóa đơn Thu (VND)',
+                data: hoaDonThu,
+                backgroundColor: 'rgba(75, 192, 192, 1)',  // Màu nền cột Thu
+                borderColor: 'rgba(75, 192, 192, 1)',
+                borderWidth: 1
+            },
+            {
+                label: 'Hóa đơn Chi (VND)',
+                data: hoaDonChi,
+                backgroundColor: 'rgba(0, 0, 255, 1)',  // Màu nền cột Chi
+                borderColor: 'rgba(0, 0, 255, 1)',
+                borderWidth: 1
+            }
+        ]
+    },
+    options: {
+        responsive: true,
+        scales: {
+            x: {
+                beginAtZero: true,
+                categoryPercentage: 0.8  // Điều chỉnh khoảng cách giữa các cột
+            },
+            y: {
+                beginAtZero: true
+            }
+        },
+        plugins: {
+            legend: {
+                position: 'bottom',
+            },
+        }
+    }
+});
+
+        </script>
+    </main>
+</div>

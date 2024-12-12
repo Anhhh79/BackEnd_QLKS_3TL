@@ -207,3 +207,13 @@ input[type=number] {
     right: 0 !important;
     z-index: 1050 !important;
 }
+
+.chart-container {
+    width: 1100px;
+    height: 550px;
+    margin-bottom: 30px;
+}
+
+.text-color {
+    color: #fea116 !important;
+}
