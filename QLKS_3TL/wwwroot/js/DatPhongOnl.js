@@ -9,7 +9,7 @@
             if (data) {
                 $('#tenHP').text(data.tenHangPhong); // Chú ý tên trường
                 $('#maHP').val(data.maHangPhong); // Chú ý tên trường
-                $('#giaHP').text(data.giaHangPhong + 'VND'); // Chú ý tên trường
+                $('#giaHP').text(data.giaHangPhong.toLocaleString() + ' '+ 'VND'); // Chú ý tên trường
 
                 // Hiển thị modal
                 $('#Datphong').modal('show');
@@ -76,6 +76,7 @@ document.getElementById("ChonDP").addEventListener("click", function () {
     const maHangPhong = document.getElementById("maHP").value;
     const giaHangPhong = document.getElementById("giaHP").textContent;
 
+
     // Tạo đối tượng dữ liệu cho phòng đã chọn
     const bookingData = {
         maHangPhong: maHangPhong,
@@ -99,7 +100,7 @@ document.getElementById("ChonDP").addEventListener("click", function () {
     alert("Chọn phòng thành công!");
     $('#Datphong').modal('hide');
 
-    //location.reload();
+    location.reload();
 });
 
 
@@ -262,6 +263,7 @@ function calculateTotalFromSessionStorage() {
     // Tính tổng số tiền
     bookingData.forEach(item => {
         const price = parseFloat(item.giaHangPhong.replace(/[^\d]/g, '')); // Chỉ lấy phần số từ giá
+        console.log(price);
         const quantity = parseInt(item.soLuong, 10); // Chuyển số lượng sang số nguyên
 
         if (!isNaN(price) && !isNaN(quantity)) {
@@ -273,6 +275,8 @@ function calculateTotalFromSessionStorage() {
 
     // Thay đổi ký hiệu tiền tệ từ ₫ thành VND
     const formattedWithVND = formattedTotal.replace('₫', 'VND');
+
+    console.log(formattedWithVND)
 
     // Hiển thị tổng số tiền vào phần tử có id "TTTongCong"
     document.getElementById('TTTongCong').textContent = formattedWithVND;

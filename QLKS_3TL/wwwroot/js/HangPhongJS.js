@@ -24,7 +24,7 @@ function loadHangPhong() {
                             <td>${hp.tenHangPhong || ''}</td>
                             <td style="padding-left: 37px;">${hp.soGiuong || ''}</td>
                             <td style="padding-left: 30px;">${hp.dienTich || ''}</td>
-                            <td>${hp.giaHangPhong || ''} VND</td>
+                            <td>${hp.giaHangPhong.toLocaleString('vi-VN')} VND</td>
                             <td class="d-flex justify-content-end">
                                 <a class="cusor me-2 mt-1 chitietBtn" onclick="loadRoomDetail('${hp.maHangPhong || ''}')"
                                    style="color: darkblue; font-style: italic; text-decoration: underline;">
@@ -57,6 +57,7 @@ function loadHangPhong() {
 
 //Tìm kiếm
 $(document).ready(function () {
+    loadHangPhong();
     $('#searchInput').on('input', function () {
         var query = $(this).val().toLowerCase(); // Lấy giá trị tìm kiếm và chuyển thành chữ thường
         $('#tblBody tr').each(function () {
@@ -340,7 +341,7 @@ function loadRoomDetail(roomCode) {
                 $('#modalRoomCode').text(data.maHangPhong); // Chú ý tên trường
                 $('#modalRoomBeds').text(data.soGiuong); // Chú ý tên trường
                 $('#modalRoomArea').text(data.dienTich + ' m²'); // Chú ý tên trường
-                $('#modalRoomPrice').text(data.giaHangPhong + 'VND'); // Chú ý tên trường
+                $('#modalRoomPrice').text(Number(data.giaHangPhong).toLocaleString('vi-VN') + ' VND');
                 $('#modalRoomDescription').html(data.moTa.replace(/\r\n/g, '<br/>')); // Sử dụng html để chèn xuống dòng
 
                 // Hiển thị modal

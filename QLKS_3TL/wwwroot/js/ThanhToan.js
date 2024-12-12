@@ -35,61 +35,10 @@
                     <hr>
                 </div>
             `;
-            document.getElementById('bookingList').innerHTML += bookingHTML;
+            document.getElementById('TTbookingList').innerHTML += bookingHTML;
         });
     } else {
-        document.getElementById('bookingList').innerHTML = "<p>Không có thông tin đặt phòng.</p>";
-    }
-});
-
-document.addEventListener("DOMContentLoaded", function () {
-    // Lấy dữ liệu booking từ sessionStorage
-    let allBookings = JSON.parse(sessionStorage.getItem("allBookings")) || [];
-    let totalAmount = 0; // Khởi tạo tổng cộng
-
-    // Kiểm tra nếu có dữ liệu
-    if (allBookings.length > 0) {
-        // Lặp qua tất cả bookings để tính tổng cộng
-        allBookings.forEach(function (booking) {
-            // Chuyển giá tiền phòng từ chuỗi (ví dụ "1,800,000 VND/đêm") thành số
-            let price = parseInt(booking.giaHangPhong.replace(/[^0-9.-]+/g, "")); // Lấy giá và bỏ đi chữ "VND/đêm"
-            let quantity = parseInt(booking.soLuong); // Số lượng phòng đã chọn
-
-            // Tính tổng tiền cho booking này và cộng vào tổng cộng
-            totalAmount += price * quantity;
-        });
-
-        // Cập nhật phần tử TTTongCong với tổng tiền đã tính được
-        document.getElementById('TTTongCong').textContent = totalAmount.toLocaleString() + " VND";
-    } else {
-        // Nếu không có dữ liệu, có thể hiển thị thông báo hoặc để trống
-        document.getElementById('TTTongCong').textContent = "0 VND";
-    }
-});
-
-
-document.addEventListener("DOMContentLoaded", function () {
-    // Lấy dữ liệu booking từ sessionStorage
-    let allBookings = JSON.parse(sessionStorage.getItem("allBookings")) || [];
-    let totalAmount = 0; // Khởi tạo tổng cộng
-
-    // Kiểm tra nếu có dữ liệu
-    if (allBookings.length > 0) {
-        // Lặp qua tất cả bookings để tính tổng cộng
-        allBookings.forEach(function (booking) {
-            // Chuyển giá tiền phòng từ chuỗi (ví dụ "1,800,000 VND/đêm") thành số
-            let price = parseInt(booking.giaHangPhong.replace(/[^0-9.-]+/g, "")); // Lấy giá và bỏ đi chữ "VND/đêm"
-            let quantity = parseInt(booking.soLuong); // Số lượng phòng đã chọn
-
-            // Tính tổng tiền cho booking này và cộng vào tổng cộng
-            totalAmount += price * quantity;
-        });
-
-        // Cập nhật phần tử TTTongCong với tổng tiền đã tính được
-        document.getElementById('TTTongCong').textContent = totalAmount.toLocaleString() + " VND";
-    } else {
-        // Nếu không có dữ liệu, có thể hiển thị thông báo hoặc để trống
-        document.getElementById('TTTongCong').textContent = "0 VND";
+        document.getElementById('TTbookingList').innerHTML = "<p>Không có thông tin đặt phòng.</p>";
     }
 });
 
@@ -190,7 +139,7 @@ $(document).ready(function () {
         }
 
         // Lấy giá trị từ phần tử #TTTongCong và loại bỏ " VND"
-        const TongThanhToan = $('#TTTongCong').text().trim().replace(' VND', '').replace(/\./g, '');
+        const TongThanhToan = $('#ThanhToanTongCong').text().trim().replace(' VND', '').replace(/\./g, '');
 
         // Tạo danh sách các đặt phòng
         const bookings = sessionData.map(booking => ({
@@ -232,16 +181,12 @@ $(document).ready(function () {
         });
     });
 });
-
-
-
-
 function calculateTotalFromSessionStorage() {
     // Lấy dữ liệu từ sessionStorage
     const data = sessionStorage.getItem("allBookings");
 
     if (!data) {
-        document.getElementById('TTTongCong').textContent = "0 VND";
+        document.getElementById('ThanhToanTongCong').textContent = "0 VND";
         return;
     }
 
@@ -260,11 +205,13 @@ function calculateTotalFromSessionStorage() {
         }
     });
 
-    // Định dạng tổng số tiền
     const formattedTotal = new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(total);
 
+    // Thay đổi ký hiệu tiền tệ từ ₫ thành VND
+    const formattedWithVND = formattedTotal.replace('₫', 'VND');
+
     // Hiển thị tổng số tiền vào phần tử có id "TTTongCong"
-    document.getElementById('TTTongCong').textContent = formattedTotal;
+    document.getElementById('ThanhToanTongCong').textContent = formattedWithVND;
 }
 
 // Gọi hàm để tính và hiển thị tổng
