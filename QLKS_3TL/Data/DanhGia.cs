@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations.Schema;
+using System.ComponentModel.DataAnnotations;
 
 namespace QLKS_3TL.Data;
 
@@ -16,6 +18,8 @@ public partial class DanhGia
     public DateOnly? ThoiGian { get; set; }
 
     public string? MaNhanVien { get; set; }
+
+    public string? NoiDung { get; set; }
 
     public virtual NhanVien? MaNhanVienNavigation { get; set; }
 }
