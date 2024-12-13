@@ -94,8 +94,13 @@
                         <div class="row">
                             <div class="col-6">
                                 <label for="tenMatHang" class="ms-1 mb-1 label-modal">Tên mặt hàng</label>
-                                <input type="text" id="tenMatHang" class="form-control" placeholder=""
-                                       aria-label="Tên mặt hàng" aria-describedby="addon-wrapping">
+                                <select class="form-select" id="tenMatHang" required>
+                                    <option value="Khác">Khác</option>
+                                    <option value="Tranh">Tranh</option>
+                                    <option value="Trái Cây">Trái Cây</option>
+                                    <option value="Wifi">Wifi</option>
+                                    <option value="Điện">Điện</option>
+                                </select>
                                 <span id="errorTenMatHang" class="text-danger"></span> <!-- Thông báo lỗi -->
                             </div>
                             <div class="col-6">

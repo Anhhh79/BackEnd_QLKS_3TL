@@ -246,17 +246,45 @@ namespace QLKS_3TL.Areas.LeTan.Controllers
 
         //Xử lý nút nhận phòng
         [HttpPost]
-        public async Task<JsonResult> XuLyNhanPhong(string maDatPhong)
+        public async Task<JsonResult> XuLyNhanPhong(string maDatPhong, DateOnly ngayNhan, DateOnly ngayTra)
         {
             try
             {
-                var datPhong = await db.ThongTinDatPhongs.FirstOrDefaultAsync(dp => dp.MaDatPhong == maDatPhong);
+                // Tìm thông tin đặt phòng
+                var datPhong = await db.ThongTinDatPhongs
+                    .FirstOrDefaultAsync(dp => dp.MaDatPhong == maDatPhong);
 
                 if (datPhong == null)
                     return Json(new { success = false, message = "Không tìm thấy thông tin đặt phòng." });
 
-                datPhong.TrangThaiPhong = "Đang hoạt động"; // Cập nhật trạng thái phòng
-                await db.SaveChangesAsync(); // Lưu thay đổi vào cơ sở dữ liệu
+                // Kiểm tra hợp lệ
+                if (ngayTra < ngayNhan)
+                {
+                    return Json(new { success = false, message = "Ngày trả không thể trước ngày nhận." });
+                }
+
+                // Tính tổng số ngày
+                int tongSoNgay = (int)(ngayTra.ToDateTime(TimeOnly.MinValue) - ngayNhan.ToDateTime(TimeOnly.MinValue)).TotalDays;
+
+                // Tìm giá hạng phòng
+                var hangPhong = await db.HangPhongs
+                    .FirstOrDefaultAsync(hp => hp.MaHangPhong == datPhong.MaHangPhong);
+
+                if (hangPhong == null)
+                    return Json(new { success = false, message = "Không tìm thấy thông tin hạng phòng." });
+
+                // Tính tổng thanh toán
+                decimal giaHangPhong = hangPhong.GiaHangPhong ?? 0;
+                decimal tongThanhToan = giaHangPhong * tongSoNgay;
+
+                // Cập nhật thông tin
+                datPhong.NgayNhan = ngayNhan; // Chuyển đổi sang DateTime
+                datPhong.NgayTra = ngayTra;   // Chuyển đổi sang DateTime
+                datPhong.TongSoNgay = tongSoNgay;
+                datPhong.TongThanhToan = tongThanhToan;
+                datPhong.TrangThaiPhong = "Đang hoạt động";
+
+                await db.SaveChangesAsync();
 
                 return Json(new { success = true, message = "Nhận phòng thành công!" });
             }
@@ -265,6 +293,8 @@ namespace QLKS_3TL.Areas.LeTan.Controllers
                 return Json(new { success = false, message = "Có lỗi xảy ra: " + ex.Message });
             }
         }
+
+
 
         //Xử lý nút đặt phòng khi phòng trống
         [HttpPost]

@@ -55,7 +55,10 @@
                                         <td>@hp.TenHangPhong</td>
                                         <td style="padding-left: 37px;">@hp.SoGiuong</td>
                                         <td style="padding-left: 30px;">@hp.DienTich</td>
-                                        <td>@hp.GiaHangPhong VND</td>
+                                        <td>
+                                            @String.Format("{0:N0}", hp.GiaHangPhong)
+                                            VND
+                                        </td>
                                         <td class="d-flex  justify-content-end">
                                             <a class="cusor me-2 mt-1 chitietBtn" onclick="loadRoomDetail('@hp.MaHangPhong')"
                                                style="color: darkblue; font-style: italic; text-decoration: underline;">

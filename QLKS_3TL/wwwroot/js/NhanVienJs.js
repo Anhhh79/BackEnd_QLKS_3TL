@@ -160,7 +160,8 @@ function ChiTietNhanVien(maNhanVien) {
                                                     <h6>
                                                         <span style="font-weight: 600;">
                                                             Lương cơ bản:
-                                                        </span> ${item.luongCoBan} VND
+                                                        </span>
+                                                         ${item.luongCoBan ? item.luongCoBan.toLocaleString() : '0'} VND
                                                     </h6>
                                                 </div>
                                                 <div class="col-4 d-flex pe-2 ">

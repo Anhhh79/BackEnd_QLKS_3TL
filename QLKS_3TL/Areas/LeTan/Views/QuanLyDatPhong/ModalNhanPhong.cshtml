@@ -2,6 +2,91 @@
     <div class="modal-dialog modal-lg" id="roomModalDialog">
         <div class="modal-content" style="border-radius: 20px" id="modalNhanPhongLT">
             <!--code vao day-->
+            <div class="modal-header d-flex justify-content-center">
+                <div>
+                    <h5 style="font-weight: bolder;">Thông tin phòng</h5>
+                </div>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div class="container">
+                    <div class="row">
+                        <div class="col-12 px-0">
+                            <div class="container" id="modalNhanPhongLT">
+                                <div class="row mt-2">
+                                    <div class="col-4">
+                                        <h6><span style="font-weight: 600;">Họ tên:</span></h6>
+                                        <input type="text" class="form-control" id="TenDatDat" disabled>
+                                    </div>
+                                    <div class="col-4">
+                                        <h6><span style="font-weight: 600;">Số điện thoại:</span></h6>
+                                        <input type="text" class="form-control" id="SdtDatDat" disabled>
+                                    </div>
+                                    <div class="col-4">
+                                        <h6><span style="font-weight: 600;">Giới tính:</span></h6>
+                                        <select class="form-select" id="gioiTinhDatDat" disabled>
+                                            <option value="Nam">Nam</option>
+                                            <option value="Nữ">Nữ</option>
+                                            <option value="Khác">Khác</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="row mt-2">
+                                    <div class="col-4">
+                                        <h6><span style="font-weight: 600;">CCCD:</span></h6>
+                                        <input type="text" class="form-control" id="CccdDatDat" disabled>
+                                    </div>
+                                    <div class="col-4">
+                                        <h6><span style="font-weight: 600;">Ngày nhận:</span></h6>
+                                        <input type="text" class="form-control datepicker" id="NgayNhanDaDat" disabled>
+                                    </div>
+                                    <div class="col-4">
+                                        <h6><span style="font-weight: 600;">Ngày trả:</span></h6>
+                                        <input type="text" class="form-control myID" id="NgayTraDaDat">
+                                    </div>
+                                </div>
+                                <div class="row mt-2">
+                                    <div class="col-4">
+                                        <h6><span style="font-weight: 600;">Email:</span></h6>
+                                        <input type="email" class="form-control" id="EmailDatDat" disabled>
+                                    </div>
+                                    <div class="col-4">
+                                        <h6><span style="font-weight: 600;">Hạng phòng:</span></h6>
+                                        <input type="text" class="form-control" id="HPDaDat"disabled>
+                                    </div>
+                                    <div class="col-4">
+                                        <h6><span style="font-weight: 600;">Tên phòng:</span></h6>
+                                        <input type="text" class="form-control" id="TPDatDat"disabled>
+                                    </div>
+                                </div>
+                                <div class="row mt-2">
+                                    <div class="col-4">
+                                        <h6><span style="font-weight: 600;">Tổng số ngày:</span></h6>
+                                        <input type="text" id="TongoSNgayDD" class="form-control" disabled>
+                                    </div>
+                                    <div class="col-4">
+                                        <h6><span style="font-weight: 600;">Yêu cầu:</span></h6>
+                                        <input type="text" class="form-control" id="YeuCauDaDat"disabled>
+                                    </div>
+                                    <div class="col-4">
+                                        <h6><span style="font-weight: 600;">Thanh toán:</span></h6>
+                                        <input type="text" class="form-control" id="TtDaDat"disabled>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-success" id="NhanPhong" onclick="XuLyNhanPhong()">Nhận phòng</button>
+            </div>
         </div>
     </div>
 </div>
+<script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+<script>
+    flatpickr(".myID", {
+            dateFormat: "Y-m-d",
+        });
+</script>
