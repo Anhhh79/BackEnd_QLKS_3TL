@@ -33,7 +33,7 @@ namespace QLKS_3TL.Areas.LeTan.Controllers
 
                         // Lấy một thông tin ngày đặt phòng (ví dụ: ngày đặt phòng đầu tiên)
                         ThoiGianDatPhong = kh.ThongTinDatPhongs.Select(dp => dp.ThoiGianDatPhong).FirstOrDefault()
-                    })
+                    }).OrderByDescending(kh => kh.ThoiGianDatPhong)
                     .ToListAsync();
 
                 return View(khachHangs);
