@@ -260,14 +260,37 @@ function calculateTotalFromSessionStorage() {
 
     let total = 0;
 
-    // Tính tổng số tiền
+    //// Tính tổng số tiền
+    //bookingData.forEach(item => {
+    //    const price = parseFloat(item.giaHangPhong.replace(/[^\d]/g, '')); // Chỉ lấy phần số từ giá
+    //    console.log(price);
+    //    const quantity = parseInt(item.soLuong, 10); // Chuyển số lượng sang số nguyên
+
+    //    if (!isNaN(price) && !isNaN(quantity)) {
+    //        total += price * quantity;
+    //    }
+    //});
+
     bookingData.forEach(item => {
-        const price = parseFloat(item.giaHangPhong.replace(/[^\d]/g, '')); // Chỉ lấy phần số từ giá
-        console.log(price);
+        // Chuyển giá từ chuỗi sang số
+        const price = parseFloat(item.giaHangPhong.replace(/[^0-9]/g, '')); // Loại bỏ mọi ký tự không phải số
         const quantity = parseInt(item.soLuong, 10); // Chuyển số lượng sang số nguyên
 
-        if (!isNaN(price) && !isNaN(quantity)) {
-            total += price * quantity;
+        // Chuyển đổi định dạng ngày từ DD-MM-YYYY sang YYYY-MM-DD
+        const formattedCheckInDate = item.ngayNhan.split('-').reverse().join('-');
+        const formattedCheckOutDate = item.ngayTra.split('-').reverse().join('-');
+
+        // Tạo đối tượng Date
+        const checkInDate = new Date(formattedCheckInDate);
+        const checkOutDate = new Date(formattedCheckOutDate);
+
+        // Tính số ngày ở (đảm bảo ngày trả >= ngày nhận)
+        const diffTime = checkOutDate - checkInDate;
+        const days = diffTime > 0 ? Math.ceil(diffTime / (1000 * 60 * 60 * 24)) : 0;
+
+        // Tính tổng nếu giá trị hợp lệ
+        if (!isNaN(price) && !isNaN(quantity) && days > 0) {
+            total += price * quantity * days;
         }
     });
 

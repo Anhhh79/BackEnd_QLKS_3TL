@@ -57,7 +57,7 @@
                                                 @item.ThoiGianDatPhong?.ToString("dd/MM/yyyy - hh:mm tt")
                                             </td>
                                             <td>
-                                                @item.TongThanhToan?.ToString("#,0", new System.Globalization.CultureInfo("vi-VN"))
+                                                @($"{item.TongThanhToan?.ToString("#,0", new System.Globalization.CultureInfo("vi-VN"))} VND")
                                             </td>
                                             <td class="d-flex  justify-content-center">
                                                 <span>
@@ -66,7 +66,6 @@
                                                         Xác Nhận
                                                     </button>
                                                 </span>
-                                                <span style="padding-left: 10px;"><button class="btn btn-danger" style="font-size: small;">Hủy</button></span>
                                             </td>
                                         </tr>
                                         stt = stt + 1;
